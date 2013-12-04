@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------------+
-  - Dateiname:		app/view/Main.js
+  - Dateiname:		app/view/MainContainer.js
   - Beschreibung:	Startseite der Applikation. 
   - Datum:			25.11.2013
   - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
@@ -31,41 +31,30 @@
 */
 
 Ext.define('LernApp.view.Main', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.Container',
     xtype: 'main',
+
     requires: [
-        'Ext.TitleBar',
-        'Ext.Video'
+       'LernApp.view.TabPanel'
     ],
+    
     config: {
-        tabBarPosition: 'bottom',
-
-        items: [
-            {
-                title: 'Wilkommen',
-                iconCls: 'home',
-
-                styleHtmlContent: true,
-                scrollable: true,
-
-                items: {
-                    docked: 'top',
-                    xtype: 'titlebar',
-                    title: 'Empty Project'
-                }
-            },
-            {
-                title: 'Info',
-                iconCls: 'action',
-
-                items: [
-                    {
-                        docked: 'top',
-                        xtype: 'titlebar',
-                        title: 'Information'
-                    }
-                ]
-            }
-        ]
+        fullscreen: true,
+        autoDestroy: true,
+        layout: 'hbox',
+        defaults: {
+            flex: 1
+        }
+    },
+    
+    initialize: function() {
+        this.callParent(arguments);
+        
+        this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
+        
+        this.tabPanel = Ext.create('LernApp.view.TabPanel');
+        this.tabPanel.add([this.navigation, Ext.create('LernApp.view.about.AboutPanel')]);
+        
+        this.add([this.tabPanel]);
     }
 });
