@@ -16,8 +16,8 @@
   +--------------------------------------------------------------------------------+
   Inoffizielle deutsche Übersetzung (http://www.gnu.de/documents/gpl.de.html):
 
-  Dieses Programm ist freie Software. Sie können es unter den Bedingungen der 
-  GNU General Public License, wie von der Free Software Foundation veröffentlicht,
+  Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU 
+  General Public License, wie von der Free Software Foundation veröffentlicht,
   weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder 
   jeder späteren Version.
   +--------------------------------------------------------------------------------+
@@ -25,57 +25,76 @@
   Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie
   der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden
   Sie in der GNU General Public License.
-  Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm
-  erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
+  Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem 
+  Programm erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
 
 Ext.application({
     name: 'LernApp',
+    appFolder: 'app',
 
     requires: [
-        'Ext.MessageBox'
-    ],
-
-    views: [
-        'Main'
+        'LernApp.view.Main'
     ],
 
     icon: {
         '57': 'resources/icons/Icon.png',
         '72': 'resources/icons/Icon~ipad.png',
-        '114': 'resources/icons/Icon@2x.png',
-        '144': 'resources/icons/Icon~ipad@2x.png'
+        '114': 'resources/icons/Icon@2x.png',		// Retina iPhone
+        '144': 'resources/icons/Icon~ipad@2x.png'	// Retina iPad
     },
-
-    isIconPrecomposed: true,
 
     startupImage: {
         '320x460': 'resources/startup/320x460.jpg',
-        '640x920': 'resources/startup/640x920.png',
+        '640x920': 'resources/startup/640x920.png',	// Retina iPhone
         '768x1004': 'resources/startup/768x1004.png',
         '748x1024': 'resources/startup/748x1024.png',
-        '1536x2008': 'resources/startup/1536x2008.png',
-        '1496x2048': 'resources/startup/1496x2048.png'
+        '1536x2008': 'resources/startup/1536x2008.png',	// Retina iPad, Portrait
+        '1496x2048': 'resources/startup/1496x2048.png'	// Retina iPad, Landscape
     },
+
+    models: [],
+    views: [
+        'Main',
+        'TabPanel',
+        
+        'login.LoginNavigation',
+        'login.WelcomePanel',
+        'login.LoginPanel',
+        
+        'home.HomeNavigation',
+        'home.OverviewPanel',
+        
+        'about.AboutPanel'
+    ],
+    controllers: [
+        'Navigation'
+    ],
+    
+    fullscreen: true,
+    isIconPrecomposed: true,
+    statusBarStyle: 'default',
 
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('LernApp.view.Main'));
+        this.main = Ext.create('LernApp.view.Main');
+        
+        Ext.Viewport.add(this.main);
     },
 
     onUpdated: function() {
         Ext.Msg.confirm(
-            "Application Update",
-            "This application has just successfully been updated to the latest version. Reload now?",
-            function(buttonId) {
-                if (buttonId === 'yes') {
-                    window.location.reload();
+                "Application Update",
+                 "This application has just successfully been updated to the latest version. Reload now?",
+                 function(buttonId) {
+                    if (buttonId === 'yes') {
+                        window.location.reload();
+                    }
                 }
-            }
         );
     }
 });
