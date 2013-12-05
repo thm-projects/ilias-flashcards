@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------------------+
-  - Dateiname:		app/view/login/LoginTabPanel.js
-  - Beschreibung:	TabPanel des Logins. 
+  - Dateiname:		app/view/TabPanel.js
+  - Beschreibung:	TabPanel Prototyp. 
   - Datum:			25.11.2013
   - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
   +--------------------------------------------------------------------------------+
