@@ -52,21 +52,13 @@ Ext.define('LernApp.view.home.OverviewPanel', {
     initialize: function() {
         this.callParent(arguments);
         
-        this.logoutButton = Ext.create('Ext.Button', {
-           text: Messages.LOGOUT,
-           ui: 'confirm',
-           handler: function() {
-               
-           }
-        });
-        
         this.continueButton = Ext.create('Ext.Button', {
-           text: Messages.CONTINUE,
-           ui: 'confirm',
-           handler: function() {
+            text: Messages.CONTINUE,
+            ui: 'confirm',
+            handler: function() {
 
-           }
-        });
+            }
+         });
         
         this.add([{ 
                 xtype: 'spacer' 
@@ -81,5 +73,19 @@ Ext.define('LernApp.view.home.OverviewPanel', {
             this.continueButton,
             { xtype: 'spacer' }
         ]);
+        
+        /**
+         * show logout button after panel is painted
+         */
+        this.onAfter('painted', function() {
+            LernApp.app.main.navigation.logoutButton.show();
+        });
+        
+        /**
+         * hide logout button on panel hiding
+         */
+        this.on('hide', function() {
+            LernApp.app.main.navigation.logoutButton.hide();
+        });
     }
 });
