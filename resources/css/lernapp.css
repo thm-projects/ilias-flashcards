@@ -1,0 +1,86 @@
+/*--------------------------------------------------------------------------------+
+  - Dateiname:      resources/css/lernapp.css
+  - Beschreibung:   Stylesheet Datei der App.
+  - Datum:          29.11.2013
+  - Autor(en):      Andreas Gärtner <andreas.gaertner@hotmail.com>
+  +--------------------------------------------------------------------------------+
+  This program is free software; you can redistribute it and/or modify it under 
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation; either version 3 of the License, or any later version.
+  +--------------------------------------------------------------------------------+
+  This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+  PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License along with 
+  this program; if not, see <http://www.gnu.org/licenses/>.
+  +--------------------------------------------------------------------------------+
+  Inoffizielle deutsche Übersetzung (http://www.gnu.de/documents/gpl.de.html):
+
+  Dieses Programm ist freie Software. Sie können es unter den Bedingungen der 
+  GNU General Public License, wie von der Free Software Foundation veröffentlicht,
+  weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder 
+  jeder späteren Version.
+  +--------------------------------------------------------------------------------+
+  Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von
+  Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie
+  der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden
+  Sie in der GNU General Public License.
+  Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm
+  erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
+  +--------------------------------------------------------------------------------+
+*/
+
+.loginFields .x-form-field {
+	text-align: center;
+}
+
+.forwardListButton { 
+	background: white
+		url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAAZiS0dEALgAuAC41wNsvAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB9sGEQk7MbF1V5sAAAENSURBVCjPY2CgNigtLS0pKyubSEgdMxqfsbS0tJuRkbGBgYHB3NLS8s+xY8cO49LMhC7AyMgoA5dkYmopLS1NIVbz//v378f///9/D5LYjLKysgCibF69evWvr1+/Bv7///8M1CXMDAwMy0tLS20xXInLSbm5uaIcHBxHGRkZVaFCH//9+2fX09NzCafNMDB58uTXjIyM6UhC/ExMTPPwOhvZ5v///89EEvr479+/JIKas7KyeDg4OLYhOfnH////fZGdjFVzaGgoGw8PzzpGRkYTBgYGhv////9lYGCI7O7uPkwotBkVFRUXMjAwuCKJZXR1dW0gKqr+////BMb+9+9fTXd39xyapG2KAAAvqFz8khrpYwAAAABJRU5ErkJggg==")
+		no-repeat;
+	background-position: 99%;
+	border-radius: 0;
+	height: 45px !important;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: thin;
+}
+
+.standardForm {
+	margin-left: 12px;
+	margin-right: 12px;
+}
+
+.standardForm>div>div:first-child {
+	-webkit-border-top-left-radius: 15px;
+	-webkit-border-top-right-radius: 15px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+.standardForm>div>div:last-child {
+	-webkit-border-bottom-left-radius: 15px;
+	-webkit-border-bottom-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+/**
+ * .confirmGreen x-button
+ */
+.x-button.confirmGreen, .x-button.x-button-back.confirmGreen::after, .x-button.x-button-forward.confirmGreen::after {
+	background-color: #6D9E00;
+	/* @alternate */ background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #A2EB00), color-stop(50%, #7FB700), color-stop(51%, #6D9E00), color-stop(100%, #5B8400) );
+	/* @alternate */ background-image: -webkit-linear-gradient(#A2EB00, #7FB700 50%, #6D9E00 51%, #5B8400);
+	/* @alternate */ background-image: linear-gradient(#A2EB00, #7FB700 50%, #6D9E00 51%, #5B8400);
+}
+
+/**
+ * .confirmGreen x-button-pressing
+ */
+.x-button.confirmGreen.x-button-pressing, .x-button.confirmGreen.x-button-pressing::after {
+	background-color: #547503;
+	/* @alternate */ background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #304402), color-stop(10%, #425C02), color-stop(65%, #547503), color-stop(100%, #557803));
+	/* @alternate */ background-image: -webkit-linear-gradient(#304402,#425C02 10%,#547503 65%,#557803);
+	/* @alternate */ background-image: linear-gradient(#304402,#425C02 10%,#547503 65%,#557803);
+}
