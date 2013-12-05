@@ -75,16 +75,16 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         ]);
         
         /**
-         * show logout button after panel is painted
+         * show logout button when panel is activated
          */
-        this.onAfter('painted', function() {
+        this.onAfter('activate', function() {
             LernApp.app.main.navigation.logoutButton.show();
         });
         
         /**
-         * hide logout button on panel hiding
+         * hide logout button when panel is deactivated
          */
-        this.on('hide', function() {
+        this.on('deactivate', function() {
             LernApp.app.main.navigation.logoutButton.hide();
         });
     }
