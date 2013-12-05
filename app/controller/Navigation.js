@@ -43,29 +43,34 @@ Ext.define('LernApp.controller.Navigation', {
         }
     },
     
-    changeNav: function(navigation) {
-        /**
-         * remove old navigation object
-         */
-        LernApp.app.main.tabPanel.removeAll();
+    changeNavigation: function(newNavigation) {        
+        var oldNavigation = LernApp.app.main.navigation;
         
         /**
-         * overwrite old navigation
+         * hide old navigation tab from tabpanel
          */
-        LernApp.app.main.navigation = navigation;
+        LernApp.app.main.tabPanel.hideTab(oldNavigation);
         
         /**
+         * overwrite old navigation,
          * add new navigation to tabPanel
          */
-        LernApp.app.main.tabPanel.add(navigation);
-        LernApp.app.main.tabPanel.add(Ext.create('LernApp.view.about.AboutPanel'));
+        LernApp.app.main.navigation = newNavigation;
+        LernApp.app.main.tabPanel.insert(0, newNavigation);
         
         /**
-         * simulate slide animation
+         * swith to new navigation,
+         * 
+         * on animation end: 
+         *  remove old navigation tab from tabpanel
          */
-        Ext.Anim.run(LernApp.app.main.tabPanel, 'slide', {
-            out: false,
-            autoClear: false
+        LernApp.app.main.tabPanel.animateActiveItem(newNavigation, {
+            type: 'slide',
+            listeners: {
+                animationend: function() {
+                    LernApp.app.main.tabPanel.remove(oldNavigation)
+                }
+            }
         });
     }
 });
