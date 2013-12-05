@@ -43,23 +43,26 @@ Ext.define('LernApp.view.login.LoginPanel', {
     
     config: {
         title: Messages.LOGIN,
+        layout: {
+            type: 'vbox',
+            align: 'center'
+        }
     },
     
     initialize: function() {
         this.callParent(arguments);
         
         this.loginFieldSet = Ext.create('Ext.form.FieldSet', {
-            title: Messages.PERSONAL_DATA,
             instructions: Messages.ENTER_YOUR_DATA,
             items: [
                 {
                     xtype: 'textfield',
                     name : 'userName',
-                    label: Messages.USERNAME
+                    placeHolder: Messages.USERNAME
                 }, {
                     xtype: 'passwordfield',
                     name : 'password',
-                    label: Messages.PASSWORD
+                    placeHolder: Messages.PASSWORD
                 }
             ]
         });
@@ -68,12 +71,17 @@ Ext.define('LernApp.view.login.LoginPanel', {
             text: 'Anmelden',
             ui: 'confirm',
             handler: function() {
-                LernApp.app.getController('Navigation').changeNav(
+                LernApp.app.getController('Navigation').changeNavigation(
                         Ext.create('LernApp.view.home.HomeNavigation')
                 );
             }
         });
         
-        this.add([this.loginFieldSet, this.confirmButton]);
+        this.add([ 
+            { xtype: 'spacer' }, 
+            this.loginFieldSet, 
+            this.confirmButton,
+            { xtype: 'spacer' }
+        ]);
     }
 });
