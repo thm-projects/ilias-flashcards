@@ -47,7 +47,26 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     
     initialize: function() {
         this.callParent(arguments);
+
+        this.logoutButton = Ext.create('Ext.Button', {
+            text: Messages.LOGOUT,
+            ui: 'confirm',
+            align: 'left',
+            hidden: true,
+            hideAnimation: Ext.os.is.Android ? false : {
+                type: 'fadeOut',
+                duration: 2000
+            },
+            showAnimation: Ext.os.is.Android ? false : {
+                type: 'fadeIn',
+                duration: 2000
+            },
+            handler: function() {
+                
+            }
+        });
         
+        this.getNavigationBar().add(this.logoutButton);
         this.push(Ext.create('LernApp.view.home.OverviewPanel'));
     }
 });
