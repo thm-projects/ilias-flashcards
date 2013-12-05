@@ -41,5 +41,16 @@ Ext.define('LernApp.view.TabPanel', {
     
     initialize: function() {
         this.callParent(arguments);
+    },
+    
+    /**
+     * hides forwarded tab panel (tab) 
+     */
+    hideTab: function(tab) {
+        this.getItems().items.forEach(function(element, index, array) {
+            if(tab == element) {
+               element.tab.hide();
+            }
+        });
     }
 });
