@@ -31,7 +31,7 @@
 */
 
 Ext.define('LernApp.view.login.LoginNavigation', {
-    extend: 'Ext.navigation.View',
+    extend: 'LernApp.prototype.NavigationView',
     xtype: 'loginNav',
 
     requires: [
@@ -39,15 +39,16 @@ Ext.define('LernApp.view.login.LoginNavigation', {
     ],
     
     config: {
-        title: Messages.HOME,
-        defaultBackButtonText: Messages.BACK,
-        iconCls: 'home',
-        autoDestroy: true
+        title: Messages.HOME
     },
     
     initialize: function() {
         this.callParent(arguments);
         
         this.push(Ext.create('LernApp.view.login.WelcomePanel'));
+    },
+    
+    afterNavigationChange: function() {
+        this.push(Ext.create('LernApp.view.login.LoginPanel'));
     }
 });

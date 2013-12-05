@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------------+
-  - Dateiname:		app/view/home/HomeNavigation.js
-  - Beschreibung:	Navigationsobjekt des Home-Bereichs. 
-  - Datum:			28.11.2013
+  - Dateiname:		app/view/NavigationView.js
+  - Beschreibung:	NavigationView Prototyp. 
+  - Datum:			25.11.2013
   - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
   +--------------------------------------------------------------------------------+
   This program is free software; you can redistribute it and/or modify it under 
@@ -30,37 +30,24 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.home.HomeNavigation', {
-    extend: 'LernApp.prototype.NavigationView',
-    xtype: 'homeNav',
-
-    requires: [
-        'LernApp.view.home.OverviewPanel'
-    ],
+Ext.define('LernApp.prototype.NavigationView', {
+    extend: 'Ext.navigation.View',
+    xtype: 'navView',
     
     config: {
-        title: Messages.HOME,
+        iconCls: 'home',
+        autoDestroy: true,
+        defaultBackButtonText: Messages.BACK,
     },
     
     initialize: function() {
         this.callParent(arguments);
-
-        this.logoutButton = Ext.create('Ext.Button', {
-            text: Messages.LOGOUT,
-            ui: 'back',
-            align: 'left',
-            hidden: true,
-            handler: function() {
-                LernApp.app.getController('Navigation').changeNavigation(
-                        Ext.create('LernApp.view.login.LoginNavigation'), true
-                );
-            }
-        });
-        
-        this.getNavigationBar().add(this.logoutButton);
     },
     
+    /**
+     * method prototype
+     */
     afterNavigationChange: function() {
-        this.push(Ext.create('LernApp.view.home.OverviewPanel'));
+        
     }
 });
