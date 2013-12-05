@@ -46,11 +46,12 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         this.callParent(arguments);
 
         this.logoutButton = Ext.create('Ext.Button', {
-            text: Messages.LOGOUT,
-            ui: 'back',
-            align: 'left',
-            hidden: true,
-            handler: function() {
+            text    : Messages.LOGOUT,
+            cls     : 'confirmGreen',
+            ui      : 'back',
+            align   : 'left',
+            hidden  : true,
+            handler : function() {
                 LernApp.app.getController('Navigation').changeNavigation(
                         Ext.create('LernApp.view.login.LoginNavigation'), true
                 );
