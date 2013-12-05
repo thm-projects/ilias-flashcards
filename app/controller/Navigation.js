@@ -43,8 +43,9 @@ Ext.define('LernApp.controller.Navigation', {
         }
     },
     
-    changeNavigation: function(newNavigation) {        
+    changeNavigation: function(newNavigation, navigateBack) {        
         var oldNavigation = LernApp.app.main.navigation;
+        var animationDirection = navigateBack ? 'right' : 'left';
         
         /**
          * hide old navigation tab from tabpanel
@@ -53,9 +54,11 @@ Ext.define('LernApp.controller.Navigation', {
         
         /**
          * overwrite old navigation,
+         * launch afterNavigationChange method,
          * add new navigation to tabPanel
          */
         LernApp.app.main.navigation = newNavigation;
+        LernApp.app.main.navigation.afterNavigationChange();
         LernApp.app.main.tabPanel.insert(0, newNavigation);
         
         /**
@@ -66,6 +69,7 @@ Ext.define('LernApp.controller.Navigation', {
          */
         LernApp.app.main.tabPanel.animateActiveItem(newNavigation, {
             type: 'slide',
+            direction: animationDirection,
             listeners: {
                 animationend: function() {
                     LernApp.app.main.tabPanel.remove(oldNavigation)
