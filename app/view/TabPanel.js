@@ -45,6 +45,8 @@ Ext.define('LernApp.view.TabPanel', {
     
     /**
      * hides forwarded tab panel (tab) 
+     * 
+     * @param: tab panel to hide
      */
     hideTab: function(tab) {
         this.getItems().items.forEach(function(element, index, array) {
@@ -52,5 +54,16 @@ Ext.define('LernApp.view.TabPanel', {
                element.tab.hide();
             }
         });
+    },
+    
+    /**
+     * insert panel to tabPanel on next-to-last position
+     * 
+     * @param: tab panel to insert
+     */
+    addBeforeLastTab: function(tab) {
+        var lastIndex = LernApp.app.main.tabPanel.getInnerItems().length - 1;
+
+        LernApp.app.main.tabPanel.insert(lastIndex, tab);
     }
 });
