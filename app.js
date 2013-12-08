@@ -65,6 +65,8 @@ Ext.application({
         
         'home.HomeNavigation',
         'home.OverviewPanel',
+        'home.SettingsPanel',
+        'home.UserPanel',
         
         'about.AboutPanel'
     ],
