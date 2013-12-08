@@ -79,6 +79,7 @@ Ext.define('LernApp.controller.Navigation', {
             listeners: {
                 animationend: function() {
                     LernApp.app.main.tabPanel.remove(oldNavigation)
+                    Ext.Viewport.setMasked(false);
                 }
             }
         });
