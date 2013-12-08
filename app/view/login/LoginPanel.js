@@ -43,6 +43,8 @@ Ext.define('LernApp.view.login.LoginPanel', {
     
     config: {
         title: Messages.LOGIN,
+        scrollable: true,
+        
         layout: {
             type: 'vbox',
             align: 'center'
@@ -54,23 +56,28 @@ Ext.define('LernApp.view.login.LoginPanel', {
         
         this.loginFieldSet = Ext.create('Ext.form.FieldSet', {
             instructions: Messages.ENTER_YOUR_DATA,
+            width: '310px',
+            
             items: [
                 {
-                    xtype: 'textfield',
-                    name : 'userName',
+                    xtype   : 'textfield',
+                    name    : 'userName',
+                    cls     : 'loginFields',
                     placeHolder: Messages.USERNAME
                 }, {
-                    xtype: 'passwordfield',
-                    name : 'password',
+                    xtype   : 'passwordfield',
+                    name    : 'password',
+                    cls     : 'loginFields',
                     placeHolder: Messages.PASSWORD
                 }
             ]
         });
         
         this.confirmButton = Ext.create('Ext.Button', {
-            text: 'Anmelden',
-            ui: 'confirm',
-            handler: function() {
+            text    : 'Anmelden',
+            ui      : 'confirm',
+            handler : function() {
+                Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });
                 LernApp.app.getController('Navigation').changeNavigation(
                         Ext.create('LernApp.view.home.HomeNavigation')
                 );

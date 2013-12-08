@@ -43,9 +43,10 @@ Ext.define('LernApp.view.login.WelcomePanel', {
     
     config: {
         title: Messages.WELCOME,
+        scrollable: true,
+        
         layout: {
             type: 'vbox',
-            pack: 'center',
             align: 'center'
         }
     },

@@ -43,6 +43,12 @@ Ext.define('LernApp.controller.Navigation', {
         }
     },
     
+    /**
+     * changes the current navigation view to a new one
+     * 
+     * @param: newNavigation - new navigation view 
+     * @param: navigateBack  - true if navigating back
+     */
     changeNavigation: function(newNavigation, navigateBack) {        
         var oldNavigation = LernApp.app.main.navigation;
         var animationDirection = navigateBack ? 'right' : 'left';
@@ -62,7 +68,7 @@ Ext.define('LernApp.controller.Navigation', {
         LernApp.app.main.tabPanel.insert(0, newNavigation);
         
         /**
-         * swith to new navigation,
+         * switch to new navigation,
          * 
          * on animation end: 
          *  remove old navigation tab from tabpanel
