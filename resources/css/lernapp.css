@@ -51,14 +51,19 @@
 	margin-right: 12px;
 }
 
-.standardForm>div>div:first-child {
+.standardForm .x-form-fieldset-inner {
+	background: none;
+	border: none;
+}
+
+.standardForm .x-form-fieldset-inner>div:first-child {
 	-webkit-border-top-left-radius: 15px;
 	-webkit-border-top-right-radius: 15px;
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
 }
 
-.standardForm>div>div:last-child {
+.standardForm .x-form-fieldset-inner>div:last-child {
 	-webkit-border-bottom-left-radius: 15px;
 	-webkit-border-bottom-right-radius: 15px;
 	border-bottom-left-radius: 15px;
