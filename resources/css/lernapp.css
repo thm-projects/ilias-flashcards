@@ -30,6 +30,11 @@
   +--------------------------------------------------------------------------------+
 */
 
+/* hide 'Sencha Touch GPL3' watermark from charts */
+.x-chart-watermark {
+	opacity: 0;
+}
+
 .loginFields .x-form-field {
 	text-align: center;
 }
@@ -46,9 +51,19 @@
 	border-width: thin;
 }
 
+.standardListButton>span, 
+.forwardListButton>span {
+	text-align: left;
+}
+
 .standardForm {
 	margin-left: 12px;
 	margin-right: 12px;
+	margin: 0.5em 0.5em 0.5em;
+}
+
+.standardForm .x-form-fieldset-title {
+	text-align: center;
 }
 
 .standardForm .x-form-fieldset-inner {
