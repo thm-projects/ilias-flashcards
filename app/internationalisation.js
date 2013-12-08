@@ -68,6 +68,17 @@ switch (lang) {
             ENTER_YOUR_DATA: 'Bitte geben Sie Ihre Login-Daten ein',
             USERNAME: 'Benutzername',
             PASSWORD: 'Password',
-            LOGOUT: 'Logout'
+            LOGOUT: 'Logout',
+            LOADING: 'Lade...',
+            OVERVIEW: 'Übersicht',
+            SETTINGS: 'Einstellungen',
+            USER: 'User',
+            LEARN_CARD: 'Lernkarten',
+            CARD_INDEX: 'Fragenkartalog',
+            LEARN_LEARN_CARDS: 'Lernen',
+            SHOW_LEARN_CARDS: 'Durchblättern',
+            SHOW_RANDOM_CARDS: 'Zufällig anzeigen',
+            SHOW_CARD_INDEX: 'Anzeigen',
+            EDIT_CARD_INDEX: 'Bearbeiten'
         }
 }
