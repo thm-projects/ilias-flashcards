@@ -41,10 +41,11 @@ Ext.define('LernApp.view.home.OverviewPanel', {
     ],
     
     config: {
-        title: Messages.WELCOME,
-        layout: {
-            type: 'vbox',
-            pack: 'center',
+        title: Messages.OVERVIEW,
+        scrollable: true,
+        
+        layout : {
+            type : 'vbox',
             align: 'center'
         }
     },
@@ -54,24 +55,61 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         
         this.continueButton = Ext.create('Ext.Button', {
             text: Messages.CONTINUE,
+            scrollable: true,
             ui: 'confirm',
             handler: function() {
 
             }
          });
         
-        this.add([{ 
-                xtype: 'spacer' 
-            }, {
-                xtype: 'label',
-                html: 'Herzlich Willkommen!',
-            }, {
-                xtype: 'label',
-                html: 'Dies ist die Home-Übersichtsseite!',
-            }, 
-            { xtype: 'spacer'},  
-            this.continueButton,
-            { xtype: 'spacer' }
+        this.learnCardFieldSet = Ext.create('Ext.form.FieldSet', {
+            title: Messages.LEARN_CARD,
+            cls: 'standardForm',
+            width: '310px',
+            
+            items: [
+                {
+                    xtype   : 'button',
+                    name    : 'learnCards',
+                    text    : Messages.LEARN_LEARN_CARDS,
+                    cls     : 'forwardListButton'
+                }, {
+                    xtype   : 'button',
+                    name    : 'showCards',
+                    text    : Messages.SHOW_LEARN_CARDS,
+                    cls     : 'forwardListButton'
+                }, {
+                    xtype   : 'button',
+                    name    : 'randomCards',
+                    text    : Messages.SHOW_RANDOM_CARDS,
+                    cls     : 'forwardListButton'
+                }
+            ]
+        });
+        
+        this.cardIndexFieldSet = Ext.create('Ext.form.FieldSet', {
+            title: Messages.CARD_INDEX,
+            cls: 'standardForm',
+            width: '310px',
+            
+            items: [
+                {
+                    xtype   : 'button',
+                    name    : 'showCardIndex',
+                    text    : Messages.SHOW_CARD_INDEX,
+                    cls     : 'forwardListButton'
+                }, {
+                    xtype   : 'button',
+                    name    : 'editCardIndex',
+                    text    : Messages.EDIT_CARD_INDEX,
+                    cls     : 'forwardListButton'
+                }
+            ]
+        });
+        
+        this.add([
+            this.learnCardFieldSet,
+            this.cardIndexFieldSet
         ]);
         
         /**
