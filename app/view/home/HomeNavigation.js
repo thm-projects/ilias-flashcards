@@ -35,7 +35,8 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     xtype: 'homeNav',
 
     requires: [
-        'LernApp.view.home.OverviewPanel'
+        'LernApp.view.home.OverviewPanel',
+        'Ext.util.DelayedTask'
     ],
     
     config: {
@@ -58,10 +59,49 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             }
         });
         
+        /**
+         * add logout button to navigationBar
+         */
         this.getNavigationBar().add(this.logoutButton);
+        
+        /**
+         * initialize listeners
+         */
+        this.on('initialize', this.onInitialize);
+        this.on('destroy', this.onDestroy);
     },
     
+    /**
+     * actions to fulfill after navigation change (Navigation controller)
+     */
     afterNavigationChange: function() {
         this.push(Ext.create('LernApp.view.home.OverviewPanel'));
+    },
+    
+    /**
+     * actions to fulfill on initialization
+     */
+    onInitialize: function() {
+        LernApp.app.main.tabPanel.addBeforeLastTab(
+                Ext.create('LernApp.view.home.UserPanel')
+        );
+        
+        LernApp.app.main.tabPanel.addBeforeLastTab(
+                Ext.create('LernApp.view.home.SettingsPanel')
+        );
+    },
+    
+    /**
+     * actions to fulfill on panel destroy
+     */
+    onDestroy: function() {
+        var userPanel = LernApp.app.main.tabPanel.down('#userPanel');
+        var settingsPanel = LernApp.app.main.tabPanel.down('#settingsPanel');
+        
+        LernApp.app.main.tabPanel.hideTab(userPanel);
+        LernApp.app.main.tabPanel.hideTab(settingsPanel);
+        
+        LernApp.app.main.tabPanel.remove(userPanel);
+        LernApp.app.main.tabPanel.remove(settingsPanel);
     }
 });
