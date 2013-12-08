@@ -84,11 +84,16 @@ Ext.define('LernApp.view.login.LoginPanel', {
             }
         });
         
+        this.logo = Ext.create('Ext.Img', {
+            mode: 'image',
+            height: '160px',
+            src: 'resources/logo_notext.png'
+        });
+        
         this.add([ 
-            { xtype: 'spacer' }, 
+            this.logo,
             this.loginFieldSet, 
-            this.confirmButton,
-            { xtype: 'spacer' }
+            this.confirmButton
         ]);
     }
 });
