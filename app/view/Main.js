@@ -53,7 +53,11 @@ Ext.define('LernApp.view.Main', {
         this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
         
         this.tabPanel = Ext.create('LernApp.view.TabPanel');
-        this.tabPanel.add([this.navigation, Ext.create('LernApp.view.about.AboutPanel')]);
+        this.aboutPanel = Ext.create('LernApp.view.about.AboutPanel');
+        this.tabPanel.add([this.navigation, this.aboutPanel]);
+
+        this.navigation.tab.show();
+        this.aboutPanel.tab.show();
         
         this.add([this.tabPanel]);
     }
