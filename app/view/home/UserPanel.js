@@ -38,11 +38,13 @@ Ext.define('LernApp.view.home.UserPanel', {
         'Ext.data.Store',
         'Ext.chart.PolarChart',
         'Ext.chart.series.Pie',
-        'Ext.chart.interactions.Rotate'
+        'Ext.chart.interactions.Rotate',
+        'Ext.chart.interactions.ItemHighlight'
     ],
     
     config: {
         title: Messages.USER,
+        fullscreen: true,
         scrollable: true,
         iconCls: 'user',
         id: 'userPanel',
@@ -85,9 +87,11 @@ Ext.define('LernApp.view.home.UserPanel', {
         
         this.statisticChart = Ext.create('Ext.chart.PolarChart', {
             animate: true,
-            interactions: ['rotate'],
+            interactions: ['rotate', 'itemhighlight'],
             colors: ['#00FF00', '#FFFF00', '#FF9900', '#FF0000'],
+            innerPadding: 15,
             store: this.store,
+            
             legend: {
                 position: 'bottom'
             },
@@ -96,6 +100,9 @@ Ext.define('LernApp.view.home.UserPanel', {
                 field: 'data',
                 showInLegend: true,
                 donut: 20,
+                highlightCfg: {
+                    margin: 15
+                },
                 label: {
                     field: 'name',
                     display: 'rotate',
