@@ -72,13 +72,16 @@ switch (lang) {
             LOADING: 'Lade...',
             OVERVIEW: 'Übersicht',
             SETTINGS: 'Einstellungen',
+            QUESTION: 'Frage',
             USER: 'User',
+            CAROUSEL: 'Carousel',
             LEARN_CARD: 'Lernkarten',
             CARD_INDEX: 'Fragenkartalog',
             LEARN_LEARN_CARDS: 'Lernen',
             SHOW_LEARN_CARDS: 'Durchblättern',
             SHOW_RANDOM_CARDS: 'Zufällig anzeigen',
             SHOW_CARD_INDEX: 'Anzeigen',
-            EDIT_CARD_INDEX: 'Bearbeiten'
+            EDIT_CARD_INDEX: 'Bearbeiten',
+            FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden'
         }
 }

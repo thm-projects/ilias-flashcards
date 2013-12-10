@@ -68,6 +68,10 @@ Ext.application({
         'home.SettingsPanel',
         'home.UserPanel',
         
+        'learncard.CardCarousel',
+        'learncard.QuestionPanel',
+        'learncard.AnswerPanel',
+        
         'about.AboutPanel'
     ],
     controllers: [
