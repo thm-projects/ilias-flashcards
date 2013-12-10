@@ -40,7 +40,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     ],
     
     config: {
-        title: Messages.HOME,
+        title: Messages.HOME
     },
     
     initialize: function() {

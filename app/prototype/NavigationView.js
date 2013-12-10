@@ -38,7 +38,7 @@ Ext.define('LernApp.prototype.NavigationView', {
         iconCls: 'home',
         autoDestroy: true,
         oldAnimation: null,
-        defaultBackButtonText: Messages.BACK,
+        defaultBackButtonText: Messages.BACK
     },
     
     initialize: function() {

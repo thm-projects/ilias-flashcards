@@ -77,7 +77,7 @@ Ext.define('LernApp.view.login.WelcomePanel', {
             {
                 xtype: 'label',
                 style: 'margin-top: 30px',
-                html: '<center>Dies ist eine Vorschau auf die App.</center>',
+                html: '<center>Dies ist eine Vorschau auf die App.</center>'
             },
             this.continueButton
         ]);
