@@ -39,7 +39,14 @@ Ext.define('LernApp.view.about.AboutPanel', {
     
     config: {
         title: Messages.HELP,
-        iconCls: 'info'
+        fullscreen: true,
+        scrollable: true,
+        iconCls: 'info',
+        
+        layout : {
+            type : 'vbox',
+            align: 'center'
+        }
     },
     
     initialize: function() {

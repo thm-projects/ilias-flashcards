@@ -31,7 +31,7 @@
 */
 
 Ext.define('LernApp.view.login.LoginPanel', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.Panel',
     xtype: 'loginPanel',
 
     requires: [        
@@ -43,6 +43,7 @@ Ext.define('LernApp.view.login.LoginPanel', {
     
     config: {
         title: Messages.LOGIN,
+        fullscreen: true,
         scrollable: true,
         
         layout: {
