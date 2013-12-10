@@ -37,11 +37,26 @@ Ext.define('LernApp.prototype.NavigationView', {
     config: {
         iconCls: 'home',
         autoDestroy: true,
+        oldAnimation: null,
         defaultBackButtonText: Messages.BACK,
     },
     
     initialize: function() {
         this.callParent(arguments);
+    },
+    
+    /**
+     * saves current animation to oldAnimation variable
+     */
+    saveAnimation: function() {
+        this.setOldAnimation(this.getLayout().getAnimation());
+    },
+    
+    /**
+     * gets saved animation from oldAnimation variable
+     */
+    getSavedAnimation: function() {
+        return this.getOldAnimation();
     },
     
     /**

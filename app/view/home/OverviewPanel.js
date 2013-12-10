@@ -38,10 +38,12 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         'Ext.Label',
         'Ext.Spacer',
         'Ext.Button',
+        'LernApp.view.learncard.CardCarousel'
     ],
     
     config: {
         title: Messages.OVERVIEW,
+        fullscreen: true,
         scrollable: true,
         
         layout : {
@@ -62,6 +64,16 @@ Ext.define('LernApp.view.home.OverviewPanel', {
             }
          });
         
+        var comingSoon = function(component) {
+            var comingSoonPanel = Ext.create('Ext.Panel', {
+                html: "<div style='padding: 0.5em'>"+Messages.FEATURE_COMING_SOON+"</div>"
+            });
+            comingSoonPanel.showBy(component, 'tc-bc');
+            Ext.defer(function() {
+                comingSoonPanel.destroy();
+            }, 2000);
+        };
+
         this.learnCardFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.LEARN_CARD,
             cls: 'standardForm',
@@ -72,17 +84,28 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     xtype   : 'button',
                     name    : 'learnCards',
                     text    : Messages.LEARN_LEARN_CARDS,
-                    cls     : 'forwardListButton'
+                    cls     : 'forwardListButton',
+                    handler : comingSoon
                 }, {
                     xtype   : 'button',
                     name    : 'showCards',
                     text    : Messages.SHOW_LEARN_CARDS,
-                    cls     : 'forwardListButton'
+                    cls     : 'forwardListButton',
+                    handler : function() {
+                        LernApp.app.main.navigation.push(
+                                Ext.create('LernApp.view.learncard.CardCarousel')
+                        );
+                    }
                 }, {
                     xtype   : 'button',
                     name    : 'randomCards',
                     text    : Messages.SHOW_RANDOM_CARDS,
-                    cls     : 'forwardListButton'
+                    cls     : 'forwardListButton',
+                    handler : function() {
+                        LernApp.app.main.navigation.push(
+                                Ext.create('LernApp.view.learncard.CardCarousel')
+                        );
+                    }
                 }
             ]
         });
@@ -97,7 +120,12 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     xtype   : 'button',
                     name    : 'showCardIndex',
                     text    : Messages.SHOW_CARD_INDEX,
-                    cls     : 'forwardListButton'
+                    cls     : 'forwardListButton',
+                    handler : function() {
+                        LernApp.app.main.navigation.push(
+                                Ext.create('LernApp.view.cardindex.CardIndex')
+                        );
+                    }
                 }, {
                     xtype   : 'button',
                     name    : 'editCardIndex',
