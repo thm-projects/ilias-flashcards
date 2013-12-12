@@ -121,18 +121,13 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                 {
                     xtype   : 'button',
                     name    : 'showCardIndex',
-                    text    : Messages.SHOW_CARD_INDEX,
+                    text    : Messages.EDIT_CARD_INDEX,
                     cls     : 'forwardListButton',
                     handler : function() {
                         LernApp.app.main.navigation.push(
                                 Ext.create('LernApp.view.cardindex.CardIndex')
                         );
                     }
-                }, {
-                    xtype   : 'button',
-                    name    : 'editCardIndex',
-                    text    : Messages.EDIT_CARD_INDEX,
-                    cls     : 'forwardListButton'
                 }
             ]
         });

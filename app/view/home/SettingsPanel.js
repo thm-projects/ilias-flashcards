@@ -1,7 +1,6 @@
 /*--------------------------------------------------------------------------------+
   - Dateiname:		app/view/home/SettingsPanel.js
   - Beschreibung:	Einstellungsseite der Applikation. 
-  - Datum:			30.11.2013
   - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
   +--------------------------------------------------------------------------------+
   This program is free software; you can redistribute it and/or modify it under 
@@ -38,7 +37,8 @@ Ext.define('LernApp.view.home.SettingsPanel', {
         'Ext.Button',
         'Ext.Panel',
         'Ext.TitleBar',
-        'Ext.form.FieldSet'
+        'Ext.form.FieldSet',
+        'LernApp.prototype.SliderField'
     ],
     
     config: {
@@ -74,43 +74,124 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             title: Messages.SETTINGS,
             items: [this.backButton]
         });
-        
-        var comingSoon = function(component) {
-            var comingSoonPanel = Ext.create('Ext.Panel', {
-                top   : -1000,
-                html: "<div style='padding: 0.5em'>"+Messages.FEATURE_COMING_SOON+"</div>"
-            });
-            comingSoonPanel.showBy(component, 'tc-bc');
-            Ext.defer(function() {
-                comingSoonPanel.destroy();
-            }, 2000);
-        };
 
-        this.firstButtonPanel = Ext.create('Ext.form.FieldSet', {
-            title: Messages.LEARN_CARD,
+        this.notificationToggle = Ext.create('Ext.field.Toggle', {
+            xtype: 'togglefield',
+            name: 'notificationToggle',
+            label: Messages.NOTIFICATIONS,
+            id: 'notification',
+            labelWidth: '60%',
+            listeners: {
+                scope: this,
+                change: function (slider, newValue, oldValue) {
+                    this.iterateThroughSliders(function(slider) {
+                        slider.isDisabled() ? slider.enable() : slider.disable();
+                    });
+                    
+                    localStorage.setItem(this.notificationToggle.getId(), newValue);
+                }
+            }
+        });
+        
+        this.firstSlider = Ext.create('LernApp.prototype.SliderField', {
+            label: Messages.FIRST_BOX,
+            labelWidth: '30%',
+            id: 'firstBox',
+            value: 1,
+            minValue: 1,
+            maxValue: 15,
+            increment: 1,
+            disabled: true,
+            listeners: {
+                scope: this,
+                change: function (me, slider, newValue, oldValue) {
+                    localStorage.setItem(this.firstSlider.getId(), newValue);
+                }
+            }
+        });
+        
+        this.secondSlider = Ext.create('LernApp.prototype.SliderField', {
+            label: Messages.SECOND_BOX,
+            labelWidth: '30%',
+            id: 'secondBox',
+            value: 3,
+            minValue: 3,
+            maxValue: 15,
+            increment: 1,
+            disabled: true,
+            listeners: {
+                scope: this,
+                change: function (me, slider, newValue, oldValue) {
+                    localStorage.setItem(this.secondSlider.getId(), newValue);
+                }
+            }
+        });
+        
+        this.thirdSlider = Ext.create('LernApp.prototype.SliderField', {
+            label: Messages.THIRD_BOX,
+            labelWidth: '30%',
+            id: 'thirdBox',
+            value: 5,
+            minValue: 5,
+            maxValue: 15,
+            increment: 1,
+            disabled: true,
+            listeners: {
+                scope: this,
+                change: function (me, slider, newValue, oldValue) {
+                    localStorage.setItem(this.thirdSlider.getId(), newValue);
+                }
+            }
+        });
+        
+        this.settingsPanel = Ext.create('Ext.form.FieldSet', {
+            title: Messages.LEARN_INTERVAL,
             cls: 'standardForm',
             width: '310px',
-            
+
             items: [
-                {
-                    xtype   : 'button',
-                    name    : 'learnCards',
-                    text    : 'Benachrichtigungen',
-                    cls     : 'forwardListButton',
-                    handler : comingSoon
-                }, {
-                    xtype   : 'button',
-                    name    : 'showCards',
-                    text    : 'Lernintervalle',
-                    cls     : 'forwardListButton',
-                    handler : comingSoon
-                }
+                this.notificationToggle,
+                this.firstSlider,
+                this.secondSlider,
+                this.thirdSlider
             ]
         });
 
         this.add([
             this.titleBar,
-            this.firstButtonPanel
+            this.settingsPanel
         ]);
+        
+        this.on('painted', this.onPainted);
+    },
+    
+    /**
+     * actions to perform on painted
+     */
+    onPainted: function() {
+        /** restore value from notificationToggle */
+        if(localStorage.getItem(this.notificationToggle.getId()) !== null) {
+            this.notificationToggle.setValue(
+                    localStorage.getItem(this.notificationToggle.getId()
+            ));
+        }
+        
+        /** restore values from sliders */
+        this.iterateThroughSliders(function(slider) {
+            if(localStorage.getItem(slider.getId()) !== null)
+                slider.setValues(localStorage.getItem(slider.getId()));
+        });
+    },
+    
+    /** dynamic function to iterate through all setting sliders */
+    iterateThroughSliders: function(functionToCall) {
+        var me = this;
+        var field = this.settingsPanel.getFieldsAsArray();
+        
+        field.forEach(function(element, index, array) {
+            if(element.getId() !== me.notificationToggle.getId()) {
+                functionToCall(element);
+            }
+        });
     }
 });

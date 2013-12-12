@@ -154,3 +154,32 @@
 	/* @alternate */ background-image: -webkit-linear-gradient(#304402,#425C02 10%,#547503 65%,#557803);
 	/* @alternate */ background-image: linear-gradient(#304402,#425C02 10%,#547503 65%,#557803);
 }
+
+.x-slider {
+ 	width: 82%;
+}
+ 
+.sliderField .x-component-outer,
+.x-toggle-field .x-component-outer,
+.x-field .x-form-label {
+	padding: 0.5em;
+	background: white;
+}
+
+.x-field .x-form-label {
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.sliderField .sliderInputField {
+	width: 18%;
+}
+
+.sliderField .sliderInputField .sliderInputValue {
+	width: 100%;
+	border: none;
+	height: 2.0em;
+	text-align: center;
+	pointer-events: none;
+}
+ 
