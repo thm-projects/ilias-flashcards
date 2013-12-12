@@ -38,7 +38,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         'Ext.Label',
         'Ext.Spacer',
         'Ext.Button',
-        'LernApp.view.learncard.CardCarousel'
+        'LernApp.view.learncard.CardCarousel',
+        'LernApp.view.cardindex.CardIndex'
     ],
     
     config: {
@@ -66,6 +67,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         
         var comingSoon = function(component) {
             var comingSoonPanel = Ext.create('Ext.Panel', {
+                top: -1000,
                 html: "<div style='padding: 0.5em'>"+Messages.FEATURE_COMING_SOON+"</div>"
             });
             comingSoonPanel.showBy(component, 'tc-bc');

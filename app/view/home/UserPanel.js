@@ -58,7 +58,7 @@ Ext.define('LernApp.view.home.UserPanel', {
         this.callParent(arguments);
         
         this.backButton = Ext.create('Ext.Button', {
-            text: Messages.BACK,
+            text: Messages.HOME,
             align: 'left', 
             ui: 'back',
             handler : function(button) {
