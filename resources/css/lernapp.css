@@ -39,19 +39,51 @@
 	text-align: center;
 }
 
+/* hide 'Sencha Touch GPL3' watermark from charts */
+.x-chart-watermark {
+	opacity: 0;
+}
+
+.loginFields .x-form-field {
+	text-align: center;
+}
+
+.addIcon {
+    background-image: url(/resources/icons/icon_add.png) !important;
+}
+
+.deleteIcon {
+    background-image: url(/resources/icons/icon_delete.png) !important;
+}
+
 .forwardListButton { 
 	background: white
 		url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAAZiS0dEALgAuAC41wNsvAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB9sGEQk7MbF1V5sAAAENSURBVCjPY2CgNigtLS0pKyubSEgdMxqfsbS0tJuRkbGBgYHB3NLS8s+xY8cO49LMhC7AyMgoA5dkYmopLS1NIVbz//v378f///9/D5LYjLKysgCibF69evWvr1+/Bv7///8M1CXMDAwMy0tLS20xXInLSbm5uaIcHBxHGRkZVaFCH//9+2fX09NzCafNMDB58uTXjIyM6UhC/ExMTPPwOhvZ5v///89EEvr479+/JIKas7KyeDg4OLYhOfnH////fZGdjFVzaGgoGw8PzzpGRkYTBgYGhv////9lYGCI7O7uPkwotBkVFRUXMjAwuCKJZXR1dW0gKqr+////BMb+9+9fTXd39xyapG2KAAAvqFz8khrpYwAAAABJRU5ErkJggg==")
 		no-repeat;
 	background-position: 99%;
 	border-radius: 0;
-	height: 45px !important;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: thin;
 }
 
-.standardListButton>span, 
+.x-button.forwardListButton {
+	height: 45px !important;
+}
+
+.x-list .x-list-item.x-list-item-tpl .x-innerhtml {
+	padding-right: 36px !important;
+}
+
+.listText {
+	/*padding: 20px !important;*/
+}
+
+.editToggleBox {
+	width: 0em !important;
+	padding: .2em !important;
+}
+
 .forwardListButton>span {
 	text-align: left;
 }
