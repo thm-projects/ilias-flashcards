@@ -61,6 +61,7 @@ switch (lang) {
             BACK: 'Zurück',
             HELP: 'Hilfe',
             WELCOME: 'Willkommen',
+            ATTENTION: 'Achtung',
             LOGIN: 'Login',
             HOME: 'Home',
             CONTINUE: 'Fortsetzen',
@@ -76,12 +77,13 @@ switch (lang) {
             USER: 'User',
             CAROUSEL: 'Carousel',
             LEARN_CARD: 'Lernkarten',
-            CARD_INDEX: 'Fragenkartalog',
+            CARD_INDEX: 'Fragenkatalog',
             LEARN_LEARN_CARDS: 'Lernen',
             SHOW_LEARN_CARDS: 'Durchblättern',
             SHOW_RANDOM_CARDS: 'Zufällig anzeigen',
             SHOW_CARD_INDEX: 'Anzeigen',
             EDIT_CARD_INDEX: 'Bearbeiten',
-            FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden'
+            FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden',
+            DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?'
         }
 }
