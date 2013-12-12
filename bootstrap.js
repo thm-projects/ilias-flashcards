@@ -747,6 +747,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.model.CardIndexModel": [],
   "LernApp.prototype.CustomMask": [],
   "LernApp.prototype.NavigationView": [],
+  "LernApp.prototype.SliderField": [],
   "LernApp.store.CardIndexStore": [],
   "LernApp.view.Main": [],
   "LernApp.view.TabPanel": [],
@@ -1712,6 +1713,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "LernApp.prototype.NavigationView": [
     "widget.navView"
+  ],
+  "LernApp.prototype.SliderField": [
+    "widget.sliderField"
   ],
   "LernApp.store.CardIndexStore": [
     "widget.cardIndexStore"
