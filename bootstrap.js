@@ -743,7 +743,25 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.viewport.WindowsPhone": [
     "Ext.viewport.WP"
   ],
-  "LernApp.view.Main": []
+  "LernApp.controller.Navigation": [],
+  "LernApp.model.CardIndexModel": [],
+  "LernApp.prototype.CustomMask": [],
+  "LernApp.prototype.NavigationView": [],
+  "LernApp.store.CardIndexStore": [],
+  "LernApp.view.Main": [],
+  "LernApp.view.TabPanel": [],
+  "LernApp.view.about.AboutPanel": [],
+  "LernApp.view.cardindex.CardIndex": [],
+  "LernApp.view.home.HomeNavigation": [],
+  "LernApp.view.home.OverviewPanel": [],
+  "LernApp.view.home.SettingsPanel": [],
+  "LernApp.view.home.UserPanel": [],
+  "LernApp.view.learncard.AnswerPanel": [],
+  "LernApp.view.learncard.CardCarousel": [],
+  "LernApp.view.learncard.QuestionPanel": [],
+  "LernApp.view.login.LoginNavigation": [],
+  "LernApp.view.login.LoginPanel": [],
+  "LernApp.view.login.WelcomePanel": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1687,7 +1705,57 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
+  "LernApp.controller.Navigation": [],
+  "LernApp.model.CardIndexModel": [],
+  "LernApp.prototype.CustomMask": [
+    "widget.customMask"
+  ],
+  "LernApp.prototype.NavigationView": [
+    "widget.navView"
+  ],
+  "LernApp.store.CardIndexStore": [
+    "widget.cardIndexStore"
+  ],
   "LernApp.view.Main": [
     "widget.main"
+  ],
+  "LernApp.view.TabPanel": [
+    "widget.TabPanel"
+  ],
+  "LernApp.view.about.AboutPanel": [
+    "widget.aboutPanel"
+  ],
+  "LernApp.view.cardindex.CardIndex": [
+    "widget.cardIndex"
+  ],
+  "LernApp.view.home.HomeNavigation": [
+    "widget.homeNav"
+  ],
+  "LernApp.view.home.OverviewPanel": [
+    "widget.overviewPanel"
+  ],
+  "LernApp.view.home.SettingsPanel": [
+    "widget.settingsPanel"
+  ],
+  "LernApp.view.home.UserPanel": [
+    "widget.userPanel"
+  ],
+  "LernApp.view.learncard.AnswerPanel": [
+    "widget.answerPanel"
+  ],
+  "LernApp.view.learncard.CardCarousel": [
+    "widget.cardCarousel"
+  ],
+  "LernApp.view.learncard.QuestionPanel": [
+    "widget.questionPanel"
+  ],
+  "LernApp.view.login.LoginNavigation": [
+    "widget.loginNav"
+  ],
+  "LernApp.view.login.LoginPanel": [
+    "widget.loginPanel"
+  ],
+  "LernApp.view.login.WelcomePanel": [
+    "widget.welcomePanel"
   ]
 });
