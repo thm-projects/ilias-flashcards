@@ -35,7 +35,8 @@ Ext.application({
     appFolder: 'app',
 
     requires: [
-        'LernApp.view.Main'
+        'LernApp.view.Main',
+        'LernApp.store.CardIndexStore'
     ],
 
     icon: {
@@ -54,7 +55,9 @@ Ext.application({
         '1496x2048': 'resources/startup/1496x2048.png'	// Retina iPad, Landscape
     },
 
-    models: [],
+    models: [
+        'CardIndexModel'
+    ],
     views: [
         'Main',
         'TabPanel',
@@ -71,6 +74,8 @@ Ext.application({
         'learncard.CardCarousel',
         'learncard.QuestionPanel',
         'learncard.AnswerPanel',
+        
+        'cardindex.CardIndex',
         
         'about.AboutPanel'
     ],
