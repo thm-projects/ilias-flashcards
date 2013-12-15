@@ -135,6 +135,27 @@
 	border-bottom: none;
 }
 
+.settingsPanel .x-form-fieldset-title {
+	 margin: 0.3em 0.9em 0.3em;
+}
+
+/**
+ * chart legend style
+ */
+.x-legend .x-legend-inner .x-legend-container .x-legend-item {
+	padding: 0.95em 0.275em 0.5em 1.8em;
+}
+
+.x-legend .x-legend-inner .x-legend-container .x-legend-item .x-legend-item-marker {
+	left: 0.5em;
+}
+
+.buttonToolbar {
+	background: transparent !important;
+	margin-bottom: none !important;
+	border-bottom: none !important;
+}
+
 /**
  * .confirmGreen x-button
  */
@@ -162,14 +183,19 @@
 .sliderField .x-component-outer,
 .x-toggle-field .x-component-outer,
 .x-field .x-form-label {
-	padding: 0.5em;
+	padding: 0.3em;
 	background: white;
 }
 
 .x-field .x-form-label {
-	padding-top: 1em;
-	padding-bottom: 1em;
+	padding-top: 0.7em;
+	padding-bottom: 0.7em;
 }
+
+.x-field .x-form-label>span {
+	margin-left: 0.5em;
+}
+
 
 .sliderField .sliderInputField {
 	width: 18%;
