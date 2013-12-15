@@ -40,8 +40,11 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     
     config: {
         title: Messages.QUESTION,
-        scrollable: 'vertical',
-        fullscreen: true
+        fullscreen: true,
+        scrollable: {
+            direction: 'vertical',
+            directionLock: true
+        }
     },
     
     initialize: function() {
