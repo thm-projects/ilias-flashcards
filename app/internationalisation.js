@@ -89,6 +89,17 @@ switch (lang) {
             SHOW_CARD_INDEX: 'Anzeigen',
             EDIT_CARD_INDEX: 'Bearbeiten',
             FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden',
-            DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?'
+            DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?',
+        
+            /** temporary */
+            CHANGE: 'Ändern',
+            CANCEL: 'Abbrechen',
+            CHOOSE: 'Auswählen',
+            CATEGORYS: 'Kategorien',
+            ALL_CATEGORYS: 'Alle Kategorien',
+            CHANGE_CATEGORY: 'Kategorie ändern',
+            PUBLIC_LAW: 'Öffentliches Recht',
+            CRIMINAL_LAW: 'Strafrecht',
+            CIVIL_LAW: 'Zivilrecht'
         }
 }
