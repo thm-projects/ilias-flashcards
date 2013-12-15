@@ -44,7 +44,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
     config: {
         title: Messages.SETTINGS,
         fullscreen: true,
-        scrollable: true,
+        scrollable: false,
         iconCls: 'settings',
         id: 'settingsPanel',
         
@@ -85,7 +85,8 @@ Ext.define('LernApp.view.home.SettingsPanel', {
                 scope: this,
                 change: function (slider, newValue, oldValue) {
                     this.iterateThroughSliders(function(slider) {
-                        slider.isDisabled() ? slider.enable() : slider.disable();
+                        if(newValue) slider.enable();
+                        else slider.disable();
                     });
                     
                     localStorage.setItem(this.notificationToggle.getId(), newValue);
@@ -144,13 +145,22 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             }
         });
         
-        this.settingsPanel = Ext.create('Ext.form.FieldSet', {
-            title: Messages.LEARN_INTERVAL,
+        this.notificationFieldSet = Ext.create('Ext.form.FieldSet', {
+            title: Messages.NOTIFICATIONS,
             cls: 'standardForm',
-            width: '310px',
+            width: '300px',
 
             items: [
-                this.notificationToggle,
+                this.notificationToggle
+            ]
+        });
+        
+        this.settingsFieldSet = Ext.create('Ext.form.FieldSet', {
+            title: Messages.LEARN_INTERVAL + ' (in Tagen)',
+            cls: 'standardForm settingsPanel',
+            width: '300px',
+
+            items: [
                 this.firstSlider,
                 this.secondSlider,
                 this.thirdSlider
@@ -159,7 +169,8 @@ Ext.define('LernApp.view.home.SettingsPanel', {
 
         this.add([
             this.titleBar,
-            this.settingsPanel
+            this.notificationFieldSet,
+            this.settingsFieldSet
         ]);
         
         this.on('painted', this.onPainted);
@@ -186,7 +197,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
     /** dynamic function to iterate through all setting sliders */
     iterateThroughSliders: function(functionToCall) {
         var me = this;
-        var field = this.settingsPanel.getFieldsAsArray();
+        var field = this.settingsFieldSet.getFieldsAsArray();
         
         field.forEach(function(element, index, array) {
             if(element.getId() !== me.notificationToggle.getId()) {
