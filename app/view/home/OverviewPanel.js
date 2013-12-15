@@ -79,7 +79,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         this.learnCardFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.LEARN_CARD,
             cls: 'standardForm',
-            width: '310px',
+            width: '300px',
+            style: 'margin-top: 0px',
             
             items: [
                 {
@@ -115,17 +116,30 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         this.cardIndexFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.CARD_INDEX,
             cls: 'standardForm',
-            width: '310px',
+            width: '300px',
+            style: 'margin-top: 0px',
             
             items: [
                 {
+                    xtype   : 'button',
+                    name    : 'showCardIndex',
+                    text    : Messages.SHOW_CARD_INDEX,
+                    cls     : 'forwardListButton',
+                    handler : function() {
+                        LernApp.app.main.navigation.push(
+                                Ext.create('LernApp.view.cardindex.CardIndex')
+                        );
+                    }
+                }, {
                     xtype   : 'button',
                     name    : 'showCardIndex',
                     text    : Messages.EDIT_CARD_INDEX,
                     cls     : 'forwardListButton',
                     handler : function() {
                         LernApp.app.main.navigation.push(
-                                Ext.create('LernApp.view.cardindex.CardIndex')
+                                Ext.create('LernApp.view.cardindex.CardIndex', {
+                                    edit: true
+                                })
                         );
                     }
                 }
