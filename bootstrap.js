@@ -5,6 +5,7 @@
  * metadata-driven class system features 
  */
 Ext.Loader.addClassPathMappings({
+  "ChartDataModel": "app/view/home/UserPanel.js",
   "Ext": "touch/src",
   "Ext.device.Purchases.Product": "touch/src/device/purchases/Sencha.js",
   "Ext.device.filesystem.DirectoryEntry": "touch/src/device/filesystem/HTML5.js",
@@ -20,6 +21,7 @@ Ext.Loader.addClassPathMappings({
   "LernApp": "app"
 });
 Ext.ClassManager.addNameAlternateMappings({
+  "ChartDataModel": [],
   "Ext.AbstractComponent": [],
   "Ext.AbstractManager": [],
   "Ext.AbstractPlugin": [],
@@ -765,6 +767,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.view.login.WelcomePanel": []
 });
 Ext.ClassManager.addNameAliasMappings({
+  "ChartDataModel": [],
   "Ext.AbstractComponent": [],
   "Ext.AbstractManager": [],
   "Ext.AbstractPlugin": [],

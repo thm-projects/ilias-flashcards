@@ -47,7 +47,7 @@
      * This value is needed when build to resolve your application's dependencies if it requires server-side resources
      * that are not accessible via file system protocol.
      */
-    "url": null,
+    "url": "agaertner.de",
 
     /**
      * List of all JavaScript assets in the right execution order.
@@ -79,7 +79,8 @@
             "x-bootstrap": true
         },
         {
-            "path": "app/internationalisation.js"
+            "path": "app/internationalisation.js",
+            "update": "delta"
         },
         {
             "path": "app.js",
@@ -110,7 +111,8 @@
             "update": "delta"
         },
         {
-            "path": "resources/css/lernapp.css"
+            "path": "resources/css/lernapp.css",
+            "update": "delta"
         }
     ],
 
@@ -140,6 +142,7 @@
      * Extra resources to be copied along when build
      */
     "resources": [
+        "app/data",
         "resources/images",
         "resources/icons",
         "resources/startup"
