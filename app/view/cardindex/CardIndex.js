@@ -51,9 +51,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         store: Ext.create('LernApp.store.CardIndexStore'),
         
         listConfig  : {
+            selectedCls: '',
             variableHeights: true,
             itemCls: 'forwardListButton',
             itemTpl: '<span class="listText">{text}</span>'
+        }
+    },
+    
+    constructor: function(args) {
+        this.callParent(args);
+        
+        if(typeof args !== 'undefined') {
+            this.withEditFunction = args.edit;
         }
     },
     
@@ -81,7 +90,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         });
         
         /**
-         * listeners to perfom after specified events
+         * listeners to perfom on specified events
          */
         this.on('back', this.onListChange);
         this.onBefore('painted', this.onActivate);
@@ -92,16 +101,24 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * actions to perform after panel activation and before panel is painted
      */
     onActivate: function() {
+        if(this.withEditFunction) {
+            this.getToolbar().add(this.editToggleField);
+            this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
+        } 
+        else {
+            this.getToolbar().setTitle('');
+        }
+        
         LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
         this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
-        this.getToolbar().add(this.editToggleField);
+        
         this.onListChange();
     },
     
     /**
      * actions to perform on itemtap or backbutton tap
      */
-    onListChange: function(panel, list, selections) {
+    onListChange: function(panel, list) {
         var navigationBar = LernApp.app.main.navigation.getNavigationBar();
         
         /** save back button hidden state */
@@ -109,7 +126,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         
         /** set navigationBar title */
         navigationBar.setTitle( this.getTitle() );
-        this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
+        if(this.withEditFunction) this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
+        else this.getToolbar().setTitle('');
     },
     
     /**
