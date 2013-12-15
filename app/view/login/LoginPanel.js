@@ -57,7 +57,8 @@ Ext.define('LernApp.view.login.LoginPanel', {
         
         this.loginFieldSet = Ext.create('Ext.form.FieldSet', {
             instructions: Messages.ENTER_YOUR_DATA,
-            width: '310px',
+            width: '300px',
+            style: 'margin-bottom: 15px',
             
             items: [
                 {
@@ -87,8 +88,12 @@ Ext.define('LernApp.view.login.LoginPanel', {
         
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
-            height: '160px',
-            src: 'resources/logo_notext.png'
+            height: '100px',
+            style: {
+                'margin-top': '20px',
+                'margin-bottom': '10px'
+            },
+            src: 'resources/icons/logo_notext.png'
         });
         
         this.add([ 

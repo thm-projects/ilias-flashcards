@@ -58,9 +58,9 @@ Ext.define('LernApp.view.login.WelcomePanel', {
         
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
-            width: '192px',
-            style: 'margin-top: 50px',
-            src: 'resources/logo.png'
+            height: '190px',
+            style: 'margin-top: 10px',
+            src: 'resources/icons/logo.png'
         });
         
         this.continueButton = Ext.create('Ext.Button', {
