@@ -35,6 +35,7 @@ Ext.define('LernApp.view.home.UserPanel', {
     xtype: 'userPanel',
 
     requires: [
+        'Ext.Picker',
         'Ext.data.Store',
         'Ext.chart.PolarChart',
         'Ext.chart.series.Pie',
@@ -45,7 +46,7 @@ Ext.define('LernApp.view.home.UserPanel', {
     config: {
         title: Messages.USER,
         fullscreen: true,
-        scrollable: true,
+        scrollable: false,
         iconCls: 'user',
         id: 'userPanel',
         
@@ -69,52 +70,259 @@ Ext.define('LernApp.view.home.UserPanel', {
             }
         });
         
+        this.picker = Ext.create('Ext.Picker', {
+            hidden: true,
+            doneButton: Messages.CHOOSE,
+            cancelButton: Messages.CANCEL,
+            slots: [
+                {
+                    name : 'categoryPicker',
+                    title: Messages.CATEGORYS,
+                    data : [
+                        {text: Messages.ALL_CATEGORYS, value: Messages.ALL_CATEGORYS},
+                        {text: Messages.PUBLIC_LAW, value: Messages.PUBLIC_LAW},
+                        {text: Messages.CRIMINAL_LAW, value: Messages.CRIMINAL_LAW},
+                        {text: Messages.CIVIL_LAW, value: Messages.CIVIL_LAW}
+                    ]
+                }
+            ],
+            listeners: {
+                scope: this,
+                change: function (picker, newValue) {
+                    this.titleBar.setTitle(newValue.categoryPicker);
+                    
+                    /** update chart data to selected category */
+                    switch(newValue.categoryPicker) {
+                        case Messages.ALL_CATEGORYS:
+                            this.updateChartData(this.allCategoryStore);
+                            break;
+                        case Messages.PUBLIC_LAW:
+                            this.updateChartData(this.publicLawStore);
+                            break;
+                        case Messages.CRIMINAL_LAW:
+                            this.updateChartData(this.criminalLawStore);
+                            break;
+                        case Messages.CIVIL_LAW:
+                            this.updateChartData(this.civilianLawStore);
+                            break;
+                    }
+                }
+            }
+        });
+        
         this.titleBar = Ext.create('Ext.TitleBar', {
             docked: 'top',
             title: Messages.USER,
-            items: [this.backButton]
-        });
-        
-        this.store = Ext.create('Ext.data.Store', {
-            fields: ['name', 'data'],
-            data: [
-                { 'name':'Erlernt', 'data':20 },
-                { 'name':'Leicht', 'data':10 },
-                { 'name':'Geht so', 'data':8 },
-                { 'name':'Schwer', 'data':6 }
+            items: [
+                this.backButton
             ]
         });
         
+        this.pickerButton = Ext.create('Ext.Button', {
+            text: Messages.CHANGE_CATEGORY,
+            ui: 'action',
+            align: 'center',
+            handler: function(button) {
+                var userPanel = LernApp.app.main.tabPanel.down('#userPanel');
+                Ext.Viewport.add(userPanel.picker);
+                userPanel.picker.show();
+            }
+        });
+        
+        this.buttonToolbar = Ext.create('Ext.Toolbar', {
+            docked: 'top',
+            cls: 'buttonToolbar',
+            items: [
+                { xtype: 'spacer' },
+                this.pickerButton,
+                { xtype: 'spacer' }
+            ]
+        });
+        
+        Ext.define('ChartDataModel', {
+            extend: 'Ext.data.Model',
+            
+            config: {
+                fields: [
+                    { name: 'name', type: 'string' },
+                    { name: 'data', type: 'int' }
+                ]
+            }
+        });
+        
+        this.allCategoryStore = Ext.create('Ext.data.Store', {
+            model: "ChartDataModel"
+        });
+        
+        this.publicLawStore = Ext.create('Ext.data.Store', {
+            model: "ChartDataModel",
+            id: 'publicLawStore',
+            
+            proxy: {
+                type:   'ajax',
+                url:    '/app/data/ChartData.json',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'publicLawItems'
+                }
+            }
+        });
+        
+        this.criminalLawStore = Ext.create('Ext.data.Store', {
+            model: "ChartDataModel",
+            id: 'criminalLawStore',
+            
+            proxy: {
+                type:   'ajax',
+                url:    '/app/data/ChartData.json',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'criminalLawItems'
+                }
+            }
+        });
+            
+            
+        this.civilianLawStore = Ext.create('Ext.data.Store', {
+            model: "ChartDataModel",
+            id: 'civilianLawStore',
+            
+            proxy: {
+                type:   'ajax',
+                url:    '/app/data/ChartData.json',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'civilLawItems'
+                }
+            }
+        });
+
         this.statisticChart = Ext.create('Ext.chart.PolarChart', {
             animate: true,
+            innerPadding: 10,
             interactions: ['rotate', 'itemhighlight'],
             colors: ['#00FF00', '#FFFF00', '#FF9900', '#FF0000'],
-            innerPadding: 15,
-            store: this.store,
+
+            store: Ext.create('Ext.data.Store', {
+                model: 'ChartDataModel' ,
+                data: [
+                       {'name': 'Erlernt',  'data': 0},
+                       {'name': 'Leicht',   'data': 0},
+                       {'name': 'Geht so',  'data': 0},
+                       {'name': 'Schwer',   'data': 0}
+                ]
+            }),
             
             legend: {
                 position: 'bottom'
             },
+            
             series: [{
-                type: 'pie',
-                field: 'data',
-                showInLegend: true,
-                donut: 20,
                 highlightCfg: {
-                    margin: 15
+                    margin: 10
                 },
-                label: {
-                    field: 'name',
-                    display: 'rotate',
-                    contrast: true,
-                    font: '18px Arial'
+                
+                type: 'pie',
+                labelField: 'name',
+                donut: 20,
+                xField: 'data',
+                
+                /** render labels in pie chart */
+                renderer: function(sprite, config, rendererData, index) {
+                    var changes         = {},
+                        currentStore    = rendererData.store,
+                        currentRecord   = currentStore.getData().items[index],
+                        currentValue    = currentRecord[rendererData.field].data;
+
+                    if (config.type == "label") { 
+                        changes.fontSize = 22;
+                        changes.lineWidth = 1;
+                        changes.contrast = true;
+                        changes.display = 'rotate',
+                        changes.text = currentValue;
+                    }
+                    return changes;
                 }
             }]
         });
         
         this.add([
             this.titleBar,
+            this.buttonToolbar,
             this.statisticChart
         ]);
+        
+        /** actions to perform when specified event is fired */
+        this.on('initialize', this.loadAllStores);
+        
+        this.onAfter('painted', function() {
+            this.titleBar.setTitle(Messages.ALL_CATEGORYS);
+            this.updateChartData(this.allCategoryStore);
+        });
+    },
+    
+    /**
+     * updates data of chart store and refreshes statisticChart
+     * 
+     * param: store - data to write to chart store
+     */
+    updateChartData: function(store) {
+        var statisticStore = this.statisticChart.getStore();
+        
+        /** write data from store to chart store */
+        statisticStore.each(function(record, index) {
+            store.each(function(catRecord, catIndex) {
+                if(record.getData().name === catRecord.getData().name) {
+                    record.set('data', catRecord.getData().data);
+                }
+            });
+        });
+        
+        /** redraw chart */
+        this.statisticChart.redraw();
+    },
+    
+    /** 
+     * reloads all stores and call summerizeCategoryData for each store
+     */
+    loadAllStores: function() {
+        this.allCategoryStore.removeAll();
+        
+        /** load publicLawStore */
+        this.publicLawStore.load({
+            callback: function(records, operation, success) {
+                this.allCategoryStore.addData(records);
+            }, scope: this
+        });
+        
+        /** load criminalLawStore */
+        this.criminalLawStore.load({
+            callback: this.summerizeCategoryData
+        });
+        
+        /** load civilianLawStore */
+        this.civilianLawStore.load({
+            callback: this.summerizeCategoryData
+        });
+    },
+    
+    /**
+     * function callback to summerize data from stores
+     */
+    summerizeCategoryData: function(records, operation, success) {
+        var store    = LernApp.app.main.tabPanel.down('#userPanel').allCategoryStore;
+        var data     = store.getData();
+
+        data.each(function(element, index, array) {
+            records.forEach(function(recElement, recIndex, recArray) {
+                if(element.getData().name === recElement.data.name) {
+                    store.add({
+                        name: element.getData().name, 
+                        data: element.getData().data + recElement.data.data
+                    });
+                    store.remove(element);
+                }
+            });
+        });
     }
 });
