@@ -37,7 +37,6 @@ Ext.define('LernApp.prototype.SliderField', {
 
     config: {
         cls: 'sliderField',
-        inputPosition: 'right',
         tabIndex: -1
     },
 
@@ -92,7 +91,6 @@ Ext.define('LernApp.prototype.SliderField', {
   
     // @private
     applyComponent: function(config) {
-        this.inputField.setStyle('float', this.config.inputPosition);
         this.setInputValue(this.config.value);
         return Ext.factory(config, Ext.slider.Slider);
     },
