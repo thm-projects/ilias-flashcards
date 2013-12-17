@@ -46,7 +46,7 @@ Ext.define('LernApp.view.home.UserPanel', {
     config: {
         title: Messages.USER,
         fullscreen: true,
-        scrollable: false,
+        scrollable: null,
         iconCls: 'user',
         id: 'userPanel',
         
