@@ -80,7 +80,7 @@
 }
 
 .editToggleBox {
-	width: 0em !important;
+	width: auto !important;
 	padding: .2em !important;
 }
 
@@ -133,6 +133,66 @@
 
 .roundedBox>.x-list-item:last-child {
 	border-bottom: none;
+}
+
+.saveConfirmPanel .x-panel-inner {
+	max-width: 80%;
+	min-width: 300px;
+	margin-bottom: 10px;
+	background: black !important;	
+}
+
+.saveConfirmPanel .x-button-label {
+	display: inline;
+	text-align: left;
+	font-weight: bold;
+	margin-top: 6px !important;
+}
+
+.saveConfirmPanel .x-button {
+	color: #606060;
+	background: #fff;
+	height: 45px !important;
+	align-items: stretch !important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+	background: -moz-linear-gradient(top, #fff, #ededed);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+	border-radius: 0;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: thin;
+}
+
+.saveConfirmPanel .x-button.x-button-pressing {
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+	background: -moz-linear-gradient(top, #fff, #dcdcdc);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+}
+
+.saveConfirmPanel .saveAnswerButtonBadge {
+	position: absolute !important;
+	margin-right: 12px;
+	margin-top: 6px;
+	right: 0;
+}
+
+.saveConfirmPanel .selfAssessmentLabel {
+	color: white;
+	text-align: center;
+	font-size: 1.2em;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.saveConfirmPanel .selfAssessmentInstruction {
+	border: none;
+	color: #909090;
+	background: transparent;
+}
+
+.saveConfirmPanel .selfAssessmentInstruction .x-button-label {
+	font-weight: normal;
 }
 
 .settingsPanel .x-form-fieldset-title {
