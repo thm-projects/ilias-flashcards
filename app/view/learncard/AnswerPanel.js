@@ -39,7 +39,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     ],
     
     config: {
-        title: Messages.QUESTION,
+        title: Messages.ANSWER,
         fullscreen: true,
         scrollable: {
             direction: 'vertical',
@@ -55,14 +55,112 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         this.saveButton = Ext.create('Ext.Button', {
             text: 'Speichern',
             ui: 'confirm',
-            align: 'right',
             handler: function() {
-                var navigation = LernApp.app.main.navigation;
+                var saveConfirmPanel = LernApp.app.main.navigation.getActiveItem().saveConfirmPanel;
                 
-                navigation.getNavigationBar().remove(this);
-                navigation.pop();
+                /** disable saveButton */
+                this.disable();
+                
+                /** 
+                 * show confirm panel over saveButton,
+                 * align panel slightly over the button,
+                 * mask out navigation view
+                 */
+                saveConfirmPanel.showBy(this, 'bc-tc');
+                saveConfirmPanel.setTop(saveConfirmPanel.getTop() - 10);
+                LernApp.app.main.navigation.getActiveItem().mask();
+                saveConfirmPanel.show();
             }
-        })
+        });
+        
+        this.saveConfirmFieldSet = Ext.create('Ext.form.FieldSet', {
+            cls: 'standardForm',
+            style: 'margin-top: 2px',
+        
+            defaults: {
+                xtype: 'button',
+                badgeCls: 'saveAnswerButtonBadge',
+                handler: function(button) {                    
+                    var main = LernApp.app.main;
+                    var answerPanel = main.navigation.getActiveItem();
+                    
+                    /** save answer to database */
+                    answerPanel.saveAnswer(button);
+                    answerPanel.saveConfirmPanel.hide();
+                }
+            },
+            
+            items: [
+                {
+                    text: Messages.DIFFICULT,
+                    badgeText: Messages.IN_THIS_SESSION
+                }, {
+                    text: Messages.COULD_BE_WORSE,
+                    badgeText: Messages.IN_NEXT_SESSION
+                }, {
+                    text: Messages.EASY,
+                    badgeText: Messages.AFTER_NEXT_SESSION
+                }, {
+                    text: Messages.LEARNED,
+                    badgeText: Messages.NO_REPEAT
+                }
+            ]
+        });
+        
+        this.saveConfirmPanel = Ext.create('Ext.Panel', {
+            top: -1000,
+            hidden: true,
+            cls: 'saveConfirmPanel',
+            
+            showAnimation: {
+                type: 'slideIn',
+                duration: 800,
+                direction: 'down'
+            },
+            
+            hideAnimation: {
+                type: 'slideOut',
+                duration: 800,
+                direction: 'up',
+                listeners: {
+                    animationend: function() {
+                        var main = LernApp.app.main;
+                        var answerPanel = main.navigation.getActiveItem();
+                        
+                        /** show loadmask 'saving' */
+                        Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.SAVING });
+                        
+                        /** destroy saveConfirmPanel */
+                        answerPanel.saveConfirmPanel.destroy();
+                        
+                        /** 
+                         * remove saveButton from tab bar,
+                         * unhide all tabs in tab panel,
+                         * pop answer panel from navigation view
+                         */
+                        main.tabPanel.getTabBar().remove(answerPanel.saveButton);
+                        main.tabPanel.showAllTabs();
+                        main.navigation.pop();
+                    }
+                }
+            },  
+
+            items: [
+                {
+                    xtype: 'label',
+                    cls: 'selfAssessmentLabel',
+                    html: Messages.SELF_ASSESSMENT
+                },
+                {
+                    xtype: 'button',
+                    text: Messages.DIFFICULTY,
+                    cls: 'selfAssessmentInstruction',
+                    badgeCls: 'saveAnswerButtonBadge',
+                    badgeText: Messages.REQUEST_AGAIN
+                },
+                this.saveConfirmFieldSet
+            ]
+        });
         
         this.answerTitle = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
@@ -86,23 +184,35 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         /**
          * actions to perform after panel is painted
          */
-        this.on('painted', function() {
+        this.onBefore('painted', function() {
             LernApp.app.main.navigation.getNavigationBar().getBackButton().hide();
-            LernApp.app.main.navigation.getNavigationBar().add(this.saveButton);
+            LernApp.app.main.tabPanel.getTabBar().add(this.saveButton);
+            LernApp.app.main.tabPanel.hideAllTabs();
         });
-        
+           
         /**
-         * actions to perform after panel is destroyed
+         * actions to perform before panel is destroyed
          */
-        this.onAfter('destroy', function() {
+        this.onBefore('destroy', function() {
+            /** restore back button of navigation bar */
             LernApp.app.main.navigation.getNavigationBar().getBackButton().show();
+            
+            /** destroy loadingmask and restore saved animation */
             var task = Ext.create('Ext.util.DelayedTask', function () {
+                Ext.Viewport.setMasked(false);
                 LernApp.app.main.navigation.getLayout().setAnimation(
                     LernApp.app.main.navigation.getSavedAnimation()
                 );
             });
             
-            task.delay(500);
+            task.delay(1000);
         });
+    },
+    
+    /**
+     * TODO: implement save answer to database
+     */
+    saveAnswer: function(button) {
+        console.log('saved: ' + button.getText());
     }
 });
