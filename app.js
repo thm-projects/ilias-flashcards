@@ -58,6 +58,7 @@ Ext.application({
     models: [
         'CardIndexModel'
     ],
+    
     views: [
         'Main',
         'TabPanel',
@@ -79,6 +80,7 @@ Ext.application({
         
         'about.AboutPanel'
     ],
+    
     controllers: [
         'Navigation'
     ],
@@ -99,13 +101,13 @@ Ext.application({
 
     onUpdated: function() {
         Ext.Msg.confirm(
-                "Update",
-                 "Diese Applikation wurde erfolgreich auf die neuste Version aktualisiert. Möchten Sie die App neustarten?",
-                 function(buttonId) {
-                    if (buttonId === 'yes') {
-                        window.location.reload();
-                    }
+            "Update",
+             "Diese Applikation wurde erfolgreich auf die neuste Version aktualisiert. Möchten Sie die App neustarten?",
+             function(buttonId) {
+                if (buttonId === 'yes') {
+                    window.location.reload();
                 }
+            }
         );
     }
 });

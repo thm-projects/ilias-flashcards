@@ -50,6 +50,16 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         
         store: Ext.create('LernApp.store.CardIndexStore'),
         
+        layout: {
+            type: 'card',
+            animation: {
+                duration: 600,
+                easing: 'ease-in-out',
+                type: 'slide',
+                direction: 'left'
+            }
+        },
+        
         listConfig  : {
             selectedCls: '',
             variableHeights: true,
@@ -149,8 +159,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         /** iterate through all listItems */
         list.forEach(function(element, index, array) {
             if(editMode) {
-                /** replace trailed newline */
-                var cat = element.bodyElement.dom.innerText.replace(/(\r\n|\n|\r)/gm,"");
+                /** replace trailing newline */
+                var cat = element.bodyElement.dom.textContent;
                 
                 if(localStorage.getItem(cat) !== "true") {
                     element.addCls('addIcon');

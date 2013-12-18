@@ -56,8 +56,8 @@ Ext.define('LernApp.view.Main', {
         this.aboutPanel = Ext.create('LernApp.view.about.AboutPanel');
         this.tabPanel.add([this.navigation, this.aboutPanel]);
 
-        this.navigation.tab.show();
         this.aboutPanel.tab.show();
+        this.navigation.tab.show();
         
         this.add([this.tabPanel]);
     }

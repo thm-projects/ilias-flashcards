@@ -36,11 +36,30 @@ Ext.define('LernApp.view.TabPanel', {
     
     config: {
         autoDestroy: true,
-        tabBarPosition: 'bottom'
+        tabBarPosition: 'bottom',
+        
+        layout: {
+            type: 'card',
+            animation: {
+                duration: 600,
+                easing: 'ease-in-out',
+                type: 'slide',
+                direction: 'left'
+            }
+        }
     },
     
     initialize: function() {
         this.callParent(arguments);
+    },
+    
+    /**
+     * unhides all tab panels
+     */
+    showAllTabs: function() {
+        this.getItems().items.forEach(function(element, index, array) {
+            if(index != 0) element.tab.show();
+        });
     },
     
     /**
@@ -51,8 +70,17 @@ Ext.define('LernApp.view.TabPanel', {
     hideTab: function(tab) {
         this.getItems().items.forEach(function(element, index, array) {
             if(tab == element) {
-               element.tab.hide();
+                element.tab.hide();
             }
+        });
+    },
+    
+    /**
+     * hide all tab panels
+     */
+    hideAllTabs: function() {
+        this.getItems().items.forEach(function(element, index, array) {
+            if(index != 0) element.tab.hide();
         });
     },
     
