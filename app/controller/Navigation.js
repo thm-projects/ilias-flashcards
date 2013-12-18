@@ -61,11 +61,11 @@ Ext.define('LernApp.controller.Navigation', {
         /**
          * overwrite old navigation,
          * launch afterNavigationChange method,
-         * add new navigation to tabPanel
+         * add new navigation to tabPanel (index 0 is reserved by tabBar)
          */
         LernApp.app.main.navigation = newNavigation;
         LernApp.app.main.navigation.afterNavigationChange();
-        LernApp.app.main.tabPanel.insert(0, newNavigation);
+        LernApp.app.main.tabPanel.insert(1, newNavigation);
         
         /**
          * switch to new navigation,
@@ -75,6 +75,7 @@ Ext.define('LernApp.controller.Navigation', {
          */
         LernApp.app.main.tabPanel.animateActiveItem(newNavigation, {
             type: 'slide',
+            duration: 600,
             direction: animationDirection,
             listeners: {
                 animationend: function() {
