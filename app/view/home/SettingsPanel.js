@@ -173,18 +173,18 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             this.settingsFieldSet
         ]);
         
-        this.on('painted', this.onPainted);
+        this.on('initialize', this.onInitialize);
     },
     
     /**
-     * actions to perform on painted
+     * actions to perform on initialization
      */
-    onPainted: function() {
+    onInitialize: function() {
         /** restore value from notificationToggle */
         if(localStorage.getItem(this.notificationToggle.getId()) !== null) {
             this.notificationToggle.setValue(
-                    localStorage.getItem(this.notificationToggle.getId()
-            ));
+                    localStorage.getItem(this.notificationToggle.getId())
+            );
         }
         
         /** restore values from sliders */
