@@ -70,6 +70,7 @@ switch (lang) {
             USERNAME: 'Benutzername',
             PASSWORD: 'Password',
             LOGOUT: 'Logout',
+            SAVING: 'Speichere...',
             LOADING: 'Lade...',
             OVERVIEW: 'Übersicht',
             SETTINGS: 'Einstellungen',
@@ -90,7 +91,20 @@ switch (lang) {
             EDIT_CARD_INDEX: 'Bearbeiten',
             FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden',
             DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?',
-        
+            
+            DIFFICULTY: 'Schwierigkeit',
+            REQUEST_AGAIN: 'Erneute Abfrage',
+            DIFFICULT: 'Schwer',
+            COULD_BE_WORSE: 'Geht so',
+            EASY: 'Leicht',
+            LEARNED: 'Erlernt',
+            IN_THIS_SESSION: 'Diese Session',
+            IN_NEXT_SESSION: 'Nächste Session',
+            AFTER_NEXT_SESSION: 'Übernächste Session',
+            NO_REPEAT: 'Keine Wiederholung',
+            SELF_ASSESSMENT: 'Selbsteinschätzung',
+            
+            
             /** temporary */
             CHANGE: 'Ändern',
             CANCEL: 'Abbrechen',
