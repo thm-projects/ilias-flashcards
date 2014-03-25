@@ -39,12 +39,12 @@ Ext.define('LernApp.view.about.AboutPanel', {
     
     config: {
         title: Messages.HELP,
-        fullscreen: true,
         scrollable: true,
         iconCls: 'info',
         
         layout : {
             type : 'vbox',
+            pack : 'center',
             align: 'center'
         }
     },
@@ -70,6 +70,40 @@ Ext.define('LernApp.view.about.AboutPanel', {
             items: [this.backButton]
         });
         
-        this.add([this.titleBar]);
+        this.logo = Ext.create('Ext.Img', {
+            mode: 'image',
+            height: '190px',
+            style: 'margin-top: 10px',
+            src: 'resources/icons/icon_help.png'
+        });
+        
+        this.buttonFieldSet = Ext.create('Ext.form.FieldSet', {
+            cls: 'standardForm',
+            width: '300px',
+            
+            items: [
+                {
+                    xtype   : 'button',
+                    text    : 'Bedienung',
+                    disabled: true,
+                    cls     : 'forwardListButton'
+                }, 
+                {
+                    xtype   : 'button',
+                    text    : 'Über die App',
+                    disabled: true,
+                    cls     : 'forwardListButton'
+                }
+            ]
+        });
+        
+        this.add([
+            this.titleBar,
+            { xtype: 'spacer' },
+            this.logo,
+            { xtype: 'spacer' },
+            this.buttonFieldSet,
+            { xtype: 'spacer' }
+        ]);
     }
 });
