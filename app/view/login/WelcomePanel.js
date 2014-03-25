@@ -38,13 +38,11 @@ Ext.define('LernApp.view.login.WelcomePanel', {
         'Ext.Label',
         'Ext.Spacer',
         'Ext.Button',
-        'Ext.Img',
-        'LernApp.view.login.LoginPanel'
+        'Ext.Img'
     ],
     
     config: {
         title: Messages.WELCOME,
-        fullscreen: true,
         scrollable: true,
         
         layout: {
@@ -68,7 +66,9 @@ Ext.define('LernApp.view.login.WelcomePanel', {
            ui: 'confirm',
            style: 'margin-top: 30px',
            handler: function() {
-               LernApp.app.main.navigation.push(Ext.create('LernApp.view.login.LoginPanel'));
+               LernApp.app.main.navigation.push(
+                       LernApp.app.main.navigation.loginPanel
+               );
            }
         });
         

@@ -42,13 +42,26 @@ Ext.define('LernApp.view.login.LoginNavigation', {
         title: Messages.HOME
     },
     
+    instanciateComponents: function() {
+        this.loginPanel = Ext.create('LernApp.view.login.LoginPanel')
+        this.welcomePanel = Ext.create('LernApp.view.login.WelcomePanel');
+    },
+    
     initialize: function() {
         this.callParent(arguments);
         
-        this.push(Ext.create('LernApp.view.login.WelcomePanel'));
+        this.instanciateComponents();
+        this.push(this.welcomePanel);
+        
+        this.on('destroy', this.onDestroy);
     },
     
     afterNavigationChange: function() {
-        this.push(Ext.create('LernApp.view.login.LoginPanel'));
+        this.push(this.loginPanel);
+    },
+    
+    onDestroy: function() {
+        this.loginPanel.destroy();
+        this.welcomePanel.destroy();
     }
 });

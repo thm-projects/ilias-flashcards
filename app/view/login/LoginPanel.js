@@ -43,7 +43,6 @@ Ext.define('LernApp.view.login.LoginPanel', {
     
     config: {
         title: Messages.LOGIN,
-        fullscreen: true,
         scrollable: true,
         
         layout: {
@@ -79,10 +78,16 @@ Ext.define('LernApp.view.login.LoginPanel', {
             text    : 'Anmelden',
             ui      : 'confirm',
             handler : function() {
-                Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });
-                LernApp.app.getController('Navigation').changeNavigation(
-                        Ext.create('LernApp.view.home.HomeNavigation')
-                );
+                Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });      
+                
+                /** destroy loadingmask and restore saved animation */
+                var task = Ext.create('Ext.util.DelayedTask', function () {
+                    LernApp.app.getController('Navigation').changeNavigation(
+                            Ext.create('LernApp.view.home.HomeNavigation')
+                    );
+                });
+                
+                task.delay(100);
             }
         });
         
