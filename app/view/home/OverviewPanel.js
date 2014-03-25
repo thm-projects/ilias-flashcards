@@ -44,7 +44,6 @@ Ext.define('LernApp.view.home.OverviewPanel', {
     
     config: {
         title: Messages.OVERVIEW,
-        fullscreen: true,
         scrollable: true,
         
         layout : {
@@ -55,6 +54,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
     
     initialize: function() {
         this.callParent(arguments);
+        
+        var me = this;
         
         this.continueButton = Ext.create('Ext.Button', {
             text: Messages.CONTINUE,
@@ -88,6 +89,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     name    : 'learnCards',
                     text    : Messages.LEARN_LEARN_CARDS,
                     cls     : 'forwardListButton',
+                    disabled: true,
                     handler : comingSoon
                 }, {
                     xtype   : 'button',

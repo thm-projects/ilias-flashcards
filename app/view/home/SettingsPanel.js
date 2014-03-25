@@ -43,7 +43,6 @@ Ext.define('LernApp.view.home.SettingsPanel', {
     
     config: {
         title: Messages.SETTINGS,
-        fullscreen: true,
         scrollable: null,
         iconCls: 'settings',
         id: 'settingsPanel',

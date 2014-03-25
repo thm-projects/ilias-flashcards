@@ -45,7 +45,6 @@ Ext.define('LernApp.view.home.UserPanel', {
     
     config: {
         title: Messages.USER,
-        fullscreen: true,
         scrollable: null,
         iconCls: 'user',
         id: 'userPanel',
@@ -160,7 +159,7 @@ Ext.define('LernApp.view.home.UserPanel', {
             
             proxy: {
                 type:   'ajax',
-                url:    '/app/data/ChartData.json',
+                url:    'app/data/ChartData.json',
                 reader: {
                     type: 'json',
                     rootProperty: 'publicLawItems'
@@ -174,7 +173,7 @@ Ext.define('LernApp.view.home.UserPanel', {
             
             proxy: {
                 type:   'ajax',
-                url:    '/app/data/ChartData.json',
+                url:    'app/data/ChartData.json',
                 reader: {
                     type: 'json',
                     rootProperty: 'criminalLawItems'
@@ -189,7 +188,7 @@ Ext.define('LernApp.view.home.UserPanel', {
             
             proxy: {
                 type:   'ajax',
-                url:    '/app/data/ChartData.json',
+                url:    'app/data/ChartData.json',
                 reader: {
                     type: 'json',
                     rootProperty: 'civilLawItems'
@@ -255,7 +254,7 @@ Ext.define('LernApp.view.home.UserPanel', {
         /** actions to perform when specified event is fired */
         this.on('initialize', this.loadAllStores);
         
-        this.onAfter('painted', function() {
+        this.on('activate', function() {
             this.titleBar.setTitle(Messages.ALL_CATEGORYS);
             this.updateChartData(this.allCategoryStore);
         });
@@ -277,7 +276,7 @@ Ext.define('LernApp.view.home.UserPanel', {
                 }
             });
         });
-        
+ 
         /** redraw chart */
         this.statisticChart.redraw();
     },

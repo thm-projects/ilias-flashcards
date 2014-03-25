@@ -36,15 +36,25 @@ Ext.define('LernApp.view.home.HomeNavigation', {
 
     requires: [
         'LernApp.view.home.OverviewPanel',
+        'LernApp.view.home.SettingsPanel',
+        'LernApp.view.home.UserPanel',
         'Ext.util.DelayedTask'
     ],
     
     config: {
-        title: Messages.HOME
+        title: Messages.HOME,
+        autoDestroy: true
+    },
+    
+    instanciateComponents: function() {
+        this.userPanel = Ext.create('LernApp.view.home.UserPanel');
+        this.settingsPanel = Ext.create('LernApp.view.home.SettingsPanel');
+        this.overviewPanel = Ext.create('LernApp.view.home.OverviewPanel');
     },
     
     initialize: function() {
         this.callParent(arguments);
+        this.instanciateComponents();
 
         this.logoutButton = Ext.create('Ext.Button', {
             text    : Messages.LOGOUT,
@@ -59,49 +69,37 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             }
         });
         
-        /**
-         * add logout button to navigationBar
-         */
+        /** add logout button to navigationBar */
         this.getNavigationBar().add(this.logoutButton);
         
-        /**
-         * initialize listeners
-         */
+        /** initialize listeners */
         this.on('initialize', this.onInitialize);
         this.on('destroy', this.onDestroy);
     },
     
-    /**
-     * actions to fulfill after navigation change (Navigation controller)
-     */
+    
+    /** actions to fulfill after navigation change (Navigation controller) */
     afterNavigationChange: function() {
-        this.push(Ext.create('LernApp.view.home.OverviewPanel'));
+        this.push(this.overviewPanel);
     },
     
-    /**
-     * actions to fulfill on initialization
-     */
+    
+    /** actions to fulfill on initialization */
     onInitialize: function() {
         LernApp.app.main.tabPanel.addBeforeLastTab(
-                Ext.create('LernApp.view.home.UserPanel')
+                this.userPanel
         );
         
         LernApp.app.main.tabPanel.addBeforeLastTab(
-                Ext.create('LernApp.view.home.SettingsPanel')
+                this.settingsPanel
         );
     },
     
-    /**
-     * actions to fulfill on panel destroy
-     */
+    
+    /** actions to fulfill on panel destroy */
     onDestroy: function() {
-        var userPanel = LernApp.app.main.tabPanel.down('#userPanel');
-        var settingsPanel = LernApp.app.main.tabPanel.down('#settingsPanel');
-        
-        LernApp.app.main.tabPanel.hideTab(userPanel);
-        LernApp.app.main.tabPanel.hideTab(settingsPanel);
-        
-        LernApp.app.main.tabPanel.remove(userPanel);
-        LernApp.app.main.tabPanel.remove(settingsPanel);
+        this.userPanel.destroy();
+        this.settingsPanel.destroy();
+        this.overviewPanel.destroy();
     }
 });
