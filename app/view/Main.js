@@ -39,7 +39,6 @@ Ext.define('LernApp.view.Main', {
     ],
     
     config: {
-        fullscreen: true,
         autoDestroy: true,
         layout: 'hbox',
         defaults: {
@@ -47,18 +46,23 @@ Ext.define('LernApp.view.Main', {
         }
     },
     
+    instanciateComponents: function() {
+        this.tabPanel = Ext.create('LernApp.view.TabPanel');
+        this.aboutPanel = Ext.create('LernApp.view.about.AboutPanel');
+        this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
+    },
+    
     initialize: function() {
         this.callParent(arguments);
         
-        this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
-        
-        this.tabPanel = Ext.create('LernApp.view.TabPanel');
-        this.aboutPanel = Ext.create('LernApp.view.about.AboutPanel');
+        this.instanciateComponents();
+   
+        /** add panels to tabpanel and show them */
         this.tabPanel.add([this.navigation, this.aboutPanel]);
-
         this.aboutPanel.tab.show();
         this.navigation.tab.show();
         
+        /** add tabPanel to main view */
         this.add([this.tabPanel]);
     }
 });
