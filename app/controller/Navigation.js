@@ -72,6 +72,7 @@ Ext.define('LernApp.controller.Navigation', {
          * 
          * on animation end: 
          *  remove old navigation tab from tabpanel
+         *  destroy old navigation
          */
         LernApp.app.main.tabPanel.animateActiveItem(newNavigation, {
             type: 'slide',
@@ -81,6 +82,7 @@ Ext.define('LernApp.controller.Navigation', {
                 animationend: function() {
                     LernApp.app.main.tabPanel.remove(oldNavigation)
                     Ext.Viewport.setMasked(false);
+                    oldNavigation.destroy();
                 }
             }
         });
