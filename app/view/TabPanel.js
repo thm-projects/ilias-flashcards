@@ -41,7 +41,7 @@ Ext.define('LernApp.view.TabPanel', {
         layout: {
             type: 'card',
             animation: {
-                duration: 600,
+                duration: 500,
                 easing: 'ease-in-out',
                 type: 'slide',
                 direction: 'left'
