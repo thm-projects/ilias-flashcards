@@ -621,6 +621,17 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.layout.wrapper.BoxDock": [],
   "Ext.layout.wrapper.Dock": [],
   "Ext.layout.wrapper.Inner": [],
+  "Ext.log.Base": [],
+  "Ext.log.Logger": [],
+  "Ext.log.filter.Filter": [],
+  "Ext.log.filter.Priority": [],
+  "Ext.log.formatter.Default": [],
+  "Ext.log.formatter.Formatter": [],
+  "Ext.log.formatter.Identity": [],
+  "Ext.log.writer.Console": [],
+  "Ext.log.writer.DocumentTitle": [],
+  "Ext.log.writer.Remote": [],
+  "Ext.log.writer.Writer": [],
   "Ext.mixin.Bindable": [],
   "Ext.mixin.Filterable": [],
   "Ext.mixin.Mixin": [],
@@ -760,8 +771,12 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.view.home.SettingsPanel": [],
   "LernApp.view.home.UserPanel": [],
   "LernApp.view.learncard.AnswerPanel": [],
+  "LernApp.view.learncard.AnswerPanel2": [],
+  "LernApp.view.learncard.AnswerPanel3": [],
   "LernApp.view.learncard.CardCarousel": [],
   "LernApp.view.learncard.QuestionPanel": [],
+  "LernApp.view.learncard.QuestionPanel2": [],
+  "LernApp.view.learncard.QuestionPanel3": [],
   "LernApp.view.login.LoginNavigation": [],
   "LernApp.view.login.LoginPanel": [],
   "LernApp.view.login.WelcomePanel": []
@@ -1569,6 +1584,17 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.layout.wrapper.BoxDock": [],
   "Ext.layout.wrapper.Dock": [],
   "Ext.layout.wrapper.Inner": [],
+  "Ext.log.Base": [],
+  "Ext.log.Logger": [],
+  "Ext.log.filter.Filter": [],
+  "Ext.log.filter.Priority": [],
+  "Ext.log.formatter.Default": [],
+  "Ext.log.formatter.Formatter": [],
+  "Ext.log.formatter.Identity": [],
+  "Ext.log.writer.Console": [],
+  "Ext.log.writer.DocumentTitle": [],
+  "Ext.log.writer.Remote": [],
+  "Ext.log.writer.Writer": [],
   "Ext.mixin.Bindable": [],
   "Ext.mixin.Filterable": [],
   "Ext.mixin.Mixin": [],
@@ -1750,10 +1776,22 @@ Ext.ClassManager.addNameAliasMappings({
   "LernApp.view.learncard.AnswerPanel": [
     "widget.answerPanel"
   ],
+  "LernApp.view.learncard.AnswerPanel2": [
+    "widget.answerPanel2"
+  ],
+  "LernApp.view.learncard.AnswerPanel3": [
+    "widget.answerPanel3"
+  ],
   "LernApp.view.learncard.CardCarousel": [
     "widget.cardCarousel"
   ],
   "LernApp.view.learncard.QuestionPanel": [
+    "widget.questionPanel"
+  ],
+  "LernApp.view.learncard.QuestionPanel2": [
+    "widget.questionPanel2"
+  ],
+  "LernApp.view.learncard.QuestionPanel3": [
     "widget.questionPanel"
   ],
   "LernApp.view.login.LoginNavigation": [

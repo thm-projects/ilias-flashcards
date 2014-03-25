@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.learncard.QuestionPanel', {
+Ext.define('LernApp.view.learncard.QuestionPanel3', {
     extend: 'Ext.Panel',
     xtype: 'questionPanel',
 
@@ -39,7 +39,7 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
     ],
     
     config: {
-        id: 'questionPanel1',
+        id: 'questionPanel3',
         title: Messages.QUESTION,
         fullscreen: true,
         scrollable: {
@@ -54,8 +54,8 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
         this.questionTitle = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
-                '<p class="title">' + Ext.util.Format.htmlEncode('01. Drei-Elemente-Lehre') + '<p/><br>' +
-                '<p>' + Ext.util.Format.htmlEncode('Worüber lässt sich anhand der auf Georg Jellinek zurückgehenden sogenannter Drei-Elemente-Lehre eine Aussage treffen?') + '</p>'
+                '<p class="title">' + Ext.util.Format.htmlEncode('03. Institutsgarantie/ institutionelle Garantie') + '<p/><br>' +
+                '<p>' + Ext.util.Format.htmlEncode('Aus welchem der nachfolgend genannten Grundrechte folgt keine Institutsgarantie oder institutionelle Garantie?') + '</p>'
         });
         
         this.answerList = Ext.create('Ext.List', {            
@@ -63,10 +63,10 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
             scrollable: { disabled: true },
             
             data: [
-                { text: 'Über den Stand der europäischen Integration.' },
-                { text: 'Über das Vorliegen eines Staates.' },
-                { text: 'Über das Vorliegen eines Staatenverbundes.' },
-                { text: 'Über das Legitimationsniveau in der EU.' }
+                { text: 'Art. 9 Abs. 1 GG (funktionierendes Vereinswesen)' },
+                { text: 'Art. 14 GG (Eigentum und Erbrecht)' },
+                { text: 'Art. 6 Abs. 1 GG (Ehe und Familie)' },
+                { text: 'Art. 33 Abs. 5 GG (Berufsbeamtentum)' }
             ],
             
             listeners: {

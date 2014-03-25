@@ -37,7 +37,11 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     requires: [
         'Ext.Button',
         'LernApp.view.learncard.QuestionPanel',
-        'LernApp.view.learncard.AnswerPanel'
+        'LernApp.view.learncard.QuestionPanel2',
+        'LernApp.view.learncard.QuestionPanel3',
+        'LernApp.view.learncard.AnswerPanel',
+        'LernApp.view.learncard.AnswerPanel2',
+        'LernApp.view.learncard.AnswerPanel3'
     ],
     
     config: {
@@ -45,8 +49,15 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         fullscreen: true
     },
     
+    instanciateComponents: function() {
+        this.q1 = Ext.create('LernApp.view.learncard.QuestionPanel');
+        this.q2 = Ext.create('LernApp.view.learncard.QuestionPanel3');
+        this.q3 = Ext.create('LernApp.view.learncard.QuestionPanel2');
+    },
+    
     initialize: function() {
         this.callParent(arguments);
+        this.instanciateComponents();
         
         this.answerButton = Ext.create('Ext.Button', {
             ui: 'confirm',
@@ -56,28 +67,36 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
             handler: function() {
                 var navigation = LernApp.app.main.navigation;
                 
+                /** quickhack */
+                var id = LernApp.app.main.navigation.getActiveItem().getActiveItem().getId();
+                var sel = LernApp.app.main.navigation.getActiveItem().getActiveItem().answerList.getSelection()[0].data.text;
+
                 navigation.saveAnimation();
                 navigation.getNavigationBar().down('#answerButton').hide();
                 navigation.getLayout().setAnimation({ type: 'flip', duration: 500 });
-                navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel'));
+                
+                switch(id) {
+                    case 'questionPanel1': navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', { selection: sel })); break;
+                    case 'questionPanel2': navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel2', { selection: sel })); break;
+                    case 'questionPanel3': navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel3', { selection: sel })); break;
+                }
             }
         });
-        
-        /**
-         * add answer button to navigationBar
-         */
-        LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
-        
+   
         this.add([
-            Ext.create('LernApp.view.learncard.QuestionPanel'),
-            Ext.create('LernApp.view.learncard.QuestionPanel'),
-            Ext.create('LernApp.view.learncard.QuestionPanel')
+            this.q1,
+            this.q3,
+            this.q2
         ]);
        
         /**
          * actions to perform after panel is activated
          */
         this.onAfter('activate', function() {
+            /**
+             * add answer button to navigationBar
+             */
+            LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
             LernApp.app.main.navigation.getNavigationBar().down('#answerButton').show();
         });
         
@@ -85,6 +104,9 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
          * actions to perform on panel destroy
          */
         this.on('destroy', function() {
+            this.q1.destroy();
+            this.q2.destroy();
+            this.q3.destroy();
             LernApp.app.main.navigation.getNavigationBar().remove(this.answerButton);
         });
     }

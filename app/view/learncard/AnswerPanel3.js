@@ -30,9 +30,9 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.learncard.AnswerPanel', {
+Ext.define('LernApp.view.learncard.AnswerPanel3', {
     extend: 'Ext.Panel',
-    xtype: 'answerPanel',
+    xtype: 'answerPanel3',
 
     requires: [
         'Ext.dataview.List'
@@ -49,7 +49,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     
     constructor: function(args) {
         this.callParent(args);
-        this.selection = (args.selection === 'Über das Vorliegen eines Staates.');
+        this.selection = (args.selection === 'Art. 9 Abs. 1 GG (funktionierendes Vereinswesen)');
         if(this.selection) {
             Ext.Msg.alert('Richtig!', 'Die Antwort war richtig.', Ext.emptyFn);
         } else {
@@ -192,14 +192,14 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             cls: 'roundedBox',
             html: 
                 '<p class="title">' + Ext.util.Format.htmlEncode('Richtige Antwort:') + '<p/><br>' +
-                '<p><it>' + Ext.util.Format.htmlEncode('"Über das Vorliegen des Staates."') + '</it></p>'
+                '<p><it>' + Ext.util.Format.htmlEncode('"Art. 9 Abs. 1 GG (funktionierendes Vereinswesen)"') + '</it></p>'
         });
         
         this.answerBox = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
                 '<p class="title">' + Ext.util.Format.htmlEncode('Hinweis:') + '<p/><br>' +
-                '<p>' + Ext.util.Format.htmlEncode('Nach der Drei-Elemente-Lehre Goerg Jellineks sind die Vorraussetzungen für die Exsitenz eines Staates das Vorliegen von Staatsgewalt, eines Staatsgebiets und eines Staatsvolks. Dabei ist die Staatsgewalt auf dem Staatsgebiet grundsätzlich unbeschränkt, das Staatsvolk wird über das rechtliche Band der Staatsangehörigkeit bestimt und das Gebiet muss keine bestimme Mindestgröße besitzen.') + '</p>'
+                '<p>' + Ext.util.Format.htmlEncode('Vgl. Pieroth/Schlink, Grundrechte, Rn. 88 ff.; Hufen, Staatsrecht II Grundrechte, § 5 Rn. 17 f.') + '</p>'
         });
         
         this.add([

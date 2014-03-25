@@ -64,6 +64,7 @@ switch (lang) {
             ATTENTION: 'Achtung',
             LOGIN: 'Login',
             HOME: 'Home',
+            ANSWER: 'Antwort',
             CONTINUE: 'Fortsetzen',
             PERSONAL_DATA: 'Ihre Daten:',
             ENTER_YOUR_DATA: 'Bitte geben Sie Ihre Login-Daten ein',

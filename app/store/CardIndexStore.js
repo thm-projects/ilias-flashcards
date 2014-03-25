@@ -41,7 +41,7 @@ Ext.define('LernApp.store.CardIndexStore', {
         model: 'LernApp.model.CardIndexModel',
         proxy: {
             type:   'ajax',
-            url:    '/app/data/CardIndexData.json',
+            url:    'app/data/CardIndexData.json',
             reader: {
                 type: 'json',
                 rootProperty: 'items'

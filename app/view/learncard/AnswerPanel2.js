@@ -30,9 +30,9 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.learncard.AnswerPanel', {
+Ext.define('LernApp.view.learncard.AnswerPanel2', {
     extend: 'Ext.Panel',
-    xtype: 'answerPanel',
+    xtype: 'answerPanel2',
 
     requires: [
         'Ext.dataview.List'
@@ -49,7 +49,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     
     constructor: function(args) {
         this.callParent(args);
-        this.selection = (args.selection === 'Über das Vorliegen eines Staates.');
+        this.selection = (args.selection === 'Die Wahlen sind allgemein, unmittelbar, frei und geheim, aber auch nach Vereinheitlichung hin zur Verhältniswahl nicht gleich.');
         if(this.selection) {
             Ext.Msg.alert('Richtig!', 'Die Antwort war richtig.', Ext.emptyFn);
         } else {
@@ -192,14 +192,14 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             cls: 'roundedBox',
             html: 
                 '<p class="title">' + Ext.util.Format.htmlEncode('Richtige Antwort:') + '<p/><br>' +
-                '<p><it>' + Ext.util.Format.htmlEncode('"Über das Vorliegen des Staates."') + '</it></p>'
+                '<p><it>' + Ext.util.Format.htmlEncode('"Die Wahlen sind allgemein, unmittelbar, frei und geheim, aber auch nach Vereinheitlichung hin zur Verhältniswahl nicht gleich."') + '</it></p>'
         });
         
         this.answerBox = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
                 '<p class="title">' + Ext.util.Format.htmlEncode('Hinweis:') + '<p/><br>' +
-                '<p>' + Ext.util.Format.htmlEncode('Nach der Drei-Elemente-Lehre Goerg Jellineks sind die Vorraussetzungen für die Exsitenz eines Staates das Vorliegen von Staatsgewalt, eines Staatsgebiets und eines Staatsvolks. Dabei ist die Staatsgewalt auf dem Staatsgebiet grundsätzlich unbeschränkt, das Staatsvolk wird über das rechtliche Band der Staatsangehörigkeit bestimt und das Gebiet muss keine bestimme Mindestgröße besitzen.') + '</p>'
+                '<p>' + Ext.util.Format.htmlEncode('Der in Art. 14 II UAbs. 1 S. 3 EU vorgesehene Grundsatz der degressiven Proportionalität bewirkt ein unterschiedliches Stimmengewicht der in den einzelnen Mitgliedstaaten abgegebenen Stimmen im Hinblick auf die Gesamtzusammensetzung des Parlaments, so dass die Wahlgleichheit nicht verwirklicht wird. Art. 14 III EU, der im Übrigen eine allgemeine, unmittelbare, freie und geheime Wahl vorsieht, verzichtet dementsprechend auf diesen Wahlgrundsatz. Dass dies auch für die Unionsbürger mit Wohnsitz in einem anderen EU-Staat als dem, dessen Staatsangehörigkeit sie besitzen, gilt (vgl. Art. 20 II UAbs. 1 S. 2 lit. b AEU), vermag hieran nichts zu ändern. Auch der Schritt zum System der Verhältniswahl kann und soll diese Konsequenz der degressiven Proportionalität nicht kompensieren, sondern ist völlig losgelöst hiervon zu betrachten.') + '<br><br>' + 'Hobe, Europarecht, § 8 Rn. 173ff.' + '</p>'
         });
         
         this.add([

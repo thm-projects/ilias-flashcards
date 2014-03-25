@@ -30,16 +30,16 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.learncard.QuestionPanel', {
+Ext.define('LernApp.view.learncard.QuestionPanel2', {
     extend: 'Ext.Panel',
-    xtype: 'questionPanel',
+    xtype: 'questionPanel2',
 
     requires: [
         'LernApp.prototype.CustomMask'
     ],
     
     config: {
-        id: 'questionPanel1',
+        id: 'questionPanel2',
         title: Messages.QUESTION,
         fullscreen: true,
         scrollable: {
@@ -54,8 +54,8 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
         this.questionTitle = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
-                '<p class="title">' + Ext.util.Format.htmlEncode('01. Drei-Elemente-Lehre') + '<p/><br>' +
-                '<p>' + Ext.util.Format.htmlEncode('Worüber lässt sich anhand der auf Georg Jellinek zurückgehenden sogenannter Drei-Elemente-Lehre eine Aussage treffen?') + '</p>'
+                '<p class="title">' + Ext.util.Format.htmlEncode('02. EP degr. Proportionalität') + '<p/><br>' +
+                '<p>' + Ext.util.Format.htmlEncode('Die Sitze im Europäischen Parlament sind in mitgliedstaatliche Kontingente gegliedert, deren Größe sich nach dem Grundsatz der degressiven Proportionalität richtet. Dies bedeutet, dass mit wachsender Bevölkerungsgröße die Zahl zusätzlicher Sitze pro Kontingent geringer wird, womit auf einen Abgeordneten aus dem deutschen Kontingent im Ergebnis etwa zwölfmal so viele Wähler kommen wie auf einen maltesischen Abgeordneten.') + '<br><br>' + Ext.util.Format.htmlEncode('Seit dem Beschluss des Rats 2002/772/EG, der den Direktwahlakt geändert hat, erfolgen die Wahlen dieser Kontingente allerdings in allen Mitgliedstaaten nach dem Verhältniswahlsystem. Vorher war es den Mitgliedstaaten überlassen, ihr Kontingent in einer Mehrheitswahl wählen zu lassen.') + '<br><br>' + Ext.util.Format.htmlEncode('Welche Bedeutung hat die degressive Proportionalität für die Verwirklichung der Grundsätze einer allgemeinen, unmittelbaren, gleichen, freien und geheimen Wahl?') + '</p>'
         });
         
         this.answerList = Ext.create('Ext.List', {            
@@ -63,10 +63,10 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
             scrollable: { disabled: true },
             
             data: [
-                { text: 'Über den Stand der europäischen Integration.' },
-                { text: 'Über das Vorliegen eines Staates.' },
-                { text: 'Über das Vorliegen eines Staatenverbundes.' },
-                { text: 'Über das Legitimationsniveau in der EU.' }
+                { text: 'Die Wahlen sind unmittelbar, frei und geheim, aber weder allgemein noch gleich.' },
+                { text: 'Keine - sämtliche Wahlgrundsätze werden unabhängig von der degressiv proportionalen Kontingentierung bei der EP-Wahl verwirklicht.' },
+                { text: 'Die Wahlen sind allgemein, unmittelbar, frei und geheim - vollkommen gleich aber sind sie erst, seit überall nach Verhältniswahl gewählt wird.' },
+                { text: 'Die Wahlen sind allgemein, unmittelbar, frei und geheim, aber auch nach Vereinheitlichung hin zur Verhältniswahl nicht gleich.' }
             ],
             
             listeners: {
