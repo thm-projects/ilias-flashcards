@@ -92,10 +92,10 @@ Ext.application({
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
-
+        
         // Initialize the main view
         this.main = Ext.create('LernApp.view.Main');
-        
+                
         Ext.Viewport.add(this.main);
     },
 
