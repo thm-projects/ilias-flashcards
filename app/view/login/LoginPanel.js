@@ -80,7 +80,7 @@ Ext.define('LernApp.view.login.LoginPanel', {
             handler : function() {
                 Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });      
                 
-                /** destroy loadingmask and restore saved animation */
+                /** change navigation to home.HomeNavigation */
                 var task = Ext.create('Ext.util.DelayedTask', function () {
                     LernApp.app.getController('Navigation').changeNavigation(
                             Ext.create('LernApp.view.home.HomeNavigation')
@@ -93,12 +93,12 @@ Ext.define('LernApp.view.login.LoginPanel', {
         
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
-            height: '100px',
+            width: '240px',
             style: {
                 'margin-top': '20px',
                 'margin-bottom': '10px'
             },
-            src: 'resources/icons/logo_notext.png'
+            src: 'resources/icons/logo.png'
         });
         
         this.add([ 

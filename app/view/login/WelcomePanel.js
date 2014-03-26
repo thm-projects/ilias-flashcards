@@ -50,20 +50,20 @@ Ext.define('LernApp.view.login.WelcomePanel', {
             align: 'center'
         }
     },
-    
+
     initialize: function() {
         this.callParent(arguments);
         
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
-            height: '190px',
-            style: 'margin-top: 10px',
+            width: '310px',
+            style: 'margin-top: 30px',
             src: 'resources/icons/logo.png'
         });
         
         this.continueButton = Ext.create('Ext.Button', {
            text: Messages.CONTINUE,
-           ui: 'confirm',
+           ui: 'action',
            style: 'margin-top: 30px',
            handler: function() {
                LernApp.app.main.navigation.push(
@@ -73,12 +73,12 @@ Ext.define('LernApp.view.login.WelcomePanel', {
         });
         
         this.add([
-            this.logo, 
             {
                 xtype: 'label',
                 style: 'margin-top: 30px',
-                html: '<center>Dies ist eine Vorschau auf die App.</center>'
+                html: '<center>Dies ist eine Vorschau auf die App</center>'
             },
+            this.logo, 
             this.continueButton
         ]);
     }
