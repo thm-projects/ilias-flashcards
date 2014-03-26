@@ -54,7 +54,6 @@ Ext.define('LernApp.view.Main', {
     
     initialize: function() {
         this.callParent(arguments);
-        
         this.instanciateComponents();
    
         /** add panels to tabpanel and show them */

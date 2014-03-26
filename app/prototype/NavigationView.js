@@ -39,18 +39,12 @@ Ext.define('LernApp.prototype.NavigationView', {
         autoDestroy: false,
         oldAnimation: null,
         defaultBackButtonText: Messages.BACK,
-        
-        layout: {
-            type: 'card',
-            animation: {
-                duration: 500,
-                easing: 'ease-in-out',
-                type: 'slide',
-                direction: 'left'
-            }
+
+        navigationBar: {
+            ui: 'dark'
         }
     },
-    
+
     initialize: function() {
         this.callParent(arguments);
     },
