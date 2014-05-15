@@ -56,6 +56,8 @@ Ext.define('LernApp.view.home.SettingsPanel', {
     initialize: function() {
         this.callParent(arguments);
         
+        var me = this;
+        
         this.backButton = Ext.create('Ext.Button', {
             text: Messages.HOME,
             align: 'left', 
@@ -88,7 +90,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
                         else slider.disable();
                     });
                     
-                    localStorage.setItem(this.notificationToggle.getId(), newValue);
+                    localforage.setItem(this.notificationToggle.getId(), newValue);
                 }
             }
         });
@@ -105,7 +107,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             listeners: {
                 scope: this,
                 change: function (me, slider, newValue, oldValue) {
-                    localStorage.setItem(this.firstSlider.getId(), newValue);
+                    localforage.setItem(this.firstSlider.getId(), newValue);
                 }
             }
         });
@@ -122,7 +124,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             listeners: {
                 scope: this,
                 change: function (me, slider, newValue, oldValue) {
-                    localStorage.setItem(this.secondSlider.getId(), newValue);
+                    localforage.setItem(this.secondSlider.getId(), newValue);
                 }
             }
         });
@@ -139,7 +141,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             listeners: {
                 scope: this,
                 change: function (me, slider, newValue, oldValue) {
-                    localStorage.setItem(this.thirdSlider.getId(), newValue);
+                    localforage.setItem(this.thirdSlider.getId(), newValue);
                 }
             }
         });
@@ -172,24 +174,27 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             this.settingsFieldSet
         ]);
         
-        this.on('initialize', this.onInitialize);
+        this.onAfter('initialize', this.onInitialize);
     },
     
     /**
      * actions to perform on initialization
      */
     onInitialize: function() {
+        var toggle = this.notificationToggle;
+        
         /** restore value from notificationToggle */
-        if(localStorage.getItem(this.notificationToggle.getId()) !== null) {
-            this.notificationToggle.setValue(
-                    localStorage.getItem(this.notificationToggle.getId())
-            );
-        }
+        localforage.getItem(toggle.getId(), function(storedValue) {
+            if(storedValue !== null)
+                toggle.setValue(storedValue);
+        });
         
         /** restore values from sliders */
         this.iterateThroughSliders(function(slider) {
-            if(localStorage.getItem(slider.getId()) !== null)
-                slider.setValues(localStorage.getItem(slider.getId()));
+            localforage.getItem(slider.getId(), function(storedValue) {
+                if(storedValue !== null) 
+                    slider.setValues(storedValue);
+            });
         });
     },
     
