@@ -39,11 +39,6 @@
 	text-align: center;
 }
 
-/* hide 'Sencha Touch GPL3' watermark from charts */
-.x-chart-watermark {
-	opacity: 0;
-}
-
 .loginFields .x-form-field {
 	text-align: center;
 }
@@ -61,6 +56,15 @@
 		url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAAZiS0dEALgAuAC41wNsvAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB9sGEQk7MbF1V5sAAAENSURBVCjPY2CgNigtLS0pKyubSEgdMxqfsbS0tJuRkbGBgYHB3NLS8s+xY8cO49LMhC7AyMgoA5dkYmopLS1NIVbz//v378f///9/D5LYjLKysgCibF69evWvr1+/Bv7///8M1CXMDAwMy0tLS20xXInLSbm5uaIcHBxHGRkZVaFCH//9+2fX09NzCafNMDB58uTXjIyM6UhC/ExMTPPwOhvZ5v///89EEvr479+/JIKas7KyeDg4OLYhOfnH////fZGdjFVzaGgoGw8PzzpGRkYTBgYGhv////9lYGCI7O7uPkwotBkVFRUXMjAwuCKJZXR1dW0gKqr+////BMb+9+9fTXd39xyapG2KAAAvqFz8khrpYwAAAABJRU5ErkJggg==")
 		no-repeat;
 	background-position: 99%;
+	border-radius: 0;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: thin;
+}
+
+.leafListItem {
+	background-color: white;
+	background-position: 100%;
 	border-radius: 0;
 	border-style: solid;
 	border-color: lightgray;
@@ -268,5 +272,39 @@
 	height: 2.0em;
 	text-align: center;
 	pointer-events: none;
+}
+
+.x-list-item .listBadge {
+    position: initial;
+    min-height: 0em;
+    border: none;
+    padding: 0;
+}
+
+.badgefixed {
+	top: 4px;
+    right: 5px;
+    position: absolute;
+}
+
+.badgeicon, .redbadgeicon {
+    font-weight: bold;
+    /* @alternate */ background: rgba(0, 0, 0, .50);
+    /* @alternate */ background: -webkit-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .70) 100%);
+    color: rgb(238, 238, 238);
+    -webkit-border-radius: 20px;
+    border-radius: 11px;
+    padding: 4px 10px 4px 10px;
+    border: 2px solid white;
+    box-shadow: 0 0 3px gray;
+}
+
+.x-list-item-leaf{
+    color:red !important;
+}
+ 
+.redbadgeicon {
+    background: rgba(128, 0, 50, 1);
+    /* @alternate */ background: -webkit-linear-gradient(top, rgba(128, 0, 50, .7) 0%, rgba(128, 0, 50, 1) 100%);
 }
  
