@@ -44,7 +44,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         backText            : Messages.BACK,
         editMode            : false,
         fullscreen          : true,
-        displayField        : 'text',
+        displayField        : 'title',
         useTitleAsBackText  : false,
         backButtonHiddenState: true,
         
@@ -64,7 +64,10 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             selectedCls: '',
             variableHeights: true,
             itemCls: 'forwardListButton',
-            itemTpl: '<span class="listText">{text}</span>'
+            itemTpl: '<span class="listText">{title}</span>' +
+                     '<div class="x-button x-hasbadge listBadge">' + 
+                     '<tpl if="questionCount &gt; 0">' +
+                     '<span class="redbadgeicon badgefixed">{questionCount}</span></tpl></div>'
         }
     },
     
@@ -102,9 +105,10 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         /**
          * listeners to perfom on specified events
          */
-        this.on('back', this.onListChange);
+        this.on('back', this.modifyToolbarTitles);
         this.onBefore('painted', this.onActivate);
-        this.onAfter('itemtap', this.onListChange);
+        this.onAfter('itemtap', this.modifyToolbarTitles);
+        this.onBefore('activeitemchange', this.onListChange);
     },
     
     /**
@@ -122,13 +126,28 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
         this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
         
-        this.onListChange();
+        this.modifyToolbarTitles();
     },
     
     /**
-     * actions to perform on itemtap or backbutton tap
+     * actions to perform on activeitemchange
      */
-    onListChange: function(panel, list) {
+    onListChange: function(panel, newList) {        
+        var innerListItems = newList.getInnerItems()[0].getInnerItems();
+        
+        /** replace itemCls of leaf nodes */
+        innerListItems.forEach(function(element, index, array) {
+            if(element.getRecord().get('leaf')) {
+                element.addCls('leafListItem');
+                element.removeCls('forwardListButton');
+            }
+        });
+    },
+    
+    /**
+     * saves back button hidden state and sets toolbar titles
+     */
+    modifyToolbarTitles: function() {
         var navigationBar = LernApp.app.main.navigation.getNavigationBar();
         
         /** save back button hidden state */
@@ -241,12 +260,12 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         if(localStorage.getItem(category) !== "true") {
             localStorage.setItem(category, "true");
             me.performEditOnChildItem(node.childNodes, false);
-            Ext.Viewport.setMasked({xtype:'loadmask',message:'Lade...'});
+            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade...'});
         } 
         else {
             localStorage.removeItem(category);
             me.performEditOnChildItem(node.childNodes, "false");
-            Ext.Viewport.setMasked({xtype:'loadmask',message:'Lösche...'});
+            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lösche...'});
         }
         
         var task = Ext.create('Ext.util.DelayedTask', function () {
