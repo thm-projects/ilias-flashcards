@@ -39,13 +39,17 @@ Ext.define('LernApp.store.CardIndexStore', {
     
     config: {
         model: 'LernApp.model.CardIndexModel',
-        proxy: {
-            type:   'ajax',
-            url:    'app/data/CardIndexData.json',
-            reader: {
-                type: 'json',
-                rootProperty: 'items'
-            }
-        }
+        defaultRootProperty: 'children',
+        proxy: LernApp.app.proxy
+    },
+    
+    initialize: function() {
+        this.callParent(arguments);
+        
+        var me = this;
+        
+        localforage.getItem('cardIndexTree', function(tree) {
+            me.setData(tree);
+        });
     }
 });

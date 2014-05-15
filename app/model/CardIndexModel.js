@@ -34,7 +34,8 @@ Ext.define('LernApp.model.CardIndexModel', {
     
     config: {
         fields: [
-            { name: 'text', type: 'string' }
+            { name: 'title', type: 'string' },
+            { name: 'questionCount', type: 'int'}
         ]
     }
 });
