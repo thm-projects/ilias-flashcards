@@ -1,7 +1,8 @@
 /*--------------------------------------------------------------------------------+
-  - Dateiname:		app/store/CardIndexStore.js
-  - Beschreibung:	Store for CardIndex.
-  - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
+  - Dateiname:      app/controller/StorageController.js
+  - Beschreibung:   StorageController
+  - Datum:          22.04.2014
+  - Autor(en):      Andreas Gärtner <andreas.gaertner@hotmail.com>
   +--------------------------------------------------------------------------------+
   This program is free software; you can redistribute it and/or modify it under 
   the terms of the GNU General Public License as published by the Free Software
@@ -28,30 +29,32 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-
-Ext.define('LernApp.store.CardIndexStore', {
-    extend: 'Ext.data.TreeStore',
-    xtype: 'cardIndexStore',
-
-    requires: [
-        'LernApp.model.CardIndexModel'
-    ],
+Ext.define('LernApp.controller.StorageController', {
+    extend: 'Ext.app.Controller',
     
     config: {
-        model: 'LernApp.model.CardIndexModel',
-        defaultRootProperty: 'children',
-        proxy: LernApp.app.proxy
+        refs: {
+            
+        },
+        control: {
+            
+        }
     },
     
-    initialize: function() {
-        this.callParent(arguments);
-        
-        LernApp.app.getController('LernApp.controller.StorageController').storeCardIndexTree(
-            this.setStoreData
-        );
+    initializeStorage: function() {
+        localforage.config({
+            name        : 'LernAppDB',
+            version     : 1.0,
+            storeName   : 'keyvaluepairs',
+            description : 'Application Database'
+        });
     },
     
-    setStoreData: function(data) {
-        this.setData(data);
+    storeCardIndexTree: function(promise) {
+        LernApp.app.proxy.getCardIndexTree({
+            success: function(tree) {
+                localforage.setItem('cardIndexTree', tree).then(promise);
+            }
+        });
     }
 });

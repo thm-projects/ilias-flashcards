@@ -48,7 +48,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         useTitleAsBackText  : false,
         backButtonHiddenState: true,
         
-        store: Ext.create('LernApp.store.CardIndexStore'),
+        //store: Ext.create('LernApp.store.CardIndexStore'),
         
         layout: {
             type: 'card',
@@ -73,6 +73,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     
     constructor: function(args) {
         this.callParent(args);
+        
+        this.setStore(Ext.create('LernApp.store.CardIndexStore'));
         
         if(typeof args !== 'undefined') {
             this.withEditFunction = args.edit;
@@ -132,16 +134,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     /**
      * actions to perform on activeitemchange
      */
-    onListChange: function(panel, newList) {        
-        var innerListItems = newList.getInnerItems()[0].getInnerItems();
-        
-        /** replace itemCls of leaf nodes */
-        innerListItems.forEach(function(element, index, array) {
-            if(element.getRecord().get('leaf')) {
-                element.addCls('leafListItem');
-                element.removeCls('forwardListButton');
-            }
-        });
+    onListChange: function(panel, newList) {
+        if(newList !== 0) {
+            var innerListItems = newList.getInnerItems()[0].getInnerItems();
+            
+            /** replace itemCls of leaf nodes */
+            innerListItems.forEach(function(element, index, array) {
+                if(element.getRecord().get('leaf')) {
+                    element.addCls('leafListItem');
+                    element.removeCls('forwardListButton');
+                }
+            });
+        }
     },
     
     /**
