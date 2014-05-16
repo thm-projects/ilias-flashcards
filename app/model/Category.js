@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------------------+
-  - Dateiname:      app/model/CardIndexModel.js
-  - Beschreibung:   Model for CardIndex
+  - Dateiname:      app/model/Category.js
+  - Beschreibung:   Model for Category
   - Autor(en):      Andreas Gärtner <andreas.gaertner@hotmail.com>
   +--------------------------------------------------------------------------------+
   This program is free software; you can redistribute it and/or modify it under 
@@ -29,12 +29,16 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.model.CardIndexModel', {
+Ext.define('LernApp.model.Category', {
     extend: 'Ext.data.Model',
     
     config: {
         fields: [
-            { name: 'text', type: 'string' }
+            { name: 'id',           type: 'int' },
+            { name: 'parent',       type: 'int'},
+            { name: 'title',        type: 'string'},
+            { name: 'type',         type: 'string'},
+            { name: 'questionCount', type:'int'}
         ]
     }
 });

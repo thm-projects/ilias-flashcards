@@ -746,10 +746,13 @@ Ext.ClassManager.addNameAlternateMappings({
     "Ext.viewport.WP"
   ],
   "LernApp.controller.Navigation": [],
+  "LernApp.controller.StorageController": [],
   "LernApp.model.CardIndexModel": [],
+  "LernApp.model.Category": [],
   "LernApp.prototype.CustomMask": [],
   "LernApp.prototype.NavigationView": [],
   "LernApp.prototype.SliderField": [],
+  "LernApp.proxy.JsonProxy": [],
   "LernApp.store.CardIndexStore": [],
   "LernApp.view.Main": [],
   "LernApp.view.TabPanel": [],
@@ -1714,7 +1717,9 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
   "LernApp.controller.Navigation": [],
+  "LernApp.controller.StorageController": [],
   "LernApp.model.CardIndexModel": [],
+  "LernApp.model.Category": [],
   "LernApp.prototype.CustomMask": [
     "widget.customMask"
   ],
@@ -1723,6 +1728,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "LernApp.prototype.SliderField": [
     "widget.sliderField"
+  ],
+  "LernApp.proxy.JsonProxy": [
+    "widget.jsonProxy"
   ],
   "LernApp.store.CardIndexStore": [
     "widget.cardIndexStore"

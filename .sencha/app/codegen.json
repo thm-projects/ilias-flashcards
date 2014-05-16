@@ -50,18 +50,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     ".sencha/app/native.properties": {
@@ -70,18 +70,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     ".sencha/app/package.properties": {
@@ -90,18 +90,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     ".sencha/app/production.properties": {
@@ -110,18 +110,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     ".sencha/app/sencha.cfg": {
@@ -130,18 +130,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     ".sencha/app/testing.properties": {
@@ -150,18 +150,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "app.js": {
@@ -170,18 +170,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "app.json": {
@@ -190,18 +190,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "index.html": {
@@ -210,18 +210,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "packager.json": {
@@ -230,18 +230,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "resources/sass/app.scss": {
@@ -250,18 +250,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "resources/sass/config.rb": {
@@ -270,18 +270,18 @@
       "parameters": {
         "viewNamespace": "LernApp.view",
         "frameworkName": "touch",
-        "frameworkPath": "touch",
-        "senchadir": ".sencha",
-        "appModels": "",
-        "appControllers": "",
-        "appViews": "",
-        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff",
         "appName": "LernApp",
-        "modelNamespace": "LernApp.model",
-        "name": "LernApp",
-        "library": "core",
         "controllerNamespace": "LernApp.controller",
-        "appStores": ""
+        "frameworkPath": "touch",
+        "appModels": "",
+        "library": "core",
+        "senchadir": ".sencha",
+        "appStores": "",
+        "name": "LernApp",
+        "appViews": "",
+        "appControllers": "",
+        "modelNamespace": "LernApp.model",
+        "uniqueId": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
       }
     },
     "app/controller/Navigation.js": {
