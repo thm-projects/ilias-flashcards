@@ -36,7 +36,8 @@ Ext.application({
 
     requires: [
         'LernApp.view.Main',
-        'LernApp.store.CardIndexStore'
+        'LernApp.proxy.JsonProxy',
+        'LernApp.prototype.CustomMessageBox',
     ],
 
     icon: {
@@ -56,7 +57,8 @@ Ext.application({
     },
 
     models: [
-        'CardIndexModel'
+        'CardIndexModel',
+        'Category'
     ],
     
     views: [
@@ -82,7 +84,8 @@ Ext.application({
     ],
     
     controllers: [
-        'Navigation'
+        'Navigation',
+        'StorageController'
     ],
     
     fullscreen: true,
@@ -97,6 +100,7 @@ Ext.application({
         this.main = Ext.create('LernApp.view.Main');
                 
         Ext.Viewport.add(this.main);
+        this.proxy = Ext.create('LernApp.proxy.JsonProxy');
     },
 
     onUpdated: function() {
