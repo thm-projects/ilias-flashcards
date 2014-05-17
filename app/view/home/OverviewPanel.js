@@ -130,7 +130,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         Ext.Viewport.setMasked({xtype:'loadmask'});
                         LernApp.app.main.navigation.push(
-                                Ext.create('LernApp.view.cardindex.CardIndex')
+                            Ext.create('LernApp.view.cardindex.CardIndex')
                         );
                     }
                 }, {
@@ -139,10 +139,9 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.EDIT_CARD_INDEX,
                     cls     : 'forwardListButton',
                     handler : function() {
+                        Ext.Viewport.setMasked({xtype:'loadmask'});
                         LernApp.app.main.navigation.push(
-                                Ext.create('LernApp.view.cardindex.CardIndex', {
-                                    edit: true
-                                })
+                            Ext.create('LernApp.view.cardindex.CardIndex', {edit: true})
                         );
                     }
                 }

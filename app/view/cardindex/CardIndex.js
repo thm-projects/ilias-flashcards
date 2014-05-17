@@ -89,6 +89,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             listeners: {
                 change: function (slider, newValue, oldValue) {
                     if (newValue) {
+                        /** save back button hidden state */
+                        me.backButtonHiddenState = me.getBackButton().isHidden();
                         me.setEditMode(true);
                     }
                     else {
@@ -144,12 +146,15 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     /**
      * actions to perform on activeitemchange
      */
-    onListChange: function(panel, newList) {
+    onListChange: function(panel, newList) {        
         if(newList !== 0) {
             var innerListItems = newList.getInnerItems()[0].getInnerItems();
             
+            /** saveid to dom.nodeId */
             /** replace itemCls of leaf nodes */
             innerListItems.forEach(function(element, index, array) {
+                element.bodyElement.dom.nodeId = element.getRecord().get('id');
+                
                 if(element.getRecord().get('leaf')) {
                     element.addCls('leafListItem');
                     element.removeCls('forwardListButton');
@@ -163,10 +168,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      */
     modifyToolbarTitles: function() {
         var navigationBar = LernApp.app.main.navigation.getNavigationBar();
-        
-        /** save back button hidden state */
-        this.setBackButtonHiddenState = this.getBackButton().isHidden();
-        
+                
         /** set navigationBar title */
         navigationBar.setTitle( this.getTitle() );
         if(this.withEditFunction) this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
@@ -176,9 +178,9 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     /**
      * toggles backbutton hidden state
      */
-    toggleBackButtonHidden: function() {
+    toggleBackButtonHidden: function() {        
         if(!this.getBackButton().isHidden()) this.getBackButton().hide();
-        else if(!this.setBackButtonHiddenState) this.getBackButton().show();
+        else this.getBackButton().setHidden(this.backButtonHiddenState);
     },
     
     /**
@@ -193,8 +195,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         list.forEach(function(element, index, array) {
             if(editMode) {
                 /** replace trailing newline */
-                var cat = element.bodyElement.dom.textContent;
-                
+                var cat = element.bodyElement.dom.nodeId;
+
                 if(localStorage.getItem(cat) !== "true") {
                     element.addCls('addIcon');
                     element.removeCls('deleteIcon');
@@ -256,7 +258,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      */
     selectListItem: function (node) {
         var me = this;
-        var category = node.getData().text;
+        var category = node.getData().id;
         
         /** the user will need to confirm a removal, if the selected 
          *  item is no leaf item  
@@ -277,8 +279,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      */
     performEditOnItem: function(node) {
         var me = this;
-        var category = node.getData().text;
-        
+        var category = node.getData().id;
+
         if(localStorage.getItem(category) !== "true") {
             localStorage.setItem(category, "true");
             me.performEditOnChildItem(node.childNodes, false);
@@ -309,7 +311,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         var me = this;
 
         childNodes.forEach(function(element, index, array) {
-            var category = element.getData().text;
+            var category = element.getData().id;
             
             if(deleteFlag) {
                 localStorage.removeItem(category);

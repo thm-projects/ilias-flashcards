@@ -50,7 +50,7 @@ Ext.define('LernApp.prototype.CustomMessageBox', {
             message     : message || null,
             buttons     : [
                 {text: Messages.YES, itemId: 'yes', ui: 'action'},
-                 {text: Messages.NO,  itemId: 'no'}
+                {text: Messages.NO,  itemId: 'no'}
             ],
             promptConfig: false,
             scope       : scope,

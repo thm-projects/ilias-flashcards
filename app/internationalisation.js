@@ -58,6 +58,8 @@ if(lang != null) {
 switch (lang) {
     default:
         Messages = {
+            YES: 'Ja',
+            NO: 'Nein',
             BACK: 'Zurück',
             HELP: 'Hilfe',
             WELCOME: 'Willkommen',
