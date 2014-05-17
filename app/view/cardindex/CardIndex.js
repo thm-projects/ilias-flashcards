@@ -48,8 +48,6 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         useTitleAsBackText  : false,
         backButtonHiddenState: true,
         
-        //store: Ext.create('LernApp.store.CardIndexStore'),
-        
         layout: {
             type: 'card',
             animation: {
@@ -73,9 +71,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     
     constructor: function(args) {
         this.callParent(args);
-        
-        this.setStore(Ext.create('LernApp.store.CardIndexStore'));
-        
+
         if(typeof args !== 'undefined') {
             this.withEditFunction = args.edit;
         }
@@ -104,6 +100,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             }
         });
         
+        this.setStoreData();
+        
         /**
          * listeners to perfom on specified events
          */
@@ -111,6 +109,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         this.onBefore('painted', this.onActivate);
         this.onAfter('itemtap', this.modifyToolbarTitles);
         this.onBefore('activeitemchange', this.onListChange);
+    },
+    
+    /**
+     * creates instance of CardIndexStore, sets store data and 
+     * assigns store to cardIndex
+     */
+    setStoreData: function() {
+        var me = this;
+        LernApp.app.storageController.storeCardIndexTree(function(data) {
+            me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
+            Ext.Viewport.setMasked(false);
+        });
     },
     
     /**
@@ -193,10 +203,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                     element.addCls('deleteIcon');
                     element.removeCls('addIcon');
                 }
+                
+                if(element.getRecord().get('leaf')) {
+                    element.bodyElement.down('.redbadgeicon').addCls('invisible');
+                }
             }
             else {
                 element.removeCls('addIcon');
                 element.removeCls('deleteIcon');
+                
+                if(element.getRecord().get('leaf')) {
+                    element.bodyElement.down('.redbadgeicon').removeCls('invisible');
+                }
             }
         });
     },

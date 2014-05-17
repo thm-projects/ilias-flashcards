@@ -41,17 +41,5 @@ Ext.define('LernApp.store.CardIndexStore', {
         model: 'LernApp.model.CardIndexModel',
         defaultRootProperty: 'children',
         proxy: LernApp.app.proxy
-    },
-    
-    initialize: function() {
-        this.callParent(arguments);
-        
-        LernApp.app.getController('LernApp.controller.StorageController').storeCardIndexTree(
-            this.setStoreData
-        );
-    },
-    
-    setStoreData: function(data) {
-        this.setData(data);
     }
 });

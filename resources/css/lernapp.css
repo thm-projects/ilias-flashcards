@@ -63,12 +63,16 @@
 }
 
 .leafListItem {
-	background-color: white;
-	background-position: 100%;
+	background: white no-repeat;
+	background-position: 99%;
 	border-radius: 0;
 	border-style: solid;
 	border-color: lightgray;
 	border-width: thin;
+}
+
+.invisible {
+	opacity: 0;
 }
 
 .x-button.forwardListButton {
@@ -299,10 +303,6 @@
     box-shadow: 0 0 3px gray;
 }
 
-.x-list-item-leaf{
-    color:red !important;
-}
- 
 .redbadgeicon {
     background: rgba(128, 0, 50, 1);
     /* @alternate */ background: -webkit-linear-gradient(top, rgba(128, 0, 50, .7) 0%, rgba(128, 0, 50, 1) 100%);

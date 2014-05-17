@@ -95,12 +95,13 @@ Ext.application({
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
+                        
+        this.proxy = Ext.create('LernApp.proxy.JsonProxy');
+        this.storageController = LernApp.app.getController('StorageController');
         
         // Initialize the main view
         this.main = Ext.create('LernApp.view.Main');
-                
         Ext.Viewport.add(this.main);
-        this.proxy = Ext.create('LernApp.proxy.JsonProxy');
     },
 
     onUpdated: function() {
