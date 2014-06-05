@@ -188,23 +188,25 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * listItem is added. Otherwise the icons will be removed.
      */
     updateListIcons: function() {
-        var editMode = this.getEditMode();
-        var list = this.getActiveItem().getInnerItems()[0].getInnerItems();
+        var me = this,
+            editMode = this.getEditMode();
+            list = this.getActiveItem().getInnerItems()[0].getInnerItems();
 
         /** iterate through all listItems */
-        list.forEach(function(element, index, array) {
+        list.forEach(function(element, index, array) {         
             if(editMode) {
-                /** replace trailing newline */
                 var cat = element.bodyElement.dom.nodeId;
-
-                if(localStorage.getItem(cat) !== "true") {
-                    element.addCls('addIcon');
-                    element.removeCls('deleteIcon');
-                }
-                else if(localStorage.getItem(cat) == "true") {
-                    element.addCls('deleteIcon');
-                    element.removeCls('addIcon');
-                }
+                
+                LernApp.app.storageController.getStoredCategories(function(categories) {
+                    if(typeof categories[cat] === 'undefined') {
+                        element.addCls('addIcon');
+                        element.removeCls('deleteIcon');
+                    }
+                    else {
+                        element.addCls('deleteIcon');
+                        element.removeCls('addIcon');
+                    }
+                });
                 
                 if(element.getRecord().get('leaf')) {
                     element.bodyElement.down('.redbadgeicon').addCls('invisible');
@@ -243,6 +245,11 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         else if (node.isLeaf()) {
             me.fireEvent('leafitemtap', this, list, index, target, record, e);
             me.goToLeaf(node);
+            
+            LernApp.app.storageController.getQuestions(node.getId(), function(questions) {
+                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { questions: questions});
+                LernApp.app.main.navigation.push(panel);
+            });
         }
         else {
             this.goToNode(node);
@@ -278,26 +285,36 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * @param {Ext.data.NodeInterface} node The selected node (listItem).
      */
     performEditOnItem: function(node) {
-        var me = this;
-        var category = node.getData().id;
-
-        if(localStorage.getItem(category) !== "true") {
-            localStorage.setItem(category, "true");
-            me.performEditOnChildItem(node.childNodes, false);
-            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade...'});
-        } 
-        else {
-            localStorage.removeItem(category);
-            me.performEditOnChildItem(node.childNodes, "false");
-            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lösche...'});
+        var me = this,
+            leaf = node.isLeaf(),
+            category = node.getData().id;
+            
+        var categoryModification = {
+            added: new Object(),
+            deleted: new Object()
         }
-        
-        var task = Ext.create('Ext.util.DelayedTask', function () {
-            me.updateListIcons();
-            Ext.Viewport.setMasked(false);
+
+        LernApp.app.storageController.getStoredCategories(function(categories) {
+            if(typeof categories[category] === 'undefined') {
+                categoryModification.added[category] = leaf;
+                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, false);
+                Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade...'});
+            } 
+            else {
+                categoryModification.deleted[category] = leaf;
+                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, true);
+                Ext.Viewport.setMasked({xtype:'loadmask', message:'Lösche...'});
+            }
+            
+            LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
+                LernApp.app.storageController.addStoredCategories(categoryModification.added, function() {
+                    LernApp.app.storageController.storeMultipleQuestions(categoryModification.added, function() {
+                        me.updateListIcons();
+                        Ext.Viewport.setMasked(false);
+                    });
+                });
+            })
         });
-        
-        task.delay(2000);
     },
     
     /**
@@ -306,24 +323,23 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * 
      * @param {Array} childNodes The childNodes which should be changed.
      * @param {Boolean} deleteFlag
+     * @param {Object} categoryModification
      */
-    performEditOnChildItem: function (childNodes, deleteFlag) {
+    performEditOnChildItem: function (childNodes, categoryModification, deleteFlag) {
         var me = this;
-
+        
         childNodes.forEach(function(element, index, array) {
-            var category = element.getData().id;
+            var leaf = element.isLeaf(),
+                category = element.getData().id;
             
-            if(deleteFlag) {
-                localStorage.removeItem(category);
-            }
-            else {
-                localStorage.setItem(category, true);
-            }
+            if(!deleteFlag) categoryModification.added[category] = leaf;
+            else categoryModification.deleted[category] = leaf;
             
-            /** recursive call */
-            if(!element.isLeaf()) {
-                me.performEditOnChildItem(element.childNodes, deleteFlag);
+            if(!leaf) {
+                categoryModification = me.performEditOnChildItem(element.childNodes, categoryModification, deleteFlag);
             }
         });
+
+        return categoryModification;
     }
 });
