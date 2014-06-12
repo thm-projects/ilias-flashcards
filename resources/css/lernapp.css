@@ -308,3 +308,14 @@
     /* @alternate */ background: -webkit-linear-gradient(top, rgba(128, 0, 50, .7) 0%, rgba(128, 0, 50, 1) 100%);
 }
  
+.answerListItem {
+	background-color: white !important;
+}
+
+.answerListItem .x-innerhtml {
+	padding: 12px 0px !important;
+}
+
+.answerListItem.x-list-item-first.x-list-item-last {
+	border: none !important;
+}
