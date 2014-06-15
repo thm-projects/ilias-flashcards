@@ -128,6 +128,7 @@ Ext.define('LernApp.controller.StorageController', {
      */
     addStoredCategories: function(categories, promise) {
         var me = this;
+        console.log('here');
         this.getStoredCategories(function(storedCategories) {
             for(var category in categories) {
                 storedCategories[category] = categories[category];
@@ -319,10 +320,21 @@ Ext.define('LernApp.controller.StorageController', {
     removeStoredCategories: function(deletedCategories, promise) {
         var me = this;
         
+        /** recusivly remove parent categories */
+        var checkAndRemoveParent = function(delCat, categories) {
+            if(delCat.parent !== 0 && typeof categories[delCat.parent] !== 'undefined') {
+                checkAndRemoveParent(categories[delCat.parent], categories);
+                delete categories[delCat.parent];
+            }
+        };
+        
         me.getStoredCategories(function(categories) {
             for(var cat in categories) {
                 for(var deletedCat in deletedCategories) {
-                    if(deletedCat == cat) delete categories[cat];
+                    if(deletedCat == cat) {
+                        checkAndRemoveParent(categories[cat], categories);
+                        delete categories[cat];
+                    }
                 }
             }
             

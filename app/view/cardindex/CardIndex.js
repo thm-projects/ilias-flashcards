@@ -65,7 +65,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             itemTpl: '<span class="listText">{title}</span>' +
                      '<div class="x-button x-hasbadge listBadge">' + 
                      '<tpl if="questionCount &gt; 0">' +
-                     '<span class="redbadgeicon badgefixed">{questionCount}</span></tpl></div>'
+                     '<span class="redbadgeicon badgefixed">{questionCount}</span></tpl>' +
+                     '<span class="greenChecker badgefixed invisible">3</span></div>'
         }
     },
     
@@ -136,9 +137,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             this.getToolbar().add(this.editToggleField);
             this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
         } 
-        else {
-            this.getToolbar().setTitle('');
-        }
+        else this.getToolbar().setTitle('');
         
         LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
         this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
@@ -152,7 +151,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     onListChange: function(panel, newList) {        
         if(newList !== 0) {
             var innerListItems = newList.getInnerItems()[0].getInnerItems();
-            
+
             /** saveid to dom.nodeId */
             /** replace itemCls of leaf nodes */
             innerListItems.forEach(function(element, index, array) {
@@ -162,6 +161,12 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                     element.addCls('leafListItem');
                     element.removeCls('forwardListButton');
                 }
+                
+                LernApp.app.storageController.getStoredCategories(function(categories) {
+                    if(typeof categories[element.bodyElement.dom.nodeId] === 'undefined') {
+                            element.bodyElement.down('.greenChecker').addCls('invisible');
+                    } else  element.bodyElement.down('.greenChecker').removeCls('invisible');
+                });
             });
         }
     },
@@ -196,11 +201,11 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             list = this.getActiveItem().getInnerItems()[0].getInnerItems();
 
         /** iterate through all listItems */
-        list.forEach(function(element, index, array) {         
-            if(editMode) {
+        list.forEach(function(element, index, array) {   
+            LernApp.app.storageController.getStoredCategories(function(categories) {
                 var cat = element.bodyElement.dom.nodeId;
-                
-                LernApp.app.storageController.getStoredCategories(function(categories) {
+               
+                if(editMode) {
                     if(typeof categories[cat] === 'undefined') {
                         element.addCls('addIcon');
                         element.removeCls('deleteIcon');
@@ -209,20 +214,28 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                         element.addCls('deleteIcon');
                         element.removeCls('addIcon');
                     }
-                });
-                
-                if(element.getRecord().get('leaf')) {
-                    element.bodyElement.down('.redbadgeicon').addCls('invisible');
+                    
+                    if(element.getRecord().get('leaf')) {
+                        element.bodyElement.down('.redbadgeicon').addCls('invisible');
+                    }
+                    
+                    element.bodyElement.down('.greenChecker').addCls('invisible');
                 }
-            }
-            else {
-                element.removeCls('addIcon');
-                element.removeCls('deleteIcon');
-                
-                if(element.getRecord().get('leaf')) {
-                    element.bodyElement.down('.redbadgeicon').removeCls('invisible');
+                else {
+                    element.removeCls('addIcon');
+                    element.removeCls('deleteIcon');
+                    
+                    if(element.getRecord().get('leaf')) {
+                        element.bodyElement.down('.redbadgeicon').removeCls('invisible');
+                    }
+                    
+                    LernApp.app.storageController.getStoredCategories(function(categories) {
+                        if(typeof categories[cat] === 'undefined') {
+                            element.bodyElement.down('.greenChecker').addCls('invisible');
+                        }   else element.bodyElement.down('.greenChecker').removeCls('invisible');
+                    });
                 }
-            }
+            });
         });
     },
     
@@ -251,7 +264,10 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             
             Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade Fragen'});
             LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
-                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { questions: questions});
+                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                    questions: questions,
+                    showOnly: true
+                });
                 LernApp.app.main.navigation.push(panel);
             });
         }
@@ -291,7 +307,9 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     performEditOnItem: function(node) {
         var me = this,
             leaf = node.isLeaf(),
-            category = node.getData().id;
+            category = node.getData().id,
+            parentId = node.parentNode.getData().id,
+            listDepth = node.parentNode.getData().depth;
             
         var categoryModification = {
             added: new Object(),
@@ -300,14 +318,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
 
         LernApp.app.storageController.getStoredCategories(function(categories) {
             if(typeof categories[category] === 'undefined') {
-                categoryModification.added[category] = leaf;
-                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, false);
                 Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade...'});
+                categoryModification.added[category] = { leaf: leaf, 
+                    parent: listDepth > 0 ? parentId : listDepth
+                };
+                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, false);
             } 
             else {
-                categoryModification.deleted[category] = leaf;
-                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, true);
                 Ext.Viewport.setMasked({xtype:'loadmask', message:'Lösche...'});
+                categoryModification.deleted[category] = { leaf: leaf, 
+                    parent: listDepth > 0 ? parentId : listDepth
+                };
+                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, true);
             }
             
             LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
@@ -334,16 +356,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         
         childNodes.forEach(function(element, index, array) {
             var leaf = element.isLeaf(),
-                category = element.getData().id;
+                category = element.getData().id,
+                parentId = element.parentNode.getData().id;
             
-            if(!deleteFlag) categoryModification.added[category] = leaf;
-            else categoryModification.deleted[category] = leaf;
+            if(!deleteFlag) categoryModification.added[category] = { parent: parentId, leaf: leaf };
+            else categoryModification.deleted[category] = { parent: parentId, leaf: leaf };
             
             if(!leaf) {
-                categoryModification = me.performEditOnChildItem(element.childNodes, categoryModification, deleteFlag);
+                categoryModification = me.performEditOnChildItem(
+                        element.childNodes, categoryModification, deleteFlag);
             }
         });
-
+        
         return categoryModification;
     }
 });
