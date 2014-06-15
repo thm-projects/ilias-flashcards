@@ -37,7 +37,7 @@ Ext.application({
     requires: [
         'LernApp.view.Main',
         'LernApp.proxy.JsonProxy',
-        'LernApp.prototype.CustomMessageBox',
+        'LernApp.prototype.CustomMessageBox'
     ],
 
     icon: {
@@ -58,7 +58,8 @@ Ext.application({
 
     models: [
         'CardIndexModel',
-        'Category'
+        'Category',
+        'Question'
     ],
     
     views: [
@@ -83,6 +84,11 @@ Ext.application({
         'about.AboutPanel'
     ],
     
+    stores: [
+        'CardIndexStore',
+        'QuestionStore'
+    ],
+    
     controllers: [
         'Navigation',
         'StorageController'
@@ -91,11 +97,11 @@ Ext.application({
     fullscreen: true,
     isIconPrecomposed: true,
     statusBarStyle: 'default',
-
+    
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
-                        
+        
         this.proxy = Ext.create('LernApp.proxy.JsonProxy');
         this.storageController = LernApp.app.getController('StorageController');
         

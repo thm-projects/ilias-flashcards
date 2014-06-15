@@ -36,22 +36,19 @@ Ext.define('LernApp.proxy.JsonProxy', {
     config: {
         //url: "https://arsnova.eu/statistics"
         //url: "https://ilias-staging.mni.thm.de/connector-service/ilias/1",
-        url: "http://localhost:8080/connector-service/ilias/1"
+        url: "http://localhost:8080/connector-service/ilias/"
     },
     
     /**
-     * Get the sessions where user is visitor
-     * @param login from user
-     * @param object with success-, unauthenticated- and failure-callbacks
-     * @return session-objects, if found
+     * Gets the card index tree
+     * @param object with success-callback
+     * @return cardindex-objects, if found
      * @return false, if nothing found
      */
     getCardIndexTree: function(callback) {
         Ext.Ajax.request({
-            url : this.config.url,
+            url : this.config.url + "1",
             method : 'GET',
-            username : 'test',
-            password : 'test',
             withCredentials: true,
             useDefaultXhrHeader: false,
             
@@ -64,11 +61,95 @@ Ext.define('LernApp.proxy.JsonProxy', {
             },
             
             failure: function(response) {
+                Ext.Viewport.setMasked(false);
+                console.log(response.status);
                 if (response.status === 401) {
                     console.log('unauthicated');
                 } else {
-                    Ext.Msg.alert('Verbindungsprobleme', 'Keine Verbindung möglich.')
-                    console.log('server-side error');
+                    Ext.Msg.alert('Offline-Modus', 'Das Programm wird im Offline-Modus ausgeführt.')
+                    callback.failure.apply(this, arguments);
+                }
+            },
+            scope : this
+        });
+    },
+    
+    /**
+     * Gets random choosen questions from a test
+     * @param object with success-callback
+     * @return cardindex-objects, if found
+     * @return false, if nothing found
+     */
+    getRandomQuestions: function(refId, callbacks) {
+        Ext.Ajax.request({
+            url : this.config.url + "question/" + refId,
+            method : 'GET',
+            username : 'test',
+            password : 'test',
+            withCredentials: true,
+            useDefaultXhrHeader: false,
+            
+            success: function(response) {
+                if (response.status === 204) {
+                    callbacks.success.call(this, {});
+                } else {
+                    callbacks.success.call(this, {
+                        refId: refId,
+                        data: Ext.decode(response.responseText)
+                    });
+                }
+            },
+            
+            failure: function(response) {
+                if (response.status === 401) {
+                    callbacks.unauthorized.apply(this, arguments);
+                } else if (response.status === 404) {
+                    callbacks.notFound.apply(this, arguments);
+                } else if (response.status = 403) {
+                    callbacks.forbidden.apply(this, arguments);
+                } else {
+                    callbacks.failure.apply(this, arguments);
+                }
+            },
+            scope : this
+        });
+    },
+    
+    /**
+     * Gets all questions from a test
+     * @param object with success-callback
+     * @return cardindex-objects, if found
+     * @return false, if nothing found
+     */
+    getAllQuestions: function(refId, callbacks) {
+        Ext.Ajax.request({
+            url : this.config.url + "question/" + refId + "?source=ALL",
+            method : 'GET',
+            username : 'test',
+            password : 'test',
+            withCredentials: true,
+            useDefaultXhrHeader: false,
+            
+            success: function(response) {
+                if (response.status === 204) {
+                    callbacks.success.call(this, {});
+                } else {
+                    callbacks.success.call(this, {
+                        refId: refId,
+                        data: Ext.decode(response.responseText)
+                    });
+                }
+            },
+            
+            failure: function(response) {
+                if (response.status === 401) {
+                    callbacks.unauthorized.apply(this, arguments);
+                } else if (response.status === 404) {
+                    callbacks.notFound.apply(this, arguments);
+                } else if (response.status = 403) {
+                    callbacks.forbidden.apply(this, arguments);
+                } else {
+                    callbacks.failure.apply(this, arguments);
                 }
             },
             scope : this

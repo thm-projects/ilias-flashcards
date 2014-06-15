@@ -746,14 +746,18 @@ Ext.ClassManager.addNameAlternateMappings({
     "Ext.viewport.WP"
   ],
   "LernApp.controller.Navigation": [],
+  "LernApp.controller.Question": [],
   "LernApp.controller.StorageController": [],
   "LernApp.model.CardIndexModel": [],
   "LernApp.model.Category": [],
+  "LernApp.model.Question": [],
   "LernApp.prototype.CustomMask": [],
+  "LernApp.prototype.CustomMessageBox": [],
   "LernApp.prototype.NavigationView": [],
   "LernApp.prototype.SliderField": [],
   "LernApp.proxy.JsonProxy": [],
   "LernApp.store.CardIndexStore": [],
+  "LernApp.store.QuestionStore": [],
   "LernApp.view.Main": [],
   "LernApp.view.TabPanel": [],
   "LernApp.view.about.AboutPanel": [],
@@ -1717,12 +1721,15 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
   "LernApp.controller.Navigation": [],
+  "LernApp.controller.Question": [],
   "LernApp.controller.StorageController": [],
   "LernApp.model.CardIndexModel": [],
   "LernApp.model.Category": [],
+  "LernApp.model.Question": [],
   "LernApp.prototype.CustomMask": [
     "widget.customMask"
   ],
+  "LernApp.prototype.CustomMessageBox": [],
   "LernApp.prototype.NavigationView": [
     "widget.navView"
   ],
@@ -1734,6 +1741,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "LernApp.store.CardIndexStore": [
     "widget.cardIndexStore"
+  ],
+  "LernApp.store.QuestionStore": [
+    "widget.questionStore"
   ],
   "LernApp.view.Main": [
     "widget.main"

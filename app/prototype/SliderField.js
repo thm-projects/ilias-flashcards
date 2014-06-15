@@ -117,19 +117,12 @@ Ext.define('LernApp.prototype.SliderField', {
         this.inputValue.dom.value = value;
     },
 
-    /**
-     * Convenience method. Calls {@link #setValue}.
-     * @param {Object} value
-     */
     setValues: function(value) {
         this.setValue(value);
         this.setInputValue(value);
         this.updateMultipleState();
     },
 
-    /**
-     * Convience method. Calls {@link #getValue}
-     */
     getValues: function() {
         return this.getValue();
     },

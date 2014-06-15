@@ -83,10 +83,6 @@
             "update": "delta"
         },
         {
-            "path": "lib/localforage.js",
-            "update": "full"
-        },
-        {
             "path": "app.js",
             "bundle": true,  /* Indicates that all class dependencies are concatenated into this file when build */
             "update": "delta"
@@ -128,7 +124,8 @@
          * List of items in the CACHE MANIFEST section
          */
         "cache": [
-            "index.html"
+            "index.html",
+            "lib/localforage.js"
         ],
         /**
          * List of items in the NETWORK section

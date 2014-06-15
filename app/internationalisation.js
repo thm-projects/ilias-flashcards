@@ -107,7 +107,6 @@ switch (lang) {
             NO_REPEAT: 'Keine Wiederholung',
             SELF_ASSESSMENT: 'Selbsteinschätzung',
             
-            
             /** temporary */
             CHANGE: 'Ändern',
             CANCEL: 'Abbrechen',
