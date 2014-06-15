@@ -79,6 +79,13 @@ Ext.define('LernApp.controller.StorageController', {
                 me.setStoredTestObject(new Object());
             }
         });
+        
+        /** initialize settings object **/
+        this.getStoredSettingsObject(function(settings) {
+            if(settings == null) {
+                me.setStoredSettingsObject(new Object());
+            }
+        });
     },
     
     /** getter for storedQuestions */
@@ -87,8 +94,8 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** setter for storedQuestions */
-    setStoredQuestionObject: function(value, promise) {
-        localforage.setItem('storedQuestions', value).then(promise);
+    setStoredQuestionObject: function(object, promise) {
+        localforage.setItem('storedQuestions', object).then(promise);
     },
     
     /** getter for storedTests */
@@ -97,8 +104,8 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** setter for storedTests */
-    setStoredTestObject: function(value, promise) {
-        localforage.setItem('storedTests', value).then(promise);
+    setStoredTestObject: function(object, promise) {
+        localforage.setItem('storedTests', object).then(promise);
     },
     
     /** getter for cardIndexTree */
@@ -107,8 +114,8 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** setter for cardIndexTree */
-    setStoredCardIndexTreeObject: function(value, promise) {
-        localforage.setItem('cardIndexTree', value).then(promise);
+    setStoredCardIndexTreeObject: function(object, promise) {
+        localforage.setItem('cardIndexTree', object).then(promise);
     },
     
     /** getter for selectedCategories */
@@ -117,8 +124,18 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** setter for selectedCategories */
-    setStoredCategories: function(value, promise) {
-        localforage.setItem('selectedCategories', value).then(promise);
+    setStoredCategories: function(object, promise) {
+        localforage.setItem('selectedCategories', object).then(promise);
+    },
+    
+    /** getter for settingsObject */
+    getStoredSettingsObject: function(promise) {
+        localforage.getItem('settingsObject').then(promise);
+    },
+    
+    /** setter for settingsObject */
+    setStoredSettingsObject: function(object, promise) {
+        localforage.setItem('settingsObject', object).then(promise);
     },
     
     /** 
@@ -128,7 +145,7 @@ Ext.define('LernApp.controller.StorageController', {
      */
     addStoredCategories: function(categories, promise) {
         var me = this;
-        console.log('here');
+        
         this.getStoredCategories(function(storedCategories) {
             for(var category in categories) {
                 storedCategories[category] = categories[category];
@@ -315,7 +332,7 @@ Ext.define('LernApp.controller.StorageController', {
     /** 
      * Removes selected categories from local database.
      * @param {Object} deletedCategories Object with categorie refIds to remove.
-     * @param {Function} promise Function to call after processing
+     * @param {Function} promise Function to call after processing.
      */
     removeStoredCategories: function(deletedCategories, promise) {
         var me = this;
@@ -341,6 +358,33 @@ Ext.define('LernApp.controller.StorageController', {
             me.removeStoredQuestions(deletedCategories, function() {
                 me.setStoredCategories(categories, promise);
             });
+        });
+    },
+    
+    /** 
+     * Stores an value to settingsObject[settingsKey].
+     * @param {String} settingsKey Id of setting to store in settingsObject.
+     * @param {int} value Value of setting to store in settingsObject.
+     */
+    storeSetting: function(settingsKey, value) {
+        var me = this;
+        
+        me.getStoredSettingsObject(function(settingsObject) {
+            settingsObject[settingsKey] = value;
+            me.setStoredSettingsObject(settingsObject);
+        });
+    },
+    
+    /** 
+     * Returns a value of a requested setting through a promise.
+     * @param {String} settingsKey Id of setting to retrieve from settingsObject.
+     * @param {promise} promise Function to call after processing.
+     */
+    getStoredSetting: function(settingsKey, promise) {
+        var me = this;
+        
+        me.getStoredSettingsObject(function(settingsObject) {
+            promise(settingsObject[settingsKey]);
         });
     }
 });

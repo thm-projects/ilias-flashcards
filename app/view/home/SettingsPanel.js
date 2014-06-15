@@ -58,6 +58,8 @@ Ext.define('LernApp.view.home.SettingsPanel', {
         
         var me = this;
         
+        this.controller = LernApp.app.storageController;
+        
         this.backButton = Ext.create('Ext.Button', {
             text: Messages.HOME,
             align: 'left', 
@@ -90,7 +92,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
                         else slider.disable();
                     });
                     
-                    localforage.setItem(this.notificationToggle.getId(), newValue);
+                    this.controller.storeSetting(this.notificationToggle.getId(), newValue);
                 }
             }
         });
@@ -107,7 +109,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             listeners: {
                 scope: this,
                 change: function (me, slider, newValue, oldValue) {
-                    localforage.setItem(this.firstSlider.getId(), newValue);
+                    this.controller.storeSetting(this.firstSlider.getId(), newValue);
                 }
             }
         });
@@ -124,7 +126,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             listeners: {
                 scope: this,
                 change: function (me, slider, newValue, oldValue) {
-                    localforage.setItem(this.secondSlider.getId(), newValue);
+                    this.controller.storeSetting(this.secondSlider.getId(), newValue);
                 }
             }
         });
@@ -141,7 +143,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             listeners: {
                 scope: this,
                 change: function (me, slider, newValue, oldValue) {
-                    localforage.setItem(this.thirdSlider.getId(), newValue);
+                    this.controller.storeSetting(this.thirdSlider.getId(), newValue);
                 }
             }
         });
@@ -181,31 +183,32 @@ Ext.define('LernApp.view.home.SettingsPanel', {
      * actions to perform on initialization
      */
     onInitialize: function() {
-        var toggle = this.notificationToggle;
+        var me = this,
+            toggle = this.notificationToggle;
         
         /** restore value from notificationToggle */
-        localforage.getItem(toggle.getId(), function(storedValue) {
-            if(storedValue !== null)
-                toggle.setValue(storedValue);
+        me.controller.getStoredSetting(toggle.getId(), function(value) {
+            if(typeof value !== 'undefined')
+                toggle.setValue(value);
         });
         
         /** restore values from sliders */
-        this.iterateThroughSliders(function(slider) {
-            localforage.getItem(slider.getId(), function(storedValue) {
-                if(storedValue !== null) 
-                    slider.setValues(storedValue);
+        me.iterateThroughSliders(function(slider) {
+            me.controller.getStoredSetting(slider.getId(), function(value) {
+                if(typeof value !== 'undefined')
+                    slider.setValues(value);
             });
         });
     },
     
     /** dynamic function to iterate through all setting sliders */
-    iterateThroughSliders: function(functionToCall) {
+    iterateThroughSliders: function(promise) {
         var me = this;
         var field = this.settingsFieldSet.getFieldsAsArray();
         
         field.forEach(function(element, index, array) {
             if(element.getId() !== me.notificationToggle.getId()) {
-                functionToCall(element);
+                promise(element);
             }
         });
     }
