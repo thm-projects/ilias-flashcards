@@ -41,6 +41,11 @@ Ext.define('LernApp.controller.StorageController', {
         }
     },
     
+    /** initialize storage at startup */
+    init: function() {
+        this.initializeStorage();
+    },
+    
     initializeStorage: function() {
         var me = this;
         
@@ -54,6 +59,13 @@ Ext.define('LernApp.controller.StorageController', {
             description : 'Application Database'
         });
         
+        /** initialize category object **/
+        this.getStoredCategories(function(categories) {
+            if(categories == null) {
+                me.setStoredCategories(new Object());
+            }
+        });
+        
         /** initialize question object **/
         this.getStoredQuestionObject(function(storedQuestions) {
             if(storedQuestions == null) {
@@ -61,11 +73,10 @@ Ext.define('LernApp.controller.StorageController', {
             }
         });
         
-        /** initialize categories object **/
-        this.getStoredCategories(function(categories) {
-            console.log(categories);
-            if(categories == null) {
-                me.setStoredCategories(new Object());
+        /** initialize test object **/
+        this.getStoredTestObject(function(tests) {
+            if(tests == null) {
+                me.setStoredTestObject(new Object());
             }
         });
     },
@@ -76,6 +87,14 @@ Ext.define('LernApp.controller.StorageController', {
     
     setStoredQuestionObject: function(value, promise) {
         localforage.setItem('storedQuestions', value).then(promise);
+    },
+    
+    getStoredTestObject: function(promise) {
+        localforage.getItem('storedTests').then(promise);
+    },
+    
+    setStoredTestObject: function(value, promise) {
+        localforage.setItem('storedTests', value).then(promise);
     },
     
     getStoredCardIndexTreeObject: function(promise) {
@@ -106,78 +125,140 @@ Ext.define('LernApp.controller.StorageController', {
         
     storeCardIndexTree: function(promise) {
         var me = this;
+            offline = true;
+            
         LernApp.app.proxy.getCardIndexTree({
             success: function(tree) {
-                me.setStoredCardIndexTreeObject(tree, promise);
+                me.setStoredCardIndexTreeObject(tree, function(tree) {
+                    promise(tree, !offline)
+                });
+            },
+            failure: function() {
+                me.getStoredCardIndexTreeObject(function(tree) {
+                    promise(tree, offline);
+                });
             }
         });
     },
     
-    storeQuestions: function(refId, promise) {
-        var me = this;
-        LernApp.app.proxy.getQuestions(refId, {
-            success: function(questions) {
-                questionObj[refId] = questions;
-                me.setStoredQuestionObject(questionObj, promise);
-            }
-        });
-    },
-    
-    storeMultipleQuestions: function(categories, promise) {
+    storeQuestions: function(categories, promise) {
         var me = this,
+            questionIds = {};
+
+        if(Object.keys(categories).length == 0) {
+            promise();
+            return;
+        }
+
+        this.getStoredTestObject(function(testObj) {
+            for(var category in testObj) {
+                if(testObj[category]) {
+                    var cat = testObj[category];
+                    var questionSet = Object.keys(cat.questions).map(function(key) {
+                        return cat.questions[key].id;
+                    });
+                    
+                    if(cat.isRandomTest) {
+                        var randomIds = [];
+                        
+                        questionIds[category] = new Array();
+                        while(Object.keys(randomIds).length < cat.randomQuestionCount) {
+                            var value = Math.floor(Math.random() * cat.questionCount);
+                            randomIds[(value != 0 ? value: null)] = true;
+                        }
+    
+                        for(id in randomIds) {
+                            questionIds[category].push(questionSet[(id == 'null' ? 0 : id)]);
+                        }
+                    }  questionIds[category] = questionSet;
+                }
+            } me.setStoredQuestionObject(questionIds, promise);
+        });
+    },
+    
+    storeTests: function(tree, promise) {
+        var me = this,
+            categories = {},
             categoryCount = 0,
             completedRequests = 0;
-            
-        for(var category in categories) {
-            if(categories[category]) categoryCount++;
-        }
         
-        var onAjaxComplete = function(questionObj) {
+        var onAjaxComplete = function(testObj) {
             if(completedRequests >= categoryCount) {
-                me.setStoredQuestionObject(questionObj, promise);
+                me.setStoredTestObject(testObj, promise);
             }
         };
-
-        this.getStoredQuestionObject(function(questionObj) {
-           for(var category in categories) {
-               if(categories[category]) {
-                   LernApp.app.proxy.getQuestions(category, {
-                       success: function(questions) {
-                           completedRequests++;
-                           questionObj[questions.refId] = questions.data;
-                           onAjaxComplete(questionObj);
-                       }
-                   });
-               }
+            
+        var iterateThrough = function(data) {
+            if(data.hasOwnProperty('children')) {
+                data.children.forEach(function(child) {
+                    iterateThrough(child);
+                });
+            } else if(data.hasOwnProperty('leaf')) {
+                categories[data.id] = data;
+                categoryCount++;
+            }
+        };
+        
+        /* iterate through tree object */
+        iterateThrough(tree);
+        
+        this.getStoredTestObject(function(testObj) {
+           for(var category in categories) {               
+               LernApp.app.proxy.getAllQuestions(category, {
+                   success: function(test) {
+                       var cat = categories[test.refId];
+                       
+                       testObj[test.refId] = {
+                           questions: test.data,
+                           isRandomTest: cat.isRandomTest,
+                           questionCount: cat.questionCount,
+                           randomQuestionCount: cat.randomQuestionCount
+                       };
+                       
+                       completedRequests++;
+                       onAjaxComplete(testObj);
+                   }
+               });
            }
            
            if(categoryCount == 0) promise();
         });
     },
     
-    getStoredQuestions: function(refId, promise) {
-        this.getStoredQuestionObject(function(questionObj) {
-            console.log(questionObj);
-            if(typeof questionObj[refId] == 'undefined') {
+    getStoredTest: function(refId, promise) {
+        this.getStoredTestObject(function(testObj) {
+            if(typeof testObj[refId] == 'undefined') {
                 promise(null);
             } else {
-                promise(questionObj[refId]);
+                promise(testObj[refId].questions);
             }
         });
     },
     
-    removeQuestionsFromStorage: function(refId, promise) {
-        var me = this;
-        this.getStoredQuestionObj(function(storedQuestions) {
-            delete storedQuestions[refId];
-            me.setStoredQuestionObject(storedQuestions, promise);
+    getStoredQuestions: function(refId, promise) {
+        var me = this,
+            questionObj = [];
+
+        me.getStoredTestObject(function(storedTests) {            
+            me.getStoredQuestionObject(function(storedQuestions) {
+                if(typeof storedQuestions[refId] !== 'undefined') {
+                    if(storedTests[refId].isRandomTest)  {                    
+                        storedTests[refId].questions.forEach(function(question) {
+                            if(Ext.Array.contains(storedQuestions[refId], parseInt(question.id))) {
+                                questionObj.push(question);
+                            }
+                        });
+                    } else questionObj = storedQuestions[refId].questions;
+                }
+                promise(questionObj);
+            });
         });
     },
     
-    removeMultipleQuestionsFromStorage: function(categories, promise) {
+    removeStoredQuestions: function(categories, promise) {
         var me = this;
                 
-        this.getStoredQuestionObject(function(questionObj) {
+        me.getStoredQuestionObject(function(questionObj) {
             for(var category in categories) delete questionObj[category];
             me.setStoredQuestionObject(questionObj, promise);
         });
@@ -185,44 +266,17 @@ Ext.define('LernApp.controller.StorageController', {
     
     removeStoredCategories: function(deletedCategories, promise) {
         var me = this;
-        this.getStoredCategories(function(categories) {
+        
+        me.getStoredCategories(function(categories) {
             for(var cat in categories) {
                 for(var deletedCat in deletedCategories) {
-                    if(deletedCat == cat) {
-                        delete categories[cat];
-                    }
+                    if(deletedCat == cat) delete categories[cat];
                 }
             }
             
-            me.removeMultipleQuestionsFromStorage(deletedCategories, function() {
+            me.removeStoredQuestions(deletedCategories, function() {
                 me.setStoredCategories(categories, promise);
             });
-        });
-    },
-    
-    getQuestions: function(refId, promise) {
-        var me = this;
-        
-        LernApp.app.proxy.getQuestions(refId, {
-            success: function(questionList) {
-                promise(questionList);
-            },
-            failure: function() {
-                me.getStoredQuestions(refId, promise)
-                /** todo: state failure message or indicator */
-            },
-            notFound: function() {
-                me.getStoredQuestions(refId, promise)
-                /** todo: state failure message or indicator */
-            },
-            unauthorized: function() {
-                me.getStoredQuestions(refId, promise)
-                /** todo: state failure message or indicator */
-            },
-            forbidden: function() {
-                me.getStoredQuestions(refId, promise)
-                /** todo: state failure message or indicator */
-            }
         });
     }
 });
