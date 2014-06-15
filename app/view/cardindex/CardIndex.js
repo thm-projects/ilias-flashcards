@@ -119,9 +119,12 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      */
     setStoreData: function() {
         var me = this;
-        LernApp.app.storageController.storeCardIndexTree(function(data) {
-            me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
-            Ext.Viewport.setMasked(false);
+        LernApp.app.storageController.storeCardIndexTree(function(data, offline) {
+            me.editToggleField.setHidden(offline);
+            LernApp.app.storageController.storeTests(data, function() {
+                me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
+                Ext.Viewport.setMasked(false);
+            });
         });
     },
     
@@ -246,7 +249,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             me.fireEvent('leafitemtap', this, list, index, target, record, e);
             me.goToLeaf(node);
             
-            LernApp.app.storageController.getQuestions(node.getId(), function(questions) {
+            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade Fragen'});
+            LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
                 var panel = Ext.create('LernApp.view.learncard.CardCarousel', { questions: questions});
                 LernApp.app.main.navigation.push(panel);
             });
@@ -280,7 +284,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     },
     
     /**
-     * Adding/removing selected listItem and it's children to/from localStore
+     * Adding/removing selected listItem and it's children to/from app database
      * 
      * @param {Ext.data.NodeInterface} node The selected node (listItem).
      */
@@ -308,7 +312,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             
             LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
                 LernApp.app.storageController.addStoredCategories(categoryModification.added, function() {
-                    LernApp.app.storageController.storeMultipleQuestions(categoryModification.added, function() {
+                    LernApp.app.storageController.storeQuestions(categoryModification.added, function() {
                         me.updateListIcons();
                         Ext.Viewport.setMasked(false);
                     });
