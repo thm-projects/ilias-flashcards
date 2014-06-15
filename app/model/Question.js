@@ -29,12 +29,12 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.model.CardIndexModel', {
+Ext.define('LernApp.model.Question', {
     extend: 'Ext.data.Model',
     
     config: {
         fields: [
-            { name: 'text', type: 'string' }
+            { name: 'title', type: 'string' }
         ]
     }
 });
