@@ -47,23 +47,15 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         }
     },
     
-    constructor: function(args) {
-        this.callParent(args);
-        this.selection = (args.selection === 'Über das Vorliegen eines Staates.');
-        if(this.selection) {
-            Ext.Msg.alert('Richtig!', 'Die Antwort war richtig.', Ext.emptyFn);
-        } else {
-            Ext.Msg.alert('Falsch!', 'Die Antwort war leider falsch.', Ext.emptyFn);
-        }
-    },
-    
     initialize: function() {
         this.callParent(arguments);
         
         var me = this;
         
+        this.evaluateAnswer();
+        
         this.saveButton = Ext.create('Ext.Button', {
-            text: 'Speichern',
+            text: Messages.CONTINUE,
             ui: 'confirm',
             handler: function() {
                 var saveConfirmPanel = LernApp.app.main.navigation.getActiveItem().saveConfirmPanel;
@@ -188,23 +180,67 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             ]
         });
         
-        this.answerTitle = Ext.create('Ext.Panel', {
-            cls: 'roundedBox',
-            html: 
-                '<p class="title">' + Ext.util.Format.htmlEncode('Richtige Antwort:') + '<p/><br>' +
-                '<p><it>' + Ext.util.Format.htmlEncode('"Über das Vorliegen des Staates."') + '</it></p>'
-        });
+        if(this.getCorrectAnswers() == 0) {
+            this.answerList = Ext.create('Ext.Panel', {
+                html: '<p class=""><it>' + Ext.util.Format.htmlEncode('Keine der Antworten ist richtig...') + '</it><p/><br>'
+            });
+        } else {
+            this.answerList = Ext.create('Ext.List', {
+                scrollable: { disabled: true },
+                
+                itemCls: 'answerListItem',
+                data: this.getCorrectAnswers(),
+                disableSelection: true,
+                
+                listeners: {
+                    scope: this,
+                    /**
+                     * The following events are used to get the computed height of all list items and 
+                     * finally to set this value to the list DataView. In order to ensure correct rendering
+                     * it is also necessary to get the properties "padding-top" and "padding-bottom" and 
+                     * add them to the height of the list DataView.
+                     */
+                    painted: function (list, eOpts) {
+                        this.answerList.fireEvent("resizeList", list);
+                    },
+                    resizeList: function(list) {
+                        var listItemsDom = list.select(".x-list .x-inner .x-inner").elements[0];
+                        
+                        this.answerList.setHeight(
+                            parseInt(window.getComputedStyle(listItemsDom, "").getPropertyValue("height"))  + 
+                            parseInt(window.getComputedStyle(list.dom, "").getPropertyValue("padding-top")) +
+                            parseInt(window.getComputedStyle(list.dom, "").getPropertyValue("padding-bottom"))
+                        );
+                    }
+                }
+            });
+        }
+        
+        if(this.answerList.getData() == null || this.answerList.getData().length == 1) {
+            this.answerTitle = Ext.create('Ext.Panel', {
+                html: '<p class="title">' + Ext.util.Format.htmlEncode('Die richtige Antwort lautet:') + '<p/>'
+            });
+        } else {
+            this.answerTitle = Ext.create('Ext.Panel', {
+                html: '<p class="title">' + Ext.util.Format.htmlEncode('Die richtigen Antworten lautet:') + '<p/>'
+            });
+        }
         
         this.answerBox = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
+            items: [this.answerTitle, this.answerList]
+        });
+        
+        this.feedbackBox = Ext.create('Ext.Panel', {
+            cls: 'roundedBox',
             html: 
                 '<p class="title">' + Ext.util.Format.htmlEncode('Hinweis:') + '<p/><br>' +
-                '<p>' + Ext.util.Format.htmlEncode('Nach der Drei-Elemente-Lehre Goerg Jellineks sind die Vorraussetzungen für die Exsitenz eines Staates das Vorliegen von Staatsgewalt, eines Staatsgebiets und eines Staatsvolks. Dabei ist die Staatsgewalt auf dem Staatsgebiet grundsätzlich unbeschränkt, das Staatsvolk wird über das rechtliche Band der Staatsangehörigkeit bestimt und das Gebiet muss keine bestimme Mindestgröße besitzen.') + '</p>'
+                '<p>' + this.getAppropriateFeedbackText() + '</p>'
         });
         
         this.add([
-            this.answerTitle,
-            this.answerBox
+            this.answerBox,
+            this.feedbackBox
         ]);
         
         /**
@@ -233,6 +269,38 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             
             task.delay(1000);
         });
+    },
+    
+    evaluateAnswer: function() {        
+        if(this.selection) {
+            Ext.Msg.alert('Richtig!', 'Die Antwort war richtig.', Ext.emptyFn);
+        } else {
+            Ext.Msg.alert('Falsch!', 'Die Antwort war leider falsch.', Ext.emptyFn);
+        }
+    },
+    
+    getCorrectAnswers: function() {
+        var correctAnswers = [];
+        
+        this.answers.forEach(function(answer) {
+            if(answer.points) {
+                correctAnswers.push(answer);
+            }
+        });
+
+        console.log(correctAnswers);
+        return correctAnswers;
+    },
+    
+    getAppropriateFeedbackText: function() {
+        var feedbackText;
+        this.feedback.forEach(function(possibility) {
+            if(possibility.correct) {
+                feedbackText = possibility.feedback;
+            }
+        });
+        
+        return feedbackText;
     },
     
     /**

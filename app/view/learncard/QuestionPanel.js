@@ -39,9 +39,7 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
     ],
     
     config: {
-        id: 'questionPanel1',
         title: Messages.QUESTION,
-        fullscreen: true,
         scrollable: {
             direction: 'vertical',
             directionLock: true
@@ -50,24 +48,19 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
     
     initialize: function() {
         this.callParent(arguments);
-        
+
         this.questionTitle = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
-                '<p class="title">' + Ext.util.Format.htmlEncode('01. Drei-Elemente-Lehre') + '<p/><br>' +
-                '<p>' + Ext.util.Format.htmlEncode('Worüber lässt sich anhand der auf Georg Jellinek zurückgehenden sogenannter Drei-Elemente-Lehre eine Aussage treffen?') + '</p>'
+                '<p class="title">' + Ext.util.Format.htmlEncode(this.questionObj.title) + '<p/><br>' +
+                this.questionObj.text
         });
         
         this.answerList = Ext.create('Ext.List', {            
             cls: 'roundedBox',  
             scrollable: { disabled: true },
             
-            data: [
-                { text: 'Über den Stand der europäischen Integration.' },
-                { text: 'Über das Vorliegen eines Staates.' },
-                { text: 'Über das Vorliegen eines Staatenverbundes.' },
-                { text: 'Über das Legitimationsniveau in der EU.' }
-            ],
+            data: this.questionObj.answers,
             
             listeners: {
                 scope: this,
