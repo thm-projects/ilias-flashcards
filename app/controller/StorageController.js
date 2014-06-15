@@ -81,38 +81,51 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /** getter for storedQuestions */
     getStoredQuestionObject: function(promise) {
         localforage.getItem('storedQuestions').then(promise);
     },
     
+    /** setter for storedQuestions */
     setStoredQuestionObject: function(value, promise) {
         localforage.setItem('storedQuestions', value).then(promise);
     },
     
+    /** getter for storedTests */
     getStoredTestObject: function(promise) {
         localforage.getItem('storedTests').then(promise);
     },
     
+    /** setter for storedTests */
     setStoredTestObject: function(value, promise) {
         localforage.setItem('storedTests', value).then(promise);
     },
     
+    /** getter for cardIndexTree */
     getStoredCardIndexTreeObject: function(promise) {
         localforage.getItem('cardIndexTree').then(promise);
     },
     
+    /** setter for cardIndexTree */
     setStoredCardIndexTreeObject: function(value, promise) {
         localforage.setItem('cardIndexTree', value).then(promise);
     },
     
+    /** getter for selectedCategories */
     getStoredCategories: function(promise) {
         localforage.getItem('selectedCategories').then(promise);
     },
     
+    /** setter for selectedCategories */
     setStoredCategories: function(value, promise) {
         localforage.setItem('selectedCategories', value).then(promise);
     },
     
+    /** 
+     * Adds references of selected categories to database.
+     * @param {Object} categories Object with selected categories.
+     * @param {Function} promise Function to call after processing.
+     */
     addStoredCategories: function(categories, promise) {
         var me = this;
         this.getStoredCategories(function(storedCategories) {
@@ -122,7 +135,11 @@ Ext.define('LernApp.controller.StorageController', {
             me.setStoredCategories(storedCategories, promise);
         });
     },
-        
+    
+    /** 
+     * Store card index tree from backend database to local database.
+     * @param {Function} promise Function to call after processing.
+     */
     storeCardIndexTree: function(promise) {
         var me = this;
             offline = true;
@@ -141,6 +158,14 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /** 
+     * Adds references of questions, selected by choosen categories,
+     * to local database. If a tests has randomQuestions option active,
+     * a random collection of questions is returned; otherwise all stored
+     * questions of a test is returned.
+     * @param {Object} categories Object with selected categories.
+     * @param {Function} promise Function to call after processing.
+     */
     storeQuestions: function(categories, promise) {
         var me = this,
             questionIds = {};
@@ -154,14 +179,15 @@ Ext.define('LernApp.controller.StorageController', {
             for(var category in testObj) {
                 if(testObj[category]) {
                     var cat = testObj[category];
+                    
                     var questionSet = Object.keys(cat.questions).map(function(key) {
                         return cat.questions[key].id;
                     });
                     
                     if(cat.isRandomTest) {
                         var randomIds = [];
-                        
                         questionIds[category] = new Array();
+                        
                         while(Object.keys(randomIds).length < cat.randomQuestionCount) {
                             var value = Math.floor(Math.random() * cat.questionCount);
                             randomIds[(value != 0 ? value: null)] = true;
@@ -170,12 +196,18 @@ Ext.define('LernApp.controller.StorageController', {
                         for(id in randomIds) {
                             questionIds[category].push(questionSet[(id == 'null' ? 0 : id)]);
                         }
-                    }  questionIds[category] = questionSet;
+                    }
+                    questionIds[category] = questionSet;
                 }
             } me.setStoredQuestionObject(questionIds, promise);
         });
     },
     
+    /** 
+     * Stores all available tests to local database.
+     * @param {Object} tree Tree object of card index.
+     * @param {Function} promise Function to call after processing.
+     */
     storeTests: function(tree, promise) {
         var me = this,
             categories = {},
@@ -225,6 +257,11 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /** 
+     * Returns stored test object through promise function.
+     * @param {int} refId Reference id of the requested test.
+     * @param {Function} promise Function to call after processing.
+     */
     getStoredTest: function(refId, promise) {
         this.getStoredTestObject(function(testObj) {
             if(typeof testObj[refId] == 'undefined') {
@@ -235,6 +272,11 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /** 
+     * Returns stored question array through promise function.
+     * @param {int} refId Reference id of the requested test.
+     * @param {Function} promise Function to call after processing.
+     */
     getStoredQuestions: function(refId, promise) {
         var me = this,
             questionObj = [];
@@ -255,6 +297,11 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /** 
+     * Removes stored questions from local database.
+     * @param {Object} categories Object with categorie refIds to remove.
+     * @param {Function} promise Function to call after processing.
+     */
     removeStoredQuestions: function(categories, promise) {
         var me = this;
                 
@@ -264,6 +311,11 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /** 
+     * Removes selected categories from local database.
+     * @param {Object} deletedCategories Object with categorie refIds to remove.
+     * @param {Function} promise Function to call after processing
+     */
     removeStoredCategories: function(deletedCategories, promise) {
         var me = this;
         
