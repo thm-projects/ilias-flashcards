@@ -97,9 +97,10 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.SHOW_LEARN_CARDS,
                     cls     : 'forwardListButton',
                     handler : function() {
-                        LernApp.app.main.navigation.push(
-                                Ext.create('LernApp.view.learncard.CardCarousel')
-                        );
+                        /*LernApp.app.main.navigation.push(
+                                //Ext.create('LernApp.view.learncard.CardCarousel')
+                                TODO: get stored questions
+                        );*/
                     }
                 }, {
                     xtype   : 'button',
@@ -107,9 +108,10 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.SHOW_RANDOM_CARDS,
                     cls     : 'forwardListButton',
                     handler : function() {
-                        LernApp.app.main.navigation.push(
-                                Ext.create('LernApp.view.learncard.CardCarousel')
-                        );
+                        /*LernApp.app.main.navigation.push(
+                                //Ext.create('LernApp.view.learncard.CardCarousel')
+                                TODO: get stored questions 
+                        );*/
                     }
                 }
             ]

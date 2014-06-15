@@ -307,6 +307,17 @@
     background: rgba(128, 0, 50, 1);
     /* @alternate */ background: -webkit-linear-gradient(top, rgba(128, 0, 50, .7) 0%, rgba(128, 0, 50, 1) 100%);
 }
+
+.greenChecker {
+	color: green;
+	font-family: 'Pictos';
+	font-size: 1.6em;
+	text-align: right;
+	line-height: 1.6em;
+	margin-right: 60px;
+	background: none !important;
+	padding: 0 !important;
+}
  
 .answerListItem {
 	background-color: white !important;

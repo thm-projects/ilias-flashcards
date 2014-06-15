@@ -63,8 +63,10 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         this.answerButton = Ext.create('Ext.Button', {
             ui: 'confirm',
             text: 'Antworten',
-            align: 'right',
             id: 'answerButton',
+            align: 'right',
+            hidden: true,
+            
             handler: function() {
                 var navigation = LernApp.app.main.navigation;
                 var activeItem = navigation.getActiveItem().getActiveItem();
@@ -92,7 +94,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
              * add answer button to navigationBar
              */
             LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
-            LernApp.app.main.navigation.getNavigationBar().down('#answerButton').show();
+            if(!this.showOnly) LernApp.app.main.navigation.getNavigationBar().down('#answerButton').show();
         });
         
         /**

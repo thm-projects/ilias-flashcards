@@ -767,12 +767,8 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.view.home.SettingsPanel": [],
   "LernApp.view.home.UserPanel": [],
   "LernApp.view.learncard.AnswerPanel": [],
-  "LernApp.view.learncard.AnswerPanel2": [],
-  "LernApp.view.learncard.AnswerPanel3": [],
   "LernApp.view.learncard.CardCarousel": [],
   "LernApp.view.learncard.QuestionPanel": [],
-  "LernApp.view.learncard.QuestionPanel2": [],
-  "LernApp.view.learncard.QuestionPanel3": [],
   "LernApp.view.login.LoginNavigation": [],
   "LernApp.view.login.LoginPanel": [],
   "LernApp.view.login.WelcomePanel": []
@@ -1772,22 +1768,10 @@ Ext.ClassManager.addNameAliasMappings({
   "LernApp.view.learncard.AnswerPanel": [
     "widget.answerPanel"
   ],
-  "LernApp.view.learncard.AnswerPanel2": [
-    "widget.answerPanel2"
-  ],
-  "LernApp.view.learncard.AnswerPanel3": [
-    "widget.answerPanel3"
-  ],
   "LernApp.view.learncard.CardCarousel": [
     "widget.cardCarousel"
   ],
   "LernApp.view.learncard.QuestionPanel": [
-    "widget.questionPanel"
-  ],
-  "LernApp.view.learncard.QuestionPanel2": [
-    "widget.questionPanel2"
-  ],
-  "LernApp.view.learncard.QuestionPanel3": [
     "widget.questionPanel"
   ],
   "LernApp.view.login.LoginNavigation": [
