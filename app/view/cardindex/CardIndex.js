@@ -70,16 +70,9 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         }
     },
     
-    constructor: function(args) {
-        this.callParent(args);
-
-        if(typeof args !== 'undefined') {
-            this.withEditFunction = args.edit;
-        }
-    },
-    
     initialize: function() {
         var me = this;
+        this.withEditFunction = this.edit;
         
         /**
          * toggleField - enables/disables edit mode
@@ -120,12 +113,19 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      */
     setStoreData: function() {
         var me = this;
-        LernApp.app.storageController.storeCardIndexTree(function(data, offline) {
-            me.editToggleField.setHidden(offline);
-            LernApp.app.storageController.storeTests(data, function() {
-                me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
-                Ext.Viewport.setMasked(false);
-            });
+        
+        var actions = function(data) {
+            if(data == null) me.editToggleField.setHidden(true);
+            me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
+            Ext.Viewport.setMasked(false);
+        };
+
+        LernApp.app.storageController.storeCardIndexTree(function(data, online) {
+            if(online) {
+                LernApp.app.storageController.storeTests(data, function() {  
+                    actions(data);
+                });
+            } else actions(data);
         });
     },
     
@@ -133,22 +133,17 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * actions to perform after panel activation and before panel is painted
      */
     onActivate: function() {
-        if(this.withEditFunction) {
-            this.getToolbar().add(this.editToggleField);
-            this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
-        } 
+        if(this.withEditFunction) this.getToolbar().add(this.editToggleField);
         else this.getToolbar().setTitle('');
         
-        LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
-        this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
-        
+        LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);  
         this.modifyToolbarTitles();
     },
     
     /**
      * actions to perform on activeitemchange
      */
-    onListChange: function(panel, newList) {        
+    onListChange: function(panel, newList) {
         if(newList !== 0) {
             var innerListItems = newList.getInnerItems()[0].getInnerItems();
 

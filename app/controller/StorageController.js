@@ -87,15 +87,15 @@ Ext.define('LernApp.controller.StorageController', {
             }
         });
     },
-    
-    /** getter for storedQuestions */
-    getStoredQuestionObject: function(promise) {
-        localforage.getItem('storedQuestions').then(promise);
+            
+    /** getter for storedTree */
+    getStoredIndexTreeObject: function(promise) {
+        localforage.getItem('storedTree').then(promise);
     },
     
-    /** setter for storedQuestions */
-    setStoredQuestionObject: function(object, promise) {
-        localforage.setItem('storedQuestions', object).then(promise);
+    /** setter for storedTree */
+    setStoredIndexTreeObject: function(object, promise) {
+        localforage.setItem('storedTree', object).then(promise);
     },
     
     /** getter for storedTests */
@@ -108,16 +108,6 @@ Ext.define('LernApp.controller.StorageController', {
         localforage.setItem('storedTests', object).then(promise);
     },
     
-    /** getter for cardIndexTree */
-    getStoredCardIndexTreeObject: function(promise) {
-        localforage.getItem('cardIndexTree').then(promise);
-    },
-    
-    /** setter for cardIndexTree */
-    setStoredCardIndexTreeObject: function(object, promise) {
-        localforage.setItem('cardIndexTree', object).then(promise);
-    },
-    
     /** getter for selectedCategories */
     getStoredCategories: function(promise) {
         localforage.getItem('selectedCategories').then(promise);
@@ -128,14 +118,34 @@ Ext.define('LernApp.controller.StorageController', {
         localforage.setItem('selectedCategories', object).then(promise);
     },
     
-    /** getter for settingsObject */
-    getStoredSettingsObject: function(promise) {
-        localforage.getItem('settingsObject').then(promise);
+    /** getter for selectedQuestions */
+    getStoredQuestionObject: function(promise) {
+        localforage.getItem('selectedQuestions').then(promise);
     },
     
-    /** setter for settingsObject */
+    /** setter for selectedQuestions */
+    setStoredQuestionObject: function(object, promise) {
+        localforage.setItem('selectedQuestions', object).then(promise);
+    },
+    
+    /** getter for preferences */
+    getStoredSettingsObject: function(promise) {
+        localforage.getItem('preferences').then(promise);
+    },
+    
+    /** setter for preferences */
     setStoredSettingsObject: function(object, promise) {
-        localforage.setItem('settingsObject', object).then(promise);
+        localforage.setItem('preferences', object).then(promise);
+    },
+    
+    /** getter for lastUpdate */
+    getStoredTimestamp: function(promise) {
+        localforage.getItem('lastUpdate').then(promise);
+    },
+    
+    /** setter for lastUpdate */
+    setStoredTimestamp: function(value, promise) {
+        localforage.setItem('lastUpdate', value).then(promise);
     },
     
     /** 
@@ -155,23 +165,57 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** 
+     * Stores timestamp of last update from backend.
+     * @param {Function} promise Function to call after processing.
+     */
+    storeLastUpdate: function(promise) {
+        var date = new Date();
+        
+        this.setStoredTimestamp(date.getTime(), promise);
+    },
+    
+    /** 
+     * Returns the number of days since last update.
+     * @param {Function} promise Function to call after processing.
+     */
+    getLastUpdateInDays: function(promise) {
+        var date = new Date(),
+            oneDay = 1000 * 60 * 60 * 24;
+        
+        this.getStoredTimestamp(function(timestamp) {
+            if(timestamp == null) promise(LernApp.app.daysToReloadData);
+            else promise(Math.round((date.getTime() - timestamp) / oneDay));
+        });
+    },
+    
+    /** 
      * Store card index tree from backend database to local database.
      * @param {Function} promise Function to call after processing.
      */
     storeCardIndexTree: function(promise) {
         var me = this;
-            offline = true;
-            
-        LernApp.app.proxy.getCardIndexTree({
-            success: function(tree) {
-                me.setStoredCardIndexTreeObject(tree, function(tree) {
-                    promise(tree, !offline)
+            online = true;            
+        
+        var onlineMode = function(tree) {
+            me.setStoredIndexTreeObject(tree, function(tree) {
+                promise(tree, online)
+            });
+        };
+        
+        var offlineMode = function() {
+            me.getStoredIndexTreeObject(function(tree) {
+                promise(tree, !online);
+            });
+        }
+        
+        me.getLastUpdateInDays(function(days) {
+            if(days >= LernApp.app.daysToReloadData) {
+                LernApp.app.proxy.getCardIndexTree({
+                    success: onlineMode,
+                    failure: offlineMode
                 });
-            },
-            failure: function() {
-                me.getStoredCardIndexTreeObject(function(tree) {
-                    promise(tree, offline);
-                });
+            } else {
+                offlineMode();
             }
         });
     },
@@ -234,7 +278,9 @@ Ext.define('LernApp.controller.StorageController', {
         
         var onAjaxComplete = function(testObj) {
             if(completedRequests >= categoryCount) {
-                me.setStoredTestObject(testObj, promise);
+                me.storeLastUpdate(function() {
+                    me.setStoredTestObject(testObj, promise);
+                });
             }
         };
             

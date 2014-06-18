@@ -70,6 +70,7 @@ Ext.application({
         'login.WelcomePanel',
         'login.LoginPanel',
         
+        'home.TestOverviewPanel',
         'home.HomeNavigation',
         'home.OverviewPanel',
         'home.SettingsPanel',
@@ -97,6 +98,8 @@ Ext.application({
     fullscreen: true,
     isIconPrecomposed: true,
     statusBarStyle: 'default',
+    
+    daysToReloadData: 3,
     
     launch: function() {
         // Destroy the #appLoadingIndicator element
