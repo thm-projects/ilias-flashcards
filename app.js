@@ -99,7 +99,7 @@ Ext.application({
     isIconPrecomposed: true,
     statusBarStyle: 'default',
     
-    daysToReloadData: 3,
+    daysToReloadData: 0,
     
     launch: function() {
         // Destroy the #appLoadingIndicator element

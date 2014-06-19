@@ -76,6 +76,7 @@ switch (lang) {
             SAVING: 'Speichere...',
             LOADING: 'Lade...',
             OVERVIEW: 'Übersicht',
+            TESTOVERVIEW: 'Test Übersicht',
             SETTINGS: 'Einstellungen',
             QUESTION: 'Frage',
             USER: 'User',

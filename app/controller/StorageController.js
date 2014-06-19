@@ -247,19 +247,19 @@ Ext.define('LernApp.controller.StorageController', {
                     });
                     
                     if(cat.isRandomTest) {
-                        var randomIds = [];
+                        var randomIds = {};
                         questionIds[category] = new Array();
                         
                         while(Object.keys(randomIds).length < cat.randomQuestionCount) {
                             var value = Math.floor(Math.random() * cat.questionCount);
-                            randomIds[(value != 0 ? value: null)] = true;
+                            randomIds[value] = true;
                         }
-    
+
                         for(id in randomIds) {
-                            questionIds[category].push(questionSet[(id == 'null' ? 0 : id)]);
+                            questionIds[category].push(questionSet[id]);
                         }
                     }
-                    questionIds[category] = questionSet;
+                    else questionIds[category] = questionSet;
                 }
             } me.setStoredQuestionObject(questionIds, promise);
         });
@@ -302,10 +302,16 @@ Ext.define('LernApp.controller.StorageController', {
            for(var category in categories) {               
                LernApp.app.proxy.getAllQuestions(category, {
                    success: function(test) {
-                       var cat = categories[test.refId];
+                       var cat = categories[test.refId],
+                           questions = {};
+                       
+                       test.data.forEach(function(question) {
+                           questions[question.id] = question;
+                       });
                        
                        testObj[test.refId] = {
-                           questions: test.data,
+                           title: cat.title,
+                           questions: questions,
                            isRandomTest: cat.isRandomTest,
                            questionCount: cat.questionCount,
                            randomQuestionCount: cat.randomQuestionCount
@@ -336,8 +342,26 @@ Ext.define('LernApp.controller.StorageController', {
         });
     },
     
+    /**
+     * Returns stored tests which are selected in selectedCategories.
+     * @param {Function} promise Function to call after processing.
+     */
+    getSelectedStoredTests: function(promise) {
+        var me = this,
+            obj = {};
+        
+        this.getStoredCategories(function(cat) {
+            me.getStoredTestObject(function(testObj) {
+                for(var key in cat) {
+                    if(key in testObj) obj[key] = testObj[key];
+                }
+                promise(obj);
+            });
+        });
+    },
+    
     /** 
-     * Returns stored question array through promise function.
+     * Returns stored question object through promise function.
      * @param {int} refId Reference id of the requested test.
      * @param {Function} promise Function to call after processing.
      */
@@ -348,13 +372,17 @@ Ext.define('LernApp.controller.StorageController', {
         me.getStoredTestObject(function(storedTests) {            
             me.getStoredQuestionObject(function(storedQuestions) {
                 if(typeof storedQuestions[refId] !== 'undefined') {
-                    if(storedTests[refId].isRandomTest)  {                    
-                        storedTests[refId].questions.forEach(function(question) {
-                            if(Ext.Array.contains(storedQuestions[refId], parseInt(question.id))) {
-                                questionObj.push(question);
+                    if(storedTests[refId].isRandomTest) {
+                        for(var key in storedTests[refId].questions) {
+                            if(Ext.Array.contains(storedQuestions[refId], parseInt(key))) {
+                                questionObj.push(storedTests[refId].questions[key]);
                             }
+                        }
+                    } else {
+                        questionObj = Object.keys(storedTests[refId].questions).map(function(key) {
+                            return storedTests[refId].questions[key];
                         });
-                    } else questionObj = storedQuestions[refId].questions;
+                    }
                 }
                 promise(questionObj);
             });

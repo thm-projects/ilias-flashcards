@@ -34,9 +34,7 @@ Ext.define('LernApp.proxy.JsonProxy', {
     xtype: 'jsonProxy',
 
     config: {
-        //url: "https://arsnova.eu/statistics"
-        //url: "https://ilias-staging.mni.thm.de/connector-service/ilias/1",
-        url: "http://localhost:8080/connector-service/ilias/"
+        url: "http://ilias-staging.mni.thm.de:8080/connector-service/ilias/",
     },
     
     /**

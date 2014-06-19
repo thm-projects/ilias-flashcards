@@ -18,7 +18,8 @@ Ext.Loader.addClassPathMappings({
   "Ext.device.sqlite.SQLResultSetRowList": "touch/src/device/sqlite/Sencha.js",
   "Ext.device.sqlite.SQLTransaction": "touch/src/device/sqlite/Sencha.js",
   "Ext.draw.engine.SvgContext.Gradient": "touch/src/draw/engine/SvgContext.js",
-  "LernApp": "app"
+  "LernApp": "app",
+  "MyListItem": "app/view/home/TestOverviewPanel.js"
 });
 Ext.ClassManager.addNameAlternateMappings({
   "ChartDataModel": [],
@@ -765,13 +766,15 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.view.home.HomeNavigation": [],
   "LernApp.view.home.OverviewPanel": [],
   "LernApp.view.home.SettingsPanel": [],
+  "LernApp.view.home.TestOverviewPanel": [],
   "LernApp.view.home.UserPanel": [],
   "LernApp.view.learncard.AnswerPanel": [],
   "LernApp.view.learncard.CardCarousel": [],
   "LernApp.view.learncard.QuestionPanel": [],
   "LernApp.view.login.LoginNavigation": [],
   "LernApp.view.login.LoginPanel": [],
-  "LernApp.view.login.WelcomePanel": []
+  "LernApp.view.login.WelcomePanel": [],
+  "MyListItem": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "ChartDataModel": [],
@@ -1762,6 +1765,9 @@ Ext.ClassManager.addNameAliasMappings({
   "LernApp.view.home.SettingsPanel": [
     "widget.settingsPanel"
   ],
+  "LernApp.view.home.TestOverviewPanel": [
+    "widget.testOverviewPanel"
+  ],
   "LernApp.view.home.UserPanel": [
     "widget.userPanel"
   ],
@@ -1782,5 +1788,8 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "LernApp.view.login.WelcomePanel": [
     "widget.welcomePanel"
+  ],
+  "MyListItem": [
+    "widget.mylistitem"
   ]
 });
