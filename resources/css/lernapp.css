@@ -75,7 +75,8 @@
 	opacity: 0;
 }
 
-.x-button.forwardListButton {
+.x-button.forwardListButton
+{
 	height: 45px !important;
 }
 
