@@ -45,13 +45,12 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     
     instanciateComponents: function() {
         var panel = [];
-
-        this.questions.forEach(function(question, index) {
-            panel[index] = Ext.create('LernApp.view.learncard.QuestionPanel', {
-                questionObj: question
-            });
-        });
         
+        for(var key in this.questions) {
+            panel.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
+                questionObj: this.questions[key]
+            }));
+        }
         this.add(panel);
     },
     

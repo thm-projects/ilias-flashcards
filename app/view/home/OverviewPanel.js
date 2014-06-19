@@ -38,6 +38,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         'Ext.Label',
         'Ext.Spacer',
         'Ext.Button',
+        'LernApp.view.home.TestOverviewPanel',
         'LernApp.view.learncard.CardCarousel',
         'LernApp.view.cardindex.CardIndex'
     ],
@@ -97,10 +98,13 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.SHOW_LEARN_CARDS,
                     cls     : 'forwardListButton',
                     handler : function() {
-                        /*LernApp.app.main.navigation.push(
-                                //Ext.create('LernApp.view.learncard.CardCarousel')
-                                TODO: get stored questions
-                        );*/
+                        LernApp.app.storageController.getSelectedStoredTests(function(testObj) {
+                            LernApp.app.main.navigation.push(
+                                Ext.create('LernApp.view.home.TestOverviewPanel', {
+                                    testObj: testObj
+                                })
+                            );
+                        });
                     }
                 }, {
                     xtype   : 'button',
@@ -158,7 +162,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         /**
          * show logout button when panel is activated
          */
-        this.onAfter('activate', function() {
+        this.onAfter('painted', function() {
             LernApp.app.main.navigation.logoutButton.show();
         });
         
