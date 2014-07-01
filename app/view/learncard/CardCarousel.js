@@ -57,6 +57,8 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     initialize: function(arguments) {
         this.callParent(arguments);
         
+        var me = this;
+        
         this.instanciateComponents();
         
         this.answerButton = Ext.create('Ext.Button', {
@@ -76,10 +78,11 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
                 navigation.saveAnimation();
                 navigation.getNavigationBar().down('#answerButton').hide();
                 navigation.getLayout().setAnimation({ type: 'flip', duration: 500 });
-                
+
                 navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', { 
                     answers: activeItem.questionObj.answers,
                     feedback: activeItem.questionObj.feedback,
+                    showOnlyAnswers: me.showOnlyAnswers,
                     selection: sel 
                 }));
             }
@@ -93,7 +96,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
              * add answer button to navigationBar
              */
             LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
-            if(!this.showOnly) LernApp.app.main.navigation.getNavigationBar().down('#answerButton').show();
+            if(!this.showOnlyQuestion) LernApp.app.main.navigation.getNavigationBar().down('#answerButton').show();
         });
         
         /**

@@ -86,7 +86,8 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
                     LernApp.app.storageController.getStoredQuestions(this.getItemId(), function(questions) {
                         var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
                             questions: questions,
-                            showOnly: false
+                            showOnlyAnswers: true,
+                            showOnlyQuestion: false
                         });
                         LernApp.app.main.navigation.push(panel);
                     });
