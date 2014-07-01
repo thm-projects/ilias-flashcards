@@ -63,6 +63,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             align   : 'left',
             hidden  : true,
             handler : function() {
+                this.disable();
                 LernApp.app.getController('Navigation').changeNavigation(
                         Ext.create('LernApp.view.login.LoginNavigation'), true
                 );
