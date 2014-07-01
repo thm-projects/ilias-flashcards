@@ -66,18 +66,19 @@ Ext.define('LernApp.view.home.OverviewPanel', {
 
             }
          });
-        
-        var comingSoon = function(component) {
-            var comingSoonPanel = Ext.create('Ext.Panel', {
-                top: -1000,
-                html: "<div style='padding: 0.5em'>"+Messages.FEATURE_COMING_SOON+"</div>"
-            });
-            comingSoonPanel.showBy(component, 'tc-bc');
-            Ext.defer(function() {
-                comingSoonPanel.destroy();
-            }, 2000);
-        };
 
+        this.messageBox = Ext.create('Ext.MessageBox', {
+            title: 'Willkommen',
+            message: Messages.PLEASE_CHOOSE,
+            buttons: [{
+                xtype: 'button',
+                text: 'OK',
+                handler: function() {
+                    me.messageBox.hide();
+                }
+            }]
+        });
+        
         this.learnCardFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.LEARN_CARD,
             cls: 'standardForm',
@@ -90,20 +91,29 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     name    : 'learnCards',
                     text    : Messages.LEARN_LEARN_CARDS,
                     cls     : 'forwardListButton',
-                    disabled: true,
-                    handler : comingSoon
+                    disabled: false,
+                    handler : function() { me.messageBox.show() } 
                 }, {
                     xtype   : 'button',
                     name    : 'showCards',
                     text    : Messages.SHOW_LEARN_CARDS,
                     cls     : 'forwardListButton',
+                    pressedDelay: 100,
                     handler : function() {
-                        LernApp.app.storageController.getSelectedStoredTests(function(testObj) {
-                            LernApp.app.main.navigation.push(
-                                Ext.create('LernApp.view.home.TestOverviewPanel', {
+                        var button = this;
+                        this.disable();
+                        Ext.Viewport.setMasked({xtype:'loadmask'});
+                        LernApp.app.storageController.getStoredSelectedTests(function(testObj) {
+                            if(Object.keys(testObj).length == 0) {
+                                me.messageBox.show();
+                            } else {
+                                var panel = Ext.create('LernApp.view.home.TestOverviewPanel', {
                                     testObj: testObj
-                                })
-                            );
+                                });
+                                LernApp.app.main.navigation.push(panel);
+                            }
+                            Ext.Viewport.setMasked(false);
+                            button.enable();
                         });
                     }
                 }, {
@@ -112,10 +122,23 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.SHOW_RANDOM_CARDS,
                     cls     : 'forwardListButton',
                     handler : function() {
-                        /*LernApp.app.main.navigation.push(
-                                //Ext.create('LernApp.view.learncard.CardCarousel')
-                                TODO: get stored questions 
-                        );*/
+                        var button = this;
+                        button.disable();
+                        Ext.Viewport.setMasked({xtype:'loadmask'});
+                        LernApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
+                            if(Object.keys(questions).length == 0) {
+                                me.messageBox.show();
+                            } else {
+                                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                                    questions: questions,
+                                    showOnlyAnswers: true,
+                                    showOnlyQuestion: false
+                                });
+                                LernApp.app.main.navigation.push(panel);
+                            }
+                            Ext.Viewport.setMasked(false);
+                            button.enable();
+                        });
                     }
                 }
             ]
@@ -135,9 +158,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     cls     : 'forwardListButton',
                     handler : function() {
                         Ext.Viewport.setMasked({xtype:'loadmask'});
-                        LernApp.app.main.navigation.push(
-                            Ext.create('LernApp.view.cardindex.CardIndex')
-                        );
+                        var panel = Ext.create('LernApp.view.cardindex.CardIndex')
+                        LernApp.app.main.navigation.push(panel);
                     }
                 }, {
                     xtype   : 'button',
@@ -146,9 +168,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     cls     : 'forwardListButton',
                     handler : function() {
                         Ext.Viewport.setMasked({xtype:'loadmask'});
-                        LernApp.app.main.navigation.push(
-                            Ext.create('LernApp.view.cardindex.CardIndex', {edit: true})
-                        );
+                        var panel = Ext.create('LernApp.view.cardindex.CardIndex', {edit: true});
+                        LernApp.app.main.navigation.push(panel);
                     }
                 }
             ]
