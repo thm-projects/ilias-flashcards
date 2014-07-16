@@ -41,11 +41,14 @@ Ext.define('LernApp.controller.StorageController', {
         }
     },
     
+    username: null,
+    
     /** initialize storage at startup */
     init: function() {
         this.initializeStorage();
     },
     
+    /** intialization of storage */
     initializeStorage: function() {
         var me = this;
         
@@ -59,95 +62,154 @@ Ext.define('LernApp.controller.StorageController', {
             description : 'Application Database'
         });
         
-        /** initialize category object **/
-        this.getStoredCategories(function(categories) {
-            if(categories == null) {
-                me.setStoredCategories(new Object());
-            }
-        });
-        
-        /** initialize question object **/
-        this.getStoredQuestionObject(function(storedQuestions) {
-            if(storedQuestions == null) {
-                me.setStoredQuestionObject(new Object());
-            }
-        });
-        
-        /** initialize test object **/
-        this.getStoredTestObject(function(tests) {
-            if(tests == null) {
-                me.setStoredTestObject(new Object());
-            }
-        });
-        
-        /** initialize settings object **/
-        this.getStoredSettingsObject(function(settings) {
-            if(settings == null) {
-                me.setStoredSettingsObject(new Object());
+        /** initalize 'initialized' object */
+        localforage.getItem('initialized', function(isInitialized) {
+            if(isInitialized == null) {
+                localforage.setItem('initialized', new Object());
             }
         });
     },
-            
+    
+    /** user specific initialization */
+    initializeUserStorage: function(username) {
+        var me = this,
+            obj = new Object();
+        
+        localforage.getItem('initialized', function(initObject) {
+            if(typeof initObject[username] === 'undefined') {
+                
+                /** set initialized object */
+                initObject[username] = true;
+                localforage.setItem('initialized', initObject);
+                
+                /** initialize user specific objects */
+                me.setStoredTimestamp(null);
+                me.setStoredSettingsObject(obj);
+
+                /** initalize tree and test specific objects */
+                me.setStoredTestObject(obj);
+                me.setStoredCategories(obj);
+                me.setStoredIndexTreeObject(obj);
+                me.setStoredQuestionIdObject(obj);
+                me.setAllSelectedQuestionsObject(obj);
+            }
+        });
+    },
+    
+    /** getter for username */
+    getUsername: function() {
+        return this.username;
+    },
+    
+    /** setter for local username */
+    setUsername: function(username) {
+        this.username = username;
+    },
+                
     /** getter for storedTree */
     getStoredIndexTreeObject: function(promise) {
-        localforage.getItem('storedTree').then(promise);
+        this.genericGetterMethod('storedTree', promise);
     },
     
     /** setter for storedTree */
     setStoredIndexTreeObject: function(object, promise) {
-        localforage.setItem('storedTree', object).then(promise);
+        this.genericSetterMethod('storedTree', object, promise);
     },
     
     /** getter for storedTests */
     getStoredTestObject: function(promise) {
-        localforage.getItem('storedTests').then(promise);
+        this.genericGetterMethod('storedTests', promise);
     },
     
     /** setter for storedTests */
     setStoredTestObject: function(object, promise) {
-        localforage.setItem('storedTests', object).then(promise);
+        this.genericSetterMethod('storedTests', object, promise);
     },
     
     /** getter for selectedCategories */
     getStoredCategories: function(promise) {
-        localforage.getItem('selectedCategories').then(promise);
+        this.genericGetterMethod('selectedCategories', promise);
     },
     
     /** setter for selectedCategories */
     setStoredCategories: function(object, promise) {
-        localforage.setItem('selectedCategories', object).then(promise);
+        this.genericSetterMethod('selectedCategories', object, promise);
     },
     
-    /** getter for selectedQuestions */
-    getStoredQuestionObject: function(promise) {
-        localforage.getItem('selectedQuestions').then(promise);
+    /** getter for selectedQuestionIds */
+    getStoredQuestionIdObject: function(promise) {
+        this.genericGetterMethod('selectedQuestionIds', promise);
     },
     
-    /** setter for selectedQuestions */
-    setStoredQuestionObject: function(object, promise) {
-        localforage.setItem('selectedQuestions', object).then(promise);
+    /** setter for selectedQuestionIds */
+    setStoredQuestionIdObject: function(object, promise) {
+        this.genericSetterMethod('selectedQuestionIds', object, promise);
+    },
+    
+    /** getter for allQuestionsFromSelection */
+    getAllSelectedQuestionsObject: function(promise) {
+        this.genericGetterMethod('allQuestionsFromSelection', promise);
+    },
+    
+    /** setter for allQuestionsFromSelection */
+    setAllSelectedQuestionsObject: function(object, promise) {
+        this.genericSetterMethod('allQuestionsFromSelection', object, promise);
     },
     
     /** getter for preferences */
     getStoredSettingsObject: function(promise) {
-        localforage.getItem('preferences').then(promise);
+        this.genericGetterMethod('preferences', promise);
     },
     
     /** setter for preferences */
     setStoredSettingsObject: function(object, promise) {
-        localforage.setItem('preferences', object).then(promise);
+        this.genericSetterMethod('preferences', object, promise);
     },
     
     /** getter for lastUpdate */
     getStoredTimestamp: function(promise) {
-        localforage.getItem('lastUpdate').then(promise);
+        this.genericGetterMethod('lastUpdate', promise);
     },
     
     /** setter for lastUpdate */
-    setStoredTimestamp: function(value, promise) {
-        localforage.setItem('lastUpdate', value).then(promise);
+    setStoredTimestamp: function(object, promise) {
+        this.genericSetterMethod('lastUpdate', object, promise);
     },
     
+    /** getter for loggedInUser */
+    getLoggedInUser: function(promise) {
+        localforage.getItem('loggedInUser', function(username) {
+            promise(atob(username));
+        });
+    },
+    
+    /** setter for loggedInUser */
+    setLoggedInUser: function(username, promise) {
+        this.setUsername(btoa(username));
+        this.initializeUserStorage(this.getUsername());
+        localforage.setItem('loggedInUser', this.getUsername()).then(promise);
+    },
+    
+    /** generic getter method */
+    genericGetterMethod: function(key, promise) {
+        var me = this;
+        localforage.getItem(key, function(obj) {
+            promise(obj[me.username]);
+        });
+    },
+    
+    /** generic setter method */
+    genericSetterMethod: function(key, value, promise) {
+        var me = this;
+        localforage.getItem(key, function(object) {
+            if(object == null) object = {};
+            
+            object[me.username] = value;
+            if(typeof promise === 'undefined') { localforage.setItem(key, object); }
+            else { localforage.setItem(key, object).then(promise); }; 
+        });
+    },
+        
     /** 
      * Adds references of selected categories to database.
      * @param {Object} categories Object with selected categories.
@@ -179,12 +241,13 @@ Ext.define('LernApp.controller.StorageController', {
      * @param {Function} promise Function to call after processing.
      */
     getLastUpdateInDays: function(promise) {
-        var date = new Date(),
+        var me = this,
+            date = new Date(),
             oneDay = 1000 * 60 * 60 * 24;
         
         this.getStoredTimestamp(function(timestamp) {
-            if(timestamp == null) promise(LernApp.app.daysToReloadData);
-            else promise(Math.round((date.getTime() - timestamp) / oneDay));
+            if(timestamp == null) promise(LernApp.app.daysUntilReloadData);
+            else { promise(Math.round((date.getTime() - timestamp) / oneDay)); }
         });
     },
     
@@ -193,30 +256,28 @@ Ext.define('LernApp.controller.StorageController', {
      * @param {Function} promise Function to call after processing.
      */
     storeCardIndexTree: function(promise) {
-        var me = this;
+        var me = this,
             online = true;            
-        
+                
         var onlineMode = function(tree) {
             me.setStoredIndexTreeObject(tree, function(tree) {
-                promise(tree, online)
+                promise(online)
             });
         };
         
         var offlineMode = function() {
             me.getStoredIndexTreeObject(function(tree) {
-                promise(tree, !online);
+                promise(!online);
             });
-        }
+        };
         
         me.getLastUpdateInDays(function(days) {
-            if(days >= LernApp.app.daysToReloadData) {
+            if(days >= LernApp.app.daysUntilReloadData) {
                 LernApp.app.proxy.getCardIndexTree({
                     success: onlineMode,
                     failure: offlineMode
                 });
-            } else {
-                offlineMode();
-            }
+            } else offlineMode();
         });
     },
     
@@ -230,7 +291,8 @@ Ext.define('LernApp.controller.StorageController', {
      */
     storeQuestions: function(categories, promise) {
         var me = this,
-            questionIds = {};
+            questionIds = {},
+            allQuestions = {};
 
         if(Object.keys(categories).length == 0) {
             promise();
@@ -241,6 +303,10 @@ Ext.define('LernApp.controller.StorageController', {
             for(var category in testObj) {
                 if(testObj[category]) {
                     var cat = testObj[category];
+                    
+                    Object.keys(cat.questions).map(function(value, index) {
+                        allQuestions[value] = cat.questions[value];
+                    });
                     
                     var questionSet = Object.keys(cat.questions).map(function(key) {
                         return cat.questions[key].id;
@@ -259,9 +325,12 @@ Ext.define('LernApp.controller.StorageController', {
                             questionIds[category].push(questionSet[id]);
                         }
                     }
-                    else questionIds[category] = questionSet;
+                    else { questionIds[category] = questionSet; }
                 }
-            } me.setStoredQuestionObject(questionIds, promise);
+            } 
+            me.setStoredQuestionIdObject(questionIds, function() {
+                me.setAllSelectedQuestionsObject(allQuestions, promise);
+            });
         });
     },
     
@@ -346,7 +415,7 @@ Ext.define('LernApp.controller.StorageController', {
      * Returns stored tests which are selected in selectedCategories.
      * @param {Function} promise Function to call after processing.
      */
-    getSelectedStoredTests: function(promise) {
+    getStoredSelectedTests: function(promise) {
         var me = this,
             obj = {};
         
@@ -370,7 +439,7 @@ Ext.define('LernApp.controller.StorageController', {
             questionObj = [];
 
         me.getStoredTestObject(function(storedTests) {            
-            me.getStoredQuestionObject(function(storedQuestions) {
+            me.getStoredQuestionIdObject(function(storedQuestions) {
                 if(typeof storedQuestions[refId] !== 'undefined') {
                     if(storedTests[refId].isRandomTest) {
                         for(var key in storedTests[refId].questions) {
@@ -390,6 +459,35 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** 
+     * Returns a random set of stored questions through promise function.
+     * The amount of random questions is specified in LernApp.app.randomQuestionCount.
+     * @param {Function} promise Function to call after processing.
+     */
+    getRandomSetofStoredQuestions: function(promise) {
+        var me = this,
+            randomIds = {},
+            randomQuestions = {};
+
+        me.getAllSelectedQuestionsObject(function(allQuestions) {
+            if(Object.keys(allQuestions).length) {
+                var questionSet = Object.keys(allQuestions).map(function(key) {
+                    return key;
+                });
+                
+                while(Object.keys(randomIds).length < LernApp.app.randomQuestionCount) {
+                    var value = Math.floor(Math.random() * Object.keys(allQuestions).length);
+                    randomIds[value] = true;
+                }
+                
+                for(id in randomIds) {
+                    randomQuestions[questionSet[id]] = allQuestions[questionSet[id]];
+                }
+            }
+            promise(randomQuestions);
+        });
+    },
+    
+    /** 
      * Removes stored questions from local database.
      * @param {Object} categories Object with categorie refIds to remove.
      * @param {Function} promise Function to call after processing.
@@ -397,9 +495,9 @@ Ext.define('LernApp.controller.StorageController', {
     removeStoredQuestions: function(categories, promise) {
         var me = this;
                 
-        me.getStoredQuestionObject(function(questionObj) {
+        me.getStoredQuestionIdObject(function(questionObj) {
             for(var category in categories) delete questionObj[category];
-            me.setStoredQuestionObject(questionObj, promise);
+            me.setStoredQuestionIdObject(questionObj, promise);
         });
     },
     
