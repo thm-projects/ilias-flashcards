@@ -120,12 +120,11 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             Ext.Viewport.setMasked(false);
         };
 
-        LernApp.app.storageController.storeCardIndexTree(function(data, online) {
-            if(online) {
-                LernApp.app.storageController.storeTests(data, function() {  
-                    actions(data);
-                });
-            } else actions(data);
+        LernApp.app.storageController.storeCardIndexTree(function(online) {
+            LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
+                if(online) LernApp.app.storageController.storeTests(treeObj);
+                actions(treeObj);
+            });
         });
     },
     
@@ -261,7 +260,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
                 var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
                     questions: questions,
-                    showOnly: true
+                    showOnlyQuestion: true
                 });
                 LernApp.app.main.navigation.push(panel);
             });
