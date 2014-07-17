@@ -90,9 +90,9 @@ switch (lang) {
             CARD_INDEX: 'Fragenkatalog',
             LEARN_LEARN_CARDS: 'Lernen',
             SHOW_LEARN_CARDS: 'Durchblättern',
-            SHOW_RANDOM_CARDS: 'Zufällig anzeigen',
+            SHOW_RANDOM_CARDS: 'Zufallstest generieren',
             SHOW_CARD_INDEX: 'Anzeigen',
-            EDIT_CARD_INDEX: 'Bearbeiten',
+            EDIT_CARD_INDEX: 'Auswählen',
             FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden',
             DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?',
             
@@ -107,6 +107,7 @@ switch (lang) {
             AFTER_NEXT_SESSION: 'Übernächste Session',
             NO_REPEAT: 'Keine Wiederholung',
             SELF_ASSESSMENT: 'Selbsteinschätzung',
+            PLEASE_CHOOSE: 'Bitte wählen Sie zuerst eine oder mehrere Kategorien im Menüpunkt "Auswählen".',
             
             /** temporary */
             CHANGE: 'Ändern',

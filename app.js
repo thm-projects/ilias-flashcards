@@ -92,6 +92,7 @@ Ext.application({
     
     controllers: [
         'Navigation',
+        'LoginController',
         'StorageController'
     ],
     
@@ -99,7 +100,12 @@ Ext.application({
     isIconPrecomposed: true,
     statusBarStyle: 'default',
     
-    daysToReloadData: 0,
+    
+    /**
+     * app configuration
+     */
+    daysUntilReloadData: 3,
+    randomQuestionCount: 10,
     
     launch: function() {
         // Destroy the #appLoadingIndicator element

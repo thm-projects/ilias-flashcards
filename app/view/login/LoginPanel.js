@@ -54,6 +54,8 @@ Ext.define('LernApp.view.login.LoginPanel', {
     initialize: function() {
         this.callParent(arguments);
         
+        var me = this;
+        
         this.loginFieldSet = Ext.create('Ext.form.FieldSet', {
             instructions: Messages.ENTER_YOUR_DATA,
             width: '300px',
@@ -78,16 +80,13 @@ Ext.define('LernApp.view.login.LoginPanel', {
             text    : 'Anmelden',
             ui      : 'confirm',
             handler : function() {
-                Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });      
-                
-                /** change navigation to home.HomeNavigation */
-                var task = Ext.create('Ext.util.DelayedTask', function () {
-                    LernApp.app.getController('Navigation').changeNavigation(
-                            Ext.create('LernApp.view.home.HomeNavigation')
-                    );
-                });
-                
-                task.delay(100);
+                //this.disable();
+                Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });
+                var fieldsetItems = me.loginFieldSet.getInnerItems();
+                LernApp.app.getController('LoginController').login(
+                    fieldsetItems[0].getValue(), 
+                    fieldsetItems[1].getValue()
+                );
             }
         });
         

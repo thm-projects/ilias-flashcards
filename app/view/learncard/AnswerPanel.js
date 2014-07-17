@@ -64,8 +64,8 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                 
                 /** disable saveButton */
                 this.disable();
-
-                if(answerPanel.selection) {
+                
+                if(answerPanel.selection && !answerPanel.showOnlyAnswers) {
                     /** 
                      * show confirm panel over saveButton,
                      * align panel slightly over the button,
@@ -288,7 +288,6 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             }
         });
 
-        console.log(correctAnswers);
         return correctAnswers;
     },
     
