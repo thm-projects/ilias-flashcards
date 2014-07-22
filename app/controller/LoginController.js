@@ -42,43 +42,46 @@ Ext.define('LernApp.controller.LoginController', {
     },
     
     /**
-     * changes the current navigation view to a new one
+     * Login handler. Tries to connect to specified server application
+     * and performs steps on success or failure.
      * 
-     * @param: newNavigation - new navigation view 
-     * @param: navigateBack  - true if navigating back
+     * @param: uname - entered username
+     * @param: upass - entered password
+     * @param: loginPanel - panel where login credentials have been entered
      */
-    login: function(uname, upass) {
+    login: function(uname, upass, loginPanel) {
         LernApp.app.proxy.login(uname, upass, {
             success: function() {
                 LernApp.app.storageController.setLoggedInUser(uname, function() {
-                    LernApp.app.getController('Navigation').changeNavigation(
-                            Ext.create('LernApp.view.home.HomeNavigation')
-                    );
-                    Ext.Viewport.setMasked(false);
+                    var navigation = Ext.create('LernApp.view.home.HomeNavigation');
+                    LernApp.app.getController('Navigation').changeNavigation(navigation);                    
+                });
+            },         
+            failure: function() {
+                LernApp.app.proxy.check({
+                    success: function() {
+                        loginPanel.markLoginFieldSet();
+                    },
+                    failure: function() {
+                        Ext.Msg.alert('', Messages.CONNECTION_ERROR, Ext.emptyFn);
+                    }
                 });
             },
-            failure: function() {
-                alert('bad login');
+            callback: function() {
+                loginPanel.enableConfirmButton();
                 Ext.Viewport.setMasked(false);
             }
         });
     },
     
+    /**
+     * Logout handler. Performs action required for a logout.
+     */
     logout: function() {
-        LernApp.app.proxy.logout({
-            success: function() {
-                //should not happen
-                alert('bad logout');
-            },
-            failure: function() {
-                // successfull logout
-                localforage.setItem('loggedInUser', '').then(function() {
-                    LernApp.app.getController('Navigation').changeNavigation(
-                            Ext.create('LernApp.view.login.LoginNavigation'), true
-                    );
-                    Ext.Viewport.setMasked(false);
-                });
-            }
+        localforage.setItem('loggedInUser', '').then(function() {
+            var navigation = Ext.create('LernApp.view.login.LoginNavigation');
+            LernApp.app.getController('Navigation').changeNavigation(navigation, true);
+            Ext.Viewport.setMasked(false);
         });
     }
 });

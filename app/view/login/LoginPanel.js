@@ -57,7 +57,7 @@ Ext.define('LernApp.view.login.LoginPanel', {
         var me = this;
         
         this.loginFieldSet = Ext.create('Ext.form.FieldSet', {
-            instructions: Messages.ENTER_YOUR_DATA,
+            instructions: Messages.LOGIN_DATA,
             width: '300px',
             style: 'margin-bottom: 15px',
             
@@ -79,13 +79,14 @@ Ext.define('LernApp.view.login.LoginPanel', {
         this.confirmButton = Ext.create('Ext.Button', {
             text    : 'Anmelden',
             ui      : 'confirm',
+            style   : 'overflow: visible',
             handler : function() {
-                //this.disable();
+                this.disable();
                 Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });
                 var fieldsetItems = me.loginFieldSet.getInnerItems();
                 LernApp.app.getController('LoginController').login(
                     fieldsetItems[0].getValue(), 
-                    fieldsetItems[1].getValue()
+                    fieldsetItems[1].getValue(), me
                 );
             }
         });
@@ -105,5 +106,20 @@ Ext.define('LernApp.view.login.LoginPanel', {
             this.loginFieldSet, 
             this.confirmButton
         ]);
+    },
+    
+    /** enables confirm button */
+    enableConfirmButton: function() {
+        this.confirmButton.enable();
+    },
+    
+    /** mark placeholders and change loginFieldSet instructions */
+    markLoginFieldSet: function() {
+        var me = this;
+        this.loginFieldSet.getInnerItems().forEach(function(field){
+            field.setValue("");
+            me.loginFieldSet.setInstructions(Messages.LOGIN_FAILED);
+            field.element.select(".x-form-field").addCls('formInvalid');
+        });
     }
 });

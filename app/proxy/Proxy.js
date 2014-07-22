@@ -29,12 +29,57 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.proxy.JsonProxy', {
-    extend: 'Ext.data.proxy.JsonP',
-    xtype: 'jsonProxy',
+Ext.define('LernApp.proxy.Proxy', {
+    extend: 'Ext.data.proxy.Ajax',
+    xtype: 'proxy',
 
     config: {
-        url: "http://ilias-staging.mni.thm.de:8080/connector-service/ilias/",
+        url: "http://ilias-staging.mni.thm.de:8080/connector-service/ilias/"
+    },
+    
+    /** checks online status of service */
+    check: function(callback) {
+        Ext.Ajax.request({
+            url: this.config.url + "check",
+            withCredentials: true,
+            method : 'GET',
+            
+            success: function(response) {
+                if(response.responseText = 'OK') {
+                    callback.success.call(this, arguments);
+                }
+            },
+            
+            failure: function(response, test, test2) {
+                callback.failure.apply(this, arguments);
+            }
+        })
+    },
+    
+    /** perform login through basic auth */
+    login: function(uname, upass, callback) {
+        Ext.Ajax.request({
+           url: this.config.url + "login",
+           withCredentials: true,
+           method : 'GET',
+           headers: {
+               'Authorization': 'Basic ' + btoa(uname + ':' + upass)
+           },
+           
+           success: function(response) {
+               if(response.responseText = 'OK') {
+                   callback.success.call(this, arguments);
+               }
+           },
+           
+           failure: function(response) {
+               callback.failure.apply(this, arguments);
+           },
+           
+           callback: function(response) {
+               callback.callback.apply(this, arguments);
+           }
+        });
     },
     
     /**
@@ -48,7 +93,7 @@ Ext.define('LernApp.proxy.JsonProxy', {
             url : this.config.url + "1",
             method : 'GET',
             withCredentials: true,
-            useDefaultXhrHeader: false,
+            
             
             success: function(response) {
                 if (response.status === 204) {
@@ -82,10 +127,7 @@ Ext.define('LernApp.proxy.JsonProxy', {
         Ext.Ajax.request({
             url : this.config.url + "question/" + refId,
             method : 'GET',
-            username : 'test',
-            password : 'test',
             withCredentials: true,
-            useDefaultXhrHeader: false,
             
             success: function(response) {
                 if (response.status === 204) {
@@ -123,10 +165,7 @@ Ext.define('LernApp.proxy.JsonProxy', {
         Ext.Ajax.request({
             url : this.config.url + "question/" + refId + "?source=ALL",
             method : 'GET',
-            username : 'test',
-            password : 'test',
             withCredentials: true,
-            useDefaultXhrHeader: false,
             
             success: function(response) {
                 if (response.status === 204) {
