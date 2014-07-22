@@ -98,7 +98,10 @@ switch (lang) {
             CONNECTION_ERROR: 'Momentan ist keine Verbindung zum Server möglich. Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.',
             DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?',
             
-            
+            VIEW: 'Ansicht',
+            TREE: 'Hierarchisch',
+            TEST: 'Nur Tests',
+            VIEW_OPTIONS: 'Ansichtseinstellung',
             DIFFICULTY: 'Schwierigkeit',
             REQUEST_AGAIN: 'Erneute Abfrage',
             DIFFICULT: 'Schwer',

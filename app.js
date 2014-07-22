@@ -36,7 +36,7 @@ Ext.application({
 
     requires: [
         'LernApp.view.Main',
-        'LernApp.proxy.JsonProxy',
+        'LernApp.proxy.Proxy',
         'LernApp.prototype.CustomMessageBox'
     ],
 
@@ -111,7 +111,7 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
         
-        this.proxy = Ext.create('LernApp.proxy.JsonProxy');
+        this.proxy = Ext.create('LernApp.proxy.Proxy');
         this.storageController = LernApp.app.getController('StorageController');
         
         // Initialize the main view

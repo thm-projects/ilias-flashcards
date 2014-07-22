@@ -379,8 +379,10 @@ Ext.define('LernApp.controller.StorageController', {
                        });
                        
                        testObj[test.refId] = {
+                           leaf: true,
                            title: cat.title,
                            questions: questions,
+                           id: parseInt(test.refId),
                            isRandomTest: cat.isRandomTest,
                            questionCount: cat.questionCount,
                            randomQuestionCount: cat.randomQuestionCount

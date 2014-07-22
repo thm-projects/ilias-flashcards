@@ -149,12 +149,28 @@
 	border-bottom: none;
 }
 
+.viewChangePanel .x-panel-inner {
+	max-width: 80%;
+	min-width: 290px;
+	margin-bottom: 10px;
+	background: black !important;	
+}
+
+.viewChangePanel .titleLabel {
+	color: white;
+	text-align: center;
+	font-size: 1.1em;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
 .saveConfirmPanel .x-panel-inner {
 	max-width: 80%;
 	min-width: 290px;
 	margin-bottom: 10px;
 	background: black !important;	
 }
+
 
 .saveConfirmPanel .x-button-label {
 	display: inline;

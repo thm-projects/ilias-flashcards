@@ -38,7 +38,8 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         'LernApp.view.home.OverviewPanel',
         'LernApp.view.home.SettingsPanel',
         'LernApp.view.home.UserPanel',
-        'Ext.util.DelayedTask'
+        'Ext.util.DelayedTask',
+        'Ext.SegmentedButton'
     ],
     
     config: {
@@ -55,6 +56,8 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     initialize: function() {
         this.callParent(arguments);
         this.instanciateComponents();
+        
+        var me = this;
 
         this.logoutButton = Ext.create('Ext.Button', {
             text    : Messages.LOGOUT,
@@ -68,8 +71,72 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             }
         });
         
-        /** add logout button to navigationBar */
+        this.viewButton = Ext.create('Ext.Button', {
+            text    : Messages.VIEW,
+            ui      : 'action',
+            align   : 'right',
+            hidden  : true,
+
+            handler : function() {
+                if(me.viewChangePanel.isHidden()) {                    
+                    me.viewChangePanel.showBy(this);
+                    me.viewChangePanel.show();
+                    me.viewChangePanel.hideTask.delay(3000);
+                } else {
+                    me.viewChangePanel.hide();
+                }
+            }
+        });
+        
+        this.viewChangePanel = Ext.create('Ext.Panel', {
+            top: -1000,
+            hidden: true,
+            cls: 'viewChangePanel',
+            hideTask : Ext.create('Ext.util.DelayedTask', function () {
+                me.viewChangePanel.hide();
+            }),
+
+            items: [
+                {
+                    xtype: 'label',
+                    cls: 'titleLabel',
+                    html: Messages.VIEW_OPTIONS
+                },
+                {
+                    xtype   : 'segmentedbutton',
+                    itemId  : 'viewChangeButton',
+                    align   : 'center',
+                    allowDepress: false,
+                    items: [{
+                        width: '50%',
+                        itemId: 'tree',
+                        text: Messages.TREE,
+                        handler: function () {
+                            var main = LernApp.app.main;
+                            var panel = main.navigation.getActiveItem();
+                            me.viewChangePanel.hideTask.cancel();
+                            me.viewChangePanel.hideTask.delay(3000);
+                            panel.setDisplayMode('tree');
+                        }
+                    }, {
+                        width: '50%',
+                        itemId: 'test',
+                        text: Messages.TEST,
+                        handler: function () {
+                            var main = LernApp.app.main;
+                            var panel = main.navigation.getActiveItem();
+                            me.viewChangePanel.hideTask.cancel();
+                            me.viewChangePanel.hideTask.delay(3000);
+                            panel.setDisplayMode('test');
+                        }
+                    }]
+                }
+            ]
+        });
+        
+        /** add buttons to navigationBar */
         this.getNavigationBar().add(this.logoutButton);
+        this.getNavigationBar().add(this.viewButton);
         
         /** initialize listeners */
         this.on('initialize', this.onInitialize);
@@ -85,6 +152,8 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     
     /** actions to fulfill on initialization */
     onInitialize: function() {
+        var me = this;
+        
         LernApp.app.main.tabPanel.addBeforeLastTab(
                 this.userPanel
         );
@@ -92,6 +161,17 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         LernApp.app.main.tabPanel.addBeforeLastTab(
                 this.settingsPanel
         );
+        
+        LernApp.app.storageController.getStoredSetting('preferedView', function(view) {
+            var viewChangeButton = me.viewChangePanel.down('#viewChangeButton');
+            var innerButtons = viewChangeButton.getInnerItems();
+            
+            if(typeof view !== 'undefined') {
+                innerButtons.forEach(function(item, index) {
+                    if(item.getItemId() == view) viewChangeButton.setPressedButtons([index]);
+                });
+            } 
+        });
     },
     
     

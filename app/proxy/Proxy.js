@@ -56,7 +56,11 @@ Ext.define('LernApp.proxy.Proxy', {
         })
     },
     
-    /** perform login through basic auth */
+    /** 
+     * perform login through basic auth 
+     * @param uname: username
+     * @param upass: password
+     */
     login: function(uname, upass, callback) {
         Ext.Ajax.request({
            url: this.config.url + "login",

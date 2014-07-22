@@ -58,7 +58,6 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             text: Messages.CONTINUE,
             ui: 'confirm',
             handler: function() {
-                var saveConfirmPanel = LernApp.app.main.navigation.getActiveItem().saveConfirmPanel;
                 var main = LernApp.app.main;
                 var answerPanel = main.navigation.getActiveItem();
                 
@@ -72,7 +71,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                      * mask out navigation view
                      */
                     saveConfirmPanel.showBy(this, 'bc-tc');
-                    saveConfirmPanel.setTop(saveConfirmPanel.getTop() - 10);
+                    saveConfirmPanel.setTop(me.saveConfirmPanel.getTop() - 10);
                     LernApp.app.main.navigation.getActiveItem().mask();
                     saveConfirmPanel.show();
                 } else {

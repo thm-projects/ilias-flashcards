@@ -47,6 +47,12 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         displayField        : 'title',
         useTitleAsBackText  : false,
         backButtonHiddenState: true,
+        selectedDisplayMode : 'tree',
+        
+        displayModes        : {
+            tree: 'tree',
+            test: 'test'
+        },
         
         layout: {
             type: 'card',
@@ -96,7 +102,32 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             }
         });
         
-        this.setStoreData();
+        /**
+         * get prefered view and set store data
+         */
+        this.on('initialize', function() {
+            LernApp.app.storageController.getStoredSetting('preferedView', function(view) {
+                if(typeof view !== 'undefined') {
+                    me.config.selectedDisplayMode = view;
+                } 
+                
+                me.setStoreData();
+            });
+        });
+
+        /**
+         * show viewchange button when panel is painted
+         */
+        this.onAfter('painted', function() {
+            LernApp.app.main.navigation.viewButton.show();
+        });
+        
+        /**
+         * hide viewchange button when panel is deactivated
+         */
+        this.on('deactivate', function() {
+            LernApp.app.main.navigation.viewButton.hide();
+        });
         
         /**
          * listeners to perfom on specified events
@@ -105,6 +136,21 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         this.onBefore('painted', this.onActivate);
         this.onAfter('itemtap', this.modifyToolbarTitles);
         this.onBefore('activeitemchange', this.onListChange);
+        this.element.on('tap', function(e) { 
+            if(!LernApp.app.main.navigation.viewChangePanel.isHidden()) {
+                LernApp.app.main.navigation.viewChangePanel.hide();
+            }
+        });
+    },
+    
+    setDisplayMode: function(mode) {        
+        if(mode == this.config.displayModes.test) {
+            this.config.selectedDisplayMode = mode;
+        } else {
+            this.config.selectedDisplayMode = this.config.displayModes.tree;
+        }
+        LernApp.app.storageController.storeSetting('preferedView', this.config.selectedDisplayMode);
+        this.setStoreData();
     },
     
     /**
@@ -119,11 +165,26 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
             Ext.Viewport.setMasked(false);
         };
+        
+        var actions2 = function(data) {
+            var newData = [];
+            Object.keys(data).map(function(value, index) {
+                newData[index] = data[value];
+            });
+            actions(newData);
+        };
 
         LernApp.app.storageController.storeCardIndexTree(function(online) {
             LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
-                if(online) LernApp.app.storageController.storeTests(treeObj);
-                actions(treeObj);
+                if(online) {
+                    LernApp.app.storageController.storeTests(treeObj);
+                }
+                if(me.config.selectedDisplayMode === me.config.displayModes.tree) {
+                    actions(treeObj);
+                }
+                else LernApp.app.storageController.getStoredTestObject(function(tests) {
+                    actions2(tests);
+                });
             });
         });
     },
@@ -253,10 +314,10 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             me.selectListItem(node);
         }
         else if (node.isLeaf()) {
+            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade Fragen'});
             me.fireEvent('leafitemtap', this, list, index, target, record, e);
             me.goToLeaf(node);
-            
-            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade Fragen'});
+
             LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
                 var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
                     questions: questions,
