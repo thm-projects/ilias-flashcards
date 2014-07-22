@@ -60,7 +60,7 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
         this.cardIndexFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.CARD_INDEX,
             cls: 'standardForm',
-            width: '300px',
+            width: '310px',
             style: 'margin-top: 20px',
         });
         

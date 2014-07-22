@@ -69,7 +69,8 @@ switch (lang) {
             ANSWER: 'Antwort',
             CONTINUE: 'Fortsetzen',
             PERSONAL_DATA: 'Ihre Daten:',
-            ENTER_YOUR_DATA: 'Bitte geben Sie Ihre Login-Daten ein',
+            LOGIN_DATA: 'Bitte geben Sie Ihre Login-Daten ein.',
+            LOGIN_FAILED: 'Login leider nicht erfolgreich.',
             USERNAME: 'Benutzername',
             PASSWORD: 'Password',
             LOGOUT: 'Logout',
@@ -94,7 +95,9 @@ switch (lang) {
             SHOW_CARD_INDEX: 'Anzeigen',
             EDIT_CARD_INDEX: 'Auswählen',
             FEATURE_COMING_SOON: 'In der Vorschau noch nicht vorhanden',
+            CONNECTION_ERROR: 'Momentan ist keine Verbindung zum Server möglich. Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.',
             DELETION_NOTICE: 'Wenn Sie eine Kategorie löschen, werden die dazugehörigen Unterkategorien ebenfalls gelöscht. Möchten Sie fortfahren?',
+            
             
             DIFFICULTY: 'Schwierigkeit',
             REQUEST_AGAIN: 'Erneute Abfrage',
