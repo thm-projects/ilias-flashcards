@@ -69,7 +69,7 @@ Ext.define('LernApp.proxy.Proxy', {
             withCredentials: true,
             method: 'GET',
             
-            success: function(reponse) {
+            success: function(response) {
                 if(response.responseText = 'OK') {
                     callback.success.call(this, arguments);
                 }
