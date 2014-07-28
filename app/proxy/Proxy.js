@@ -41,6 +41,7 @@ Ext.define('LernApp.proxy.Proxy', {
     check: function(callback) {
         Ext.Ajax.request({
             url: this.config.url + "check",
+            useDefaultXhrHeader: false,
             withCredentials: true,
             method : 'GET',
             
@@ -64,6 +65,7 @@ Ext.define('LernApp.proxy.Proxy', {
     checkLogin: function(callback) {
         Ext.Ajax.request({
             url: this.config.url + "checkLogin",
+            useDefaultXhrHeader: false,
             withCredentials: true,
             method: 'GET',
             
@@ -87,6 +89,7 @@ Ext.define('LernApp.proxy.Proxy', {
     login: function(uname, upass, callback) {
         Ext.Ajax.request({
            url: this.config.url + "login",
+           useDefaultXhrHeader: false,
            withCredentials: true,
            method : 'POST',
            params: {
@@ -114,9 +117,9 @@ Ext.define('LernApp.proxy.Proxy', {
     getCardIndexTree: function(callback) {
         Ext.Ajax.request({
             url : this.config.url + "1",
-            method : 'GET',
+            useDefaultXhrHeader: false,
             withCredentials: true,
-            
+            method : 'GET',
             
             success: function(response) {
                 if (response.status === 204) {
@@ -148,9 +151,10 @@ Ext.define('LernApp.proxy.Proxy', {
      */
     getRandomQuestions: function(refId, callbacks) {
         Ext.Ajax.request({
-            url : this.config.url + "question/" + refId,
-            method : 'GET',
+            url : this.config.url + "question/" + refId,       
+            useDefaultXhrHeader: false,
             withCredentials: true,
+            method : 'GET',
             
             success: function(response) {
                 if (response.status === 204) {
@@ -187,8 +191,9 @@ Ext.define('LernApp.proxy.Proxy', {
     getAllQuestions: function(refId, callbacks) {
         Ext.Ajax.request({
             url : this.config.url + "question/" + refId + "?source=ALL",
-            method : 'GET',
+            useDefaultXhrHeader: false,
             withCredentials: true,
+            method : 'GET',
             
             success: function(response) {
                 if (response.status === 204) {
