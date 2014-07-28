@@ -285,6 +285,7 @@ Ext.define('LernApp.view.home.UserPanel', {
      * reloads all stores and call summerizeCategoryData for each store
      */
     loadAllStores: function() {
+        var me = this;
         this.allCategoryStore.removeAll();
         
         /** load publicLawStore */
@@ -296,20 +297,24 @@ Ext.define('LernApp.view.home.UserPanel', {
         
         /** load criminalLawStore */
         this.criminalLawStore.load({
-            callback: this.summerizeCategoryData
+            callback: function(records, operation, success) {
+                me.summerizeCategoryData(records, me);
+            }
         });
         
         /** load civilianLawStore */
         this.civilianLawStore.load({
-            callback: this.summerizeCategoryData
+            callback: function(records, operation, success) {
+                me.summerizeCategoryData(records, me);
+            }
         });
     },
     
     /**
      * function callback to summerize data from stores
      */
-    summerizeCategoryData: function(records, operation, success) {
-        var store    = LernApp.app.main.tabPanel.down('#userPanel').allCategoryStore;
+    summerizeCategoryData: function(records, me) {
+        var store    = me.allCategoryStore;
         var data     = store.getData();
 
         data.each(function(element, index, array) {

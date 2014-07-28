@@ -101,11 +101,12 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     pressedDelay: 100,
                     handler : function() {
                         var button = this;
-                        this.disable();
+                        button.disable();
                         Ext.Viewport.setMasked({xtype:'loadmask'});
                         LernApp.app.storageController.getStoredSelectedTests(function(testObj) {
                             if(Object.keys(testObj).length == 0) {
                                 me.messageBox.show();
+                                button.enable();
                             } else {
                                 var panel = Ext.create('LernApp.view.home.TestOverviewPanel', {
                                     testObj: testObj
@@ -113,7 +114,6 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                                 LernApp.app.main.navigation.push(panel);
                             }
                             Ext.Viewport.setMasked(false);
-                            button.enable();
                         });
                     }
                 }, {
@@ -128,6 +128,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                         LernApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
                             if(Object.keys(questions).length == 0) {
                                 me.messageBox.show();
+                                button.enable();
                             } else {
                                 var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
                                     questions: questions,
@@ -137,7 +138,6 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                                 LernApp.app.main.navigation.push(panel);
                             }
                             Ext.Viewport.setMasked(false);
-                            button.enable();
                         });
                     }
                 }
@@ -157,6 +157,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.SHOW_CARD_INDEX,
                     cls     : 'forwardListButton',
                     handler : function() {
+                        var button = this;
+                        button.disable();
                         Ext.Viewport.setMasked({xtype:'loadmask'});
                         var panel = Ext.create('LernApp.view.cardindex.CardIndex')
                         LernApp.app.main.navigation.push(panel);
@@ -167,6 +169,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.EDIT_CARD_INDEX,
                     cls     : 'forwardListButton',
                     handler : function() {
+                        var button = this;
+                        button.disable();
                         Ext.Viewport.setMasked({xtype:'loadmask'});
                         var panel = Ext.create('LernApp.view.cardindex.CardIndex', {edit: true});
                         LernApp.app.main.navigation.push(panel);
@@ -185,6 +189,15 @@ Ext.define('LernApp.view.home.OverviewPanel', {
          */
         this.onAfter('painted', function() {
             LernApp.app.main.navigation.logoutButton.show();
+            
+            this.learnCardFieldSet.getInnerItems().forEach(function(item) {
+                item.enable();
+            });
+            
+            this.cardIndexFieldSet.getInnerItems().forEach(function(item) {
+                item.enable();
+            });
+            
         });
         
         /**

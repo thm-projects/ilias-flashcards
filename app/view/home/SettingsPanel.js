@@ -188,15 +188,13 @@ Ext.define('LernApp.view.home.SettingsPanel', {
         
         /** restore value from notificationToggle */
         me.controller.getStoredSetting(toggle.getId(), function(value) {
-            if(typeof value !== 'undefined')
-                toggle.setValue(value);
+            if(value !== null) toggle.setValue(value);
         });
         
         /** restore values from sliders */
         me.iterateThroughSliders(function(slider) {
             me.controller.getStoredSetting(slider.getId(), function(value) {
-                if(typeof value !== 'undefined')
-                    slider.setValues(value);
+                if(value !== null) slider.setValues(value);
             });
         });
     },
