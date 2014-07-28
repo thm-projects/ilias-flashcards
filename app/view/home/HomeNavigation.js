@@ -91,6 +91,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         this.viewChangePanel = Ext.create('Ext.Panel', {
             top: -1000,
             hidden: true,
+            isInitialized: false,
             cls: 'viewChangePanel',
             hideTask : Ext.create('Ext.util.DelayedTask', function () {
                 me.viewChangePanel.hide();
@@ -110,26 +111,21 @@ Ext.define('LernApp.view.home.HomeNavigation', {
                     items: [{
                         width: '50%',
                         itemId: 'tree',
-                        text: Messages.TREE,
-                        handler: function () {
-                            var main = LernApp.app.main;
-                            var panel = main.navigation.getActiveItem();
-                            me.viewChangePanel.hideTask.cancel();
-                            me.viewChangePanel.hideTask.delay(3000);
-                            panel.setDisplayMode('tree');
-                        }
+                        text: Messages.TREE
                     }, {
                         width: '50%',
                         itemId: 'test',
-                        text: Messages.TEST,
-                        handler: function () {
+                        text: Messages.TEST
+                    }],
+                    listeners: {
+                        toggle: function(container, button, pressed){
                             var main = LernApp.app.main;
                             var panel = main.navigation.getActiveItem();
                             me.viewChangePanel.hideTask.cancel();
                             me.viewChangePanel.hideTask.delay(3000);
-                            panel.setDisplayMode('test');
+                            panel.setDisplayMode(button.getItemId());
                         }
-                    }]
+                    }
                 }
             ]
         });
@@ -139,7 +135,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         this.getNavigationBar().add(this.viewButton);
         
         /** initialize listeners */
-        this.on('initialize', this.onInitialize);
+        this.on('painted', this.onInitialize);
         this.on('destroy', this.onDestroy);
     },
     
@@ -152,28 +148,38 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     
     /** actions to fulfill on initialization */
     onInitialize: function() {
-        var me = this;
-        
         LernApp.app.main.tabPanel.addBeforeLastTab(
-                this.userPanel
+            this.userPanel
         );
         
         LernApp.app.main.tabPanel.addBeforeLastTab(
-                this.settingsPanel
+            this.settingsPanel
         );
-        
-        LernApp.app.storageController.getStoredSetting('preferedView', function(view) {
-            var viewChangeButton = me.viewChangePanel.down('#viewChangeButton');
-            var innerButtons = viewChangeButton.getInnerItems();
-            
-            if(typeof view !== 'undefined') {
-                innerButtons.forEach(function(item, index) {
-                    if(item.getItemId() == view) viewChangeButton.setPressedButtons([index]);
-                });
-            } 
-        });
     },
     
+    /** sets pressed property of segmented button */
+    setPressedButton: function(promise) {
+        var me = this;
+
+        LernApp.app.storageController.getStoredSetting('preferedView', function(view) {
+            if(!me.viewChangePanel.isInitialized) {  
+                var selView, 
+                    viewChangeButton = me.viewChangePanel.down('#viewChangeButton'),
+                    innerButtons = viewChangeButton.getInnerItems();
+
+                if(view !== null) { selView = view; }
+                else { selView = innerButtons[0].getItemId() }
+                
+                innerButtons.forEach(function(item, index) {
+                    if(item.getItemId() == selView) viewChangeButton.setPressedButtons([index]);
+                });
+    
+                me.viewChangePanel.isInitialized = true;
+                promise(false);
+            }
+            else promise(true, view);
+        });
+    },
     
     /** actions to fulfill on panel destroy */
     onDestroy: function() {

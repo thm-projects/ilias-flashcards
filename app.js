@@ -104,19 +104,26 @@ Ext.application({
     /**
      * app configuration
      */
-    daysUntilReloadData: 3,
-    randomQuestionCount: 10,
+    daysUntilReloadData:    7,
+    daysUntilLoginExpires:  14,
+    randomQuestionCount:    10,
+
     
-    launch: function() {
-        // Destroy the #appLoadingIndicator element
+    launch: function() {    
+        var me = this;
+        
+        /** destroy loading indicator */
         Ext.fly('appLoadingIndicator').destroy();
         
         this.proxy = Ext.create('LernApp.proxy.Proxy');
-        this.storageController = LernApp.app.getController('StorageController');
+        this.storageController = this.getController('StorageController');
         
-        // Initialize the main view
         this.main = Ext.create('LernApp.view.Main');
-        Ext.Viewport.add(this.main);
+        
+        this.getController('LoginController').checkLogin(function(loginState) {
+            me.main.initializeComponents(loginState);
+            Ext.Viewport.add(me.main);
+        });
     },
 
     onUpdated: function() {

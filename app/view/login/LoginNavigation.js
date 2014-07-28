@@ -49,10 +49,10 @@ Ext.define('LernApp.view.login.LoginNavigation', {
     
     initialize: function() {
         this.callParent(arguments);
-        
         this.instanciateComponents();
-        this.push(this.welcomePanel);
         
+        this.push(this.welcomePanel);
+
         this.on('destroy', this.onDestroy);
     },
     

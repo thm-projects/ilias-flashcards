@@ -49,19 +49,27 @@ Ext.define('LernApp.view.Main', {
     instanciateComponents: function() {
         this.tabPanel = Ext.create('LernApp.view.TabPanel');
         this.aboutPanel = Ext.create('LernApp.view.about.AboutPanel');
-        this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
     },
     
     initialize: function() {
         this.callParent(arguments);
         this.instanciateComponents();
-   
+    },
+    
+    initializeComponents: function(loginState) {
+        /** determine the navigation to loaded */    
+        if(!loginState) {
+            this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
+        } else {
+            this.navigation = Ext.create('LernApp.view.home.HomeNavigation');
+            this.navigation.afterNavigationChange();
+        }
+        
         /** add panels to tabpanel and show them */
-        this.tabPanel.add([this.navigation, this.aboutPanel]);
-        this.aboutPanel.tab.show();
-        this.navigation.tab.show();
+        this.tabPanel.insert(0, this.navigation);
+        this.tabPanel.add([this.aboutPanel]);
         
         /** add tabPanel to main view */
-        this.add([this.tabPanel]);
+        this.add([this.tabPanel]);  
     }
 });
