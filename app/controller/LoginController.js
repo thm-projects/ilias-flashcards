@@ -54,7 +54,8 @@ Ext.define('LernApp.controller.LoginController', {
             success: function() {
                 LernApp.app.storageController.setLoggedInUser(uname, function() {
                     var navigation = Ext.create('LernApp.view.home.HomeNavigation');
-                    LernApp.app.getController('Navigation').changeNavigation(navigation);                    
+                    LernApp.app.getController('Navigation').changeNavigation(navigation);
+                    Ext.Viewport.setMasked(false);
                 });
             },         
             failure: function() {
@@ -64,23 +65,36 @@ Ext.define('LernApp.controller.LoginController', {
                     },
                     failure: function() {
                         Ext.Msg.alert('', Messages.CONNECTION_ERROR, Ext.emptyFn);
+                    },
+                    callback: function() {
+                        loginPanel.enableConfirmButton();
+                        Ext.Viewport.setMasked(false);
                     }
                 });
-            },
-            callback: function() {
-                loginPanel.enableConfirmButton();
-                Ext.Viewport.setMasked(false);
             }
         });
+    },
+    
+    checkLogin: function(promise) {
+        if(LernApp.app.storageController.isUserLoggedIn()) {
+            LernApp.app.proxy.checkLogin({
+                success: function() { 
+                    LernApp.app.storageController.initializeSession();
+                    promise(true); 
+                },
+                failure: function() { promise(false); }
+            });
+        } else promise(false);
     },
     
     /**
      * Logout handler. Performs action required for a logout.
      */
     logout: function() {
-        localforage.setItem('loggedInUser', '').then(function() {
+        localforage.setItem('loggedInUser', null).then(function() {
             var navigation = Ext.create('LernApp.view.login.LoginNavigation');
             LernApp.app.getController('Navigation').changeNavigation(navigation, true);
+            localStorage.removeItem('login');
             Ext.Viewport.setMasked(false);
         });
     }

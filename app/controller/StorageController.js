@@ -72,8 +72,7 @@ Ext.define('LernApp.controller.StorageController', {
     
     /** user specific initialization */
     initializeUserStorage: function(username) {
-        var me = this,
-            obj = new Object();
+        var me = this;
         
         localforage.getItem('initialized', function(initObject) {
             if(typeof initObject[username] === 'undefined') {
@@ -81,18 +80,35 @@ Ext.define('LernApp.controller.StorageController', {
                 /** set initialized object */
                 initObject[username] = true;
                 localforage.setItem('initialized', initObject);
-                
-                /** initialize user specific objects */
                 me.setStoredTimestamp(null);
-                me.setStoredSettingsObject(obj);
-
-                /** initalize tree and test specific objects */
-                me.setStoredTestObject(obj);
-                me.setStoredCategories(obj);
-                me.setStoredIndexTreeObject(obj);
-                me.setStoredQuestionIdObject(obj);
-                me.setAllSelectedQuestionsObject(obj);
+                
+                /** initialize storedSettingsObject */
+                me.setStoredSettingsObject(new Object());
+                
+                /** initialize storedTestObject */
+                me.setStoredTestObject(new Object());
+                
+                /** initialize storedCategoriesObject */
+                me.setStoredCategories(new Object());
+                
+                /** initialize storedIndexTreeObject */
+                me.setStoredIndexTreeObject(new Object());
+                
+                /** initialize storedQuestionIdObject */
+                me.setStoredQuestionIdObject(new Object());
+                
+                /** initialize allSelectedQuestionsObject */
+                me.setAllSelectedQuestionsObject(new Object());
             }
+        });
+    },
+    
+    /** session specific initialization */
+    initializeSession: function(promise) {
+        var me = this;
+        
+        this.getLoggedInUser(function(username) {
+            me.setUsername(username);
         });
     },
     
@@ -179,15 +195,35 @@ Ext.define('LernApp.controller.StorageController', {
     /** getter for loggedInUser */
     getLoggedInUser: function(promise) {
         localforage.getItem('loggedInUser', function(username) {
-            promise(atob(username));
+            promise(username);
         });
     },
     
     /** setter for loggedInUser */
     setLoggedInUser: function(username, promise) {
+        var date = new Date();
+        
         this.setUsername(btoa(username));
         this.initializeUserStorage(this.getUsername());
+        localStorage.setItem('login', date.getTime());
         localforage.setItem('loggedInUser', this.getUsername()).then(promise);
+    },
+    
+    /** returns login state */
+    isUserLoggedIn: function() {
+        var date = new Date(),
+            returnVal = false,
+            oneDay = 1000 * 60 * 60 * 24,
+            loginTimestamp = localStorage.getItem('login'),
+            daysUntilReload = Math.round((date.getTime() - loginTimestamp) / oneDay);
+
+        if(loginTimestamp != null) {
+            if(daysUntilReload < LernApp.app.daysUntilLoginExpires) {
+                returnVal = true;
+            }
+        }
+        
+        return returnVal;
     },
     
     /** generic getter method */
@@ -556,9 +592,9 @@ Ext.define('LernApp.controller.StorageController', {
      */
     getStoredSetting: function(settingsKey, promise) {
         var me = this;
-        
         me.getStoredSettingsObject(function(settingsObject) {
-            promise(settingsObject[settingsKey]);
+            if(settingsObject.hasOwnProperty(settingsKey)) promise(settingsObject[settingsKey]);
+            else promise(null);
         });
     }
 });

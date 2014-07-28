@@ -50,14 +50,37 @@ Ext.define('LernApp.proxy.Proxy', {
                 }
             },
             
-            failure: function(response, test, test2) {
+            failure: function(response) {
                 callback.failure.apply(this, arguments);
+            },
+            
+            callback: function(response) {
+                callback.callback.apply(this, arguments);
             }
         })
     },
     
+    /** check login state */
+    checkLogin: function(callback) {
+        Ext.Ajax.request({
+            url: this.config.url + "checkLogin",
+            withCredentials: true,
+            method: 'GET',
+            
+            success: function(reponse) {
+                if(response.responseText = 'OK') {
+                    callback.success.call(this, arguments);
+                }
+            },
+            
+            failure: function(response) {
+                callback.failure.apply(this, arguments);
+            }
+        });
+    },
+    
     /** 
-     * perform login through basic auth 
+     * perform login through basic authentication 
      * @param uname: username
      * @param upass: password
      */
@@ -65,23 +88,19 @@ Ext.define('LernApp.proxy.Proxy', {
         Ext.Ajax.request({
            url: this.config.url + "login",
            withCredentials: true,
-           method : 'GET',
-           headers: {
-               'Authorization': 'Basic ' + btoa(uname + ':' + upass)
+           method : 'POST',
+           params: {
+               username: uname,
+               password: upass,
+               "remember-me": true
            },
            
            success: function(response) {
-               if(response.responseText = 'OK') {
-                   callback.success.call(this, arguments);
-               }
+               callback.success.call(this, arguments);
            },
            
            failure: function(response) {
                callback.failure.apply(this, arguments);
-           },
-           
-           callback: function(response) {
-               callback.callback.apply(this, arguments);
            }
         });
     },
