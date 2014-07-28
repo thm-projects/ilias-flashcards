@@ -94,6 +94,7 @@ Ext.define('LernApp.view.login.LoginPanel', {
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
             width: '240px',
+            height: '98px',
             style: {
                 'margin-top': '20px',
                 'margin-bottom': '10px'

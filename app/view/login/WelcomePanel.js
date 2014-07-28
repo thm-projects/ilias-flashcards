@@ -57,6 +57,7 @@ Ext.define('LernApp.view.login.WelcomePanel', {
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
             width: '310px',
+            height: '126px',
             style: 'margin-top: 30px',
             src: 'resources/icons/logo.png'
         });
