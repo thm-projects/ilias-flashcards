@@ -106,12 +106,9 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
          * get prefered view and set store data
          */
         this.on('initialize', function() {
-            LernApp.app.storageController.getStoredSetting('preferedView', function(view) {
-                if(typeof view !== 'undefined') {
-                    me.config.selectedDisplayMode = view;
-                } 
-                
-                me.setStoreData();
+            var me = this;
+            LernApp.app.main.navigation.setPressedButton(function(isInitialized, view) {
+                if(isInitialized) me.setDisplayMode(view);
             });
         });
 
@@ -143,7 +140,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         });
     },
     
-    setDisplayMode: function(mode) {        
+    setDisplayMode: function(mode) {
         if(mode == this.config.displayModes.test) {
             this.config.selectedDisplayMode = mode;
         } else {
@@ -173,7 +170,6 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             });
             actions(newData);
         };
-
         LernApp.app.storageController.storeCardIndexTree(function(online) {
             LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
                 if(online) {
@@ -196,7 +192,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         if(this.withEditFunction) this.getToolbar().add(this.editToggleField);
         else this.getToolbar().setTitle('');
         
-        LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);  
+        LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
         this.modifyToolbarTitles();
     },
     

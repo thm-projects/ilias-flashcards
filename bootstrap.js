@@ -756,7 +756,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.prototype.CustomMessageBox": [],
   "LernApp.prototype.NavigationView": [],
   "LernApp.prototype.SliderField": [],
-  "LernApp.proxy.JsonProxy": [],
+  "LernApp.proxy.Proxy": [],
   "LernApp.store.CardIndexStore": [],
   "LernApp.store.QuestionStore": [],
   "LernApp.view.Main": [],
@@ -1735,8 +1735,8 @@ Ext.ClassManager.addNameAliasMappings({
   "LernApp.prototype.SliderField": [
     "widget.sliderField"
   ],
-  "LernApp.proxy.JsonProxy": [
-    "widget.jsonProxy"
+  "LernApp.proxy.Proxy": [
+    "widget.proxy"
   ],
   "LernApp.store.CardIndexStore": [
     "widget.cardIndexStore"
