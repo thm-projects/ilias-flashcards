@@ -30,20 +30,20 @@
 */
 
 Ext.define('LernApp.proxy.Proxy', {
-    extend: 'Ext.data.proxy.Ajax',
+    extend: 'Ext.data.Connection',
     xtype: 'proxy',
 
     config: {
-        url: "http://ilias-staging.mni.thm.de:8080/connector-service/ilias/"
+        url: "http://localhost:8080/connector-service/ilias/",
+        useDefaultXhrHeader: false,
+        withCredentials: true,
+        method: 'GET',
     },
     
     /** checks online status of service */
     check: function(callback) {
-        Ext.Ajax.request({
-            url: this.config.url + "check",
-            useDefaultXhrHeader: false,
-            withCredentials: true,
-            method : 'GET',
+        this.request({
+            url: this.getUrl() + "check",
             
             success: function(response) {
                 if(response.responseText = 'OK') {
@@ -57,27 +57,37 @@ Ext.define('LernApp.proxy.Proxy', {
             
             callback: function(response) {
                 callback.callback.apply(this, arguments);
-            }
+            },
+            
+            scope: this
         })
     },
     
     /** check login state */
     checkLogin: function(callback) {
-        Ext.Ajax.request({
-            url: this.config.url + "checkLogin",
-            useDefaultXhrHeader: false,
-            withCredentials: true,
-            method: 'GET',
-            
-            success: function(response) {
-                if(response.responseText = 'OK') {
-                    callback.success.call(this, arguments);
-                }
-            },
-            
-            failure: function(response) {
-                callback.failure.apply(this, arguments);
-            }
+        var me = this;
+       
+        var checkLoginRequest = function() {
+            me.request({
+                url: me.getUrl() + "checklogin",
+                
+                success: function(response) {
+                    if(response.responseText = 'OK') {
+                        callback.success.call(this, arguments);
+                    }
+                },
+                
+                failure: function(response) {
+                    callback.failure.apply(this, arguments);
+                },
+                
+                scope: me
+            });
+        }
+        
+        LernApp.app.storageController.getLoggedInUserObj(function(loginObj) {
+            if(loginObj != null) me.setDefaultHeaders(loginObj.authObj);
+            checkLoginRequest();
         });
     },
     
@@ -87,24 +97,24 @@ Ext.define('LernApp.proxy.Proxy', {
      * @param upass: password
      */
     login: function(uname, upass, callback) {
-        Ext.Ajax.request({
-           url: this.config.url + "login",
-           useDefaultXhrHeader: false,
-           withCredentials: true,
+        this.request({
+           url: this.getUrl() + "login",
            method : 'POST',
+           
            params: {
                username: uname,
-               password: upass,
-               "remember-me": true
+               password: upass
            },
            
            success: function(response) {
-               callback.success.call(this, arguments);
+               callback.success.call(this, Ext.decode(response.responseText));
            },
            
            failure: function(response) {
                callback.failure.apply(this, arguments);
-           }
+           },
+           
+           scope: this
         });
     },
     
@@ -115,11 +125,8 @@ Ext.define('LernApp.proxy.Proxy', {
      * @return false, if nothing found
      */
     getCardIndexTree: function(callback) {
-        Ext.Ajax.request({
-            url : this.config.url + "1",
-            useDefaultXhrHeader: false,
-            withCredentials: true,
-            method : 'GET',
+        this.request({
+            url: this.getUrl() + "1",
             
             success: function(response) {
                 if (response.status === 204) {
@@ -139,7 +146,8 @@ Ext.define('LernApp.proxy.Proxy', {
                     callback.failure.apply(this, arguments);
                 }
             },
-            scope : this
+            
+            scope: this
         });
     },
     
@@ -150,11 +158,8 @@ Ext.define('LernApp.proxy.Proxy', {
      * @return false, if nothing found
      */
     getRandomQuestions: function(refId, callbacks) {
-        Ext.Ajax.request({
-            url : this.config.url + "question/" + refId,       
-            useDefaultXhrHeader: false,
-            withCredentials: true,
-            method : 'GET',
+        this.request({
+            url: this.getUrl() + "question/" + refId,       
             
             success: function(response) {
                 if (response.status === 204) {
@@ -178,7 +183,8 @@ Ext.define('LernApp.proxy.Proxy', {
                     callbacks.failure.apply(this, arguments);
                 }
             },
-            scope : this
+            
+            scope: this
         });
     },
     
@@ -189,11 +195,8 @@ Ext.define('LernApp.proxy.Proxy', {
      * @return false, if nothing found
      */
     getAllQuestions: function(refId, callbacks) {
-        Ext.Ajax.request({
-            url : this.config.url + "question/" + refId + "?source=ALL",
-            useDefaultXhrHeader: false,
-            withCredentials: true,
-            method : 'GET',
+        this.request({
+            url: this.getUrl() + "question/" + refId + "?source=ALL",
             
             success: function(response) {
                 if (response.status === 204) {
@@ -217,7 +220,8 @@ Ext.define('LernApp.proxy.Proxy', {
                     callbacks.failure.apply(this, arguments);
                 }
             },
-            scope : this
+            
+            scope: this
         });
     }
 });

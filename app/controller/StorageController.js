@@ -107,8 +107,8 @@ Ext.define('LernApp.controller.StorageController', {
     initializeSession: function(promise) {
         var me = this;
         
-        this.getLoggedInUser(function(username) {
-            me.setUsername(username);
+        this.getLoggedInUserObj(function(userObj) {
+            me.setUsername(userObj.user);
         });
     },
     
@@ -193,37 +193,32 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** getter for loggedInUser */
-    getLoggedInUser: function(promise) {
-        localforage.getItem('loggedInUser', function(username) {
-            promise(username);
+    getLoggedInUserObj: function(promise) {
+        localforage.getItem('loginObj', function(loginObj) {
+            promise(loginObj);
         });
     },
     
     /** setter for loggedInUser */
-    setLoggedInUser: function(username, promise) {
+    setLoggedInUser: function(username, authObj, promise) {
         var date = new Date();
+            obj = new Object();
         
         this.setUsername(btoa(username));
         this.initializeUserStorage(this.getUsername());
+        
+        obj.user = this.getUsername();
+        obj.authObj = authObj;
+        
         localStorage.setItem('login', date.getTime());
-        localforage.setItem('loggedInUser', this.getUsername()).then(promise);
+        localforage.setItem('loginObj', obj).then(promise);
     },
     
     /** returns login state */
     isUserLoggedIn: function() {
-        var date = new Date(),
-            returnVal = false,
-            oneDay = 1000 * 60 * 60 * 24,
-            loginTimestamp = localStorage.getItem('login'),
-            daysUntilReload = Math.round((date.getTime() - loginTimestamp) / oneDay);
+        var loginTimestamp = localStorage.getItem('login');
 
-        if(loginTimestamp != null) {
-            if(daysUntilReload < LernApp.app.daysUntilLoginExpires) {
-                returnVal = true;
-            }
-        }
-        
-        return returnVal;
+        return loginTimestamp;
     },
     
     /** generic getter method */

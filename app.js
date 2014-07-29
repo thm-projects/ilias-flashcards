@@ -115,9 +115,8 @@ Ext.application({
         /** destroy loading indicator */
         Ext.fly('appLoadingIndicator').destroy();
         
-        this.proxy = Ext.create('LernApp.proxy.Proxy');
         this.storageController = this.getController('StorageController');
-        
+        this.proxy = Ext.create('LernApp.proxy.Proxy');
         this.main = Ext.create('LernApp.view.Main');
         
         this.getController('LoginController').checkLogin(function(loginState) {

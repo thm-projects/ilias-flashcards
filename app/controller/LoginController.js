@@ -50,9 +50,11 @@ Ext.define('LernApp.controller.LoginController', {
      * @param: loginPanel - panel where login credentials have been entered
      */
     login: function(uname, upass, loginPanel) {
+        var me = this;
+        
         LernApp.app.proxy.login(uname, upass, {
-            success: function() {
-                LernApp.app.storageController.setLoggedInUser(uname, function() {
+            success: function(responseObj) {                
+                LernApp.app.storageController.setLoggedInUser(uname, responseObj, function() {
                     var navigation = Ext.create('LernApp.view.home.HomeNavigation');
                     LernApp.app.getController('Navigation').changeNavigation(navigation);
                     Ext.Viewport.setMasked(false);
