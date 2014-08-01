@@ -64,9 +64,16 @@ Ext.define('LernApp.prototype.NavigationView', {
     },
     
     /**
-     * method prototype
+     * method prototypes
      */
+    
+    /** to call after navigation change */
     afterNavigationChange: function() {
         
-    }
+    },
+    
+    /** to call after insertion of navigation to tabPanel or viewport */
+    afterInsertionToViewport: function() {
+        
+    },
 });

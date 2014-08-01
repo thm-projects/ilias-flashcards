@@ -62,12 +62,12 @@ Ext.define('LernApp.view.Main', {
             this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
         } else {
             this.navigation = Ext.create('LernApp.view.home.HomeNavigation');
-            this.navigation.afterNavigationChange();
         }
         
         /** add panels to tabpanel and show them */
-        this.tabPanel.insert(0, this.navigation);
-        this.tabPanel.add([this.aboutPanel]);
+        this.tabPanel.addItem(this.aboutPanel);
+        this.tabPanel.addItem(this.navigation);
+        this.tabPanel.setActiveItem(this.navigation);
         
         /** add tabPanel to main view */
         this.add([this.tabPanel]);  

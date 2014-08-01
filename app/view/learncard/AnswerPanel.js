@@ -221,7 +221,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             });
         } else {
             this.answerTitle = Ext.create('Ext.Panel', {
-                html: '<p class="title">' + Ext.util.Format.htmlEncode('Die richtigen Antworten lautet:') + '<p/>'
+                html: '<p class="title">' + Ext.util.Format.htmlEncode('Die richtigen Antworten lauten:') + '<p/>'
             });
         }
         

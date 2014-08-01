@@ -68,6 +68,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             handler : function() {
                 this.disable();
                 LernApp.app.getController('LoginController').logout();
+                console.log(LernApp.app.main.tabPanel.getInnerItems());
             }
         });
         
@@ -134,27 +135,22 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         this.getNavigationBar().add(this.logoutButton);
         this.getNavigationBar().add(this.viewButton);
         
+        this.push(this.overviewPanel);
+        
         /** initialize listeners */
-        this.on('painted', this.onInitialize);
         this.on('destroy', this.onDestroy);
     },
     
     
     /** actions to fulfill after navigation change (Navigation controller) */
     afterNavigationChange: function() {
-        this.push(this.overviewPanel);
+        this.afterInsertionToViewport();
     },
     
-    
-    /** actions to fulfill on initialization */
-    onInitialize: function() {
-        LernApp.app.main.tabPanel.addBeforeLastTab(
-            this.userPanel
-        );
-        
-        LernApp.app.main.tabPanel.addBeforeLastTab(
-            this.settingsPanel
-        );
+    /** actions to fulfill after navigation is added to tabPanel */
+    afterInsertionToViewport: function() {
+        LernApp.app.main.tabPanel.addItem(this.userPanel);
+        LernApp.app.main.tabPanel.addItem(this.settingsPanel);
     },
     
     /** sets pressed property of segmented button */

@@ -84,14 +84,35 @@ Ext.define('LernApp.view.TabPanel', {
         });
     },
     
+    addItem: function(tab) {
+        var me = this;
+        
+        if(tab.getBaseCls() == "x-navigationview") {
+            me.addAfterFirstTab(tab);
+            tab.afterInsertionToViewport();
+        } else {
+            me.addBeforeLastTab(tab);
+        }
+    },
+    
     /**
-     * insert panel to tabPanel on next-to-last position
+     * insert panel to tabPanel next to first position
+     * 
+     * @param: tab panel to insert
+     */
+    addAfterFirstTab: function(tab) {
+        LernApp.app.main.tabPanel.insert(1, tab);
+    },
+    
+    /**
+     * insert panel to tabPanel on next-to-last position. If only one
+     * index is set, the tabPanel will be inserted on last position
      * 
      * @param: tab panel to insert
      */
     addBeforeLastTab: function(tab) {
-        var lastIndex = LernApp.app.main.tabPanel.getInnerItems().length - 1;
-
-        LernApp.app.main.tabPanel.insert(lastIndex, tab);
+        var lastIndex = LernApp.app.main.tabPanel.getInnerItems().length + 1;
+        if(lastIndex < 2) lastIndex = 2;
+        LernApp.app.main.tabPanel.insert(lastIndex - 1, tab);
     }
 });
