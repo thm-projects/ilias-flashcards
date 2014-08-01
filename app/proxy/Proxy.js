@@ -34,13 +34,22 @@ Ext.define('LernApp.proxy.Proxy', {
     xtype: 'proxy',
 
     config: {
-        url: "http://localhost:8080/connector-service/ilias/",
+        url: "http://ilias-staging.mni.thm.de:8080/connector-service/ilias/",
         useDefaultXhrHeader: false,
         withCredentials: true,
         method: 'GET',
     },
     
-    /** checks online status of service */
+    /**
+     * removes custom headers from requests
+     */
+    resetDefaultRequestHeaders: function() {
+        this.setDefaultHeaders(null);
+    },
+    
+    /** 
+     * checks online status of service 
+     */
     check: function(callback) {
         this.request({
             url: this.getUrl() + "check",
@@ -63,7 +72,9 @@ Ext.define('LernApp.proxy.Proxy', {
         })
     },
     
-    /** check login state */
+    /** 
+     * check login state 
+     */
     checkLogin: function(callback) {
         var me = this;
        
@@ -102,8 +113,8 @@ Ext.define('LernApp.proxy.Proxy', {
            method : 'POST',
            
            params: {
-               username: uname,
-               password: upass
+               uname: uname,
+               upass: upass
            },
            
            success: function(response) {

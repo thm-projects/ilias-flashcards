@@ -55,6 +55,7 @@ Ext.define('LernApp.controller.LoginController', {
         LernApp.app.proxy.login(uname, upass, {
             success: function(responseObj) {                
                 LernApp.app.storageController.setLoggedInUser(uname, responseObj, function() {
+                    LernApp.app.proxy.setDefaultHeaders(responseObj);
                     var navigation = Ext.create('LernApp.view.home.HomeNavigation');
                     LernApp.app.getController('Navigation').changeNavigation(navigation);
                     Ext.Viewport.setMasked(false);
@@ -93,7 +94,8 @@ Ext.define('LernApp.controller.LoginController', {
      * Logout handler. Performs action required for a logout.
      */
     logout: function() {
-        localforage.setItem('loggedInUser', null).then(function() {
+        LernApp.app.storageController.removeLoggedInUser(function() {
+            LernApp.app.proxy.resetDefaultRequestHeaders();
             var navigation = Ext.create('LernApp.view.login.LoginNavigation');
             LernApp.app.getController('Navigation').changeNavigation(navigation, true);
             localStorage.removeItem('login');
