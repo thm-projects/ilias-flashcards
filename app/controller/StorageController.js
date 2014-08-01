@@ -214,6 +214,11 @@ Ext.define('LernApp.controller.StorageController', {
         localforage.setItem('loginObj', obj).then(promise);
     },
     
+    /** removes loginObj */
+    removeLoggedInUser: function(promise) {
+        localforage.removeItem('loginObj').then(promise);
+    },
+    
     /** returns login state */
     isUserLoggedIn: function() {
         var loginTimestamp = localStorage.getItem('login');
