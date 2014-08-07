@@ -82,7 +82,12 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
                 itemId  : key,
                 cls     : 'forwardListButton', 
                 handler : function() {
-                    Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade Fragen'});
+                    Ext.Viewport.add({
+                        masked: {
+                           xtype: 'loadmask'
+                        }
+                    });
+                    
                     LernApp.app.storageController.getStoredQuestions(this.getItemId(), function(questions) {
                         var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
                             questions: questions,

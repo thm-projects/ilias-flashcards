@@ -104,10 +104,6 @@ switch (lang) {
             VIEW_OPTIONS: 'Ansichtseinstellung',
             DIFFICULTY: 'Schwierigkeit',
             REQUEST_AGAIN: 'Erneute Abfrage',
-            DIFFICULT: 'Schwer',
-            COULD_BE_WORSE: 'Geht so',
-            EASY: 'Leicht',
-            LEARNED: 'Erlernt',
             IN_THIS_SESSION: 'Diese Session',
             IN_NEXT_SESSION: 'Nächste Session',
             AFTER_NEXT_SESSION: 'Übernächste Session',
@@ -124,6 +120,19 @@ switch (lang) {
             CHANGE_CATEGORY: 'Kategorie ändern',
             PUBLIC_LAW: 'Öffentliches Recht',
             CRIMINAL_LAW: 'Strafrecht',
-            CIVIL_LAW: 'Zivilrecht'
+            CIVIL_LAW: 'Zivilrecht',
+            
+            FLASHCARD_BOXES: 'Lernkartei Fächer',  
+            FLASHCARD_NOTEDITED: 'Unbearbeitet',
+            FLASHCARD_EASY: 'Leicht',
+            FLASHCARD_COULD_BE_WORSE: 'Geht so',
+            FLASHCARD_DIFFICULT: 'Schwer',
+            FLASHCARD_LEARNED: 'Erlernt',
+            
+            FLASHCARD_BOX1: 'Fach 1:',
+            FLASHCARD_BOX2: 'Fach 2:',
+            FLASHCARD_BOX3: 'Fach 3:',
+            FLASHCARD_BOX4: 'Fach 4:',
+            FLASHCARD_BOX5: 'Fach 5:'
         }
 }
