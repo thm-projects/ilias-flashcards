@@ -35,7 +35,8 @@ Ext.define('LernApp.view.login.LoginNavigation', {
     xtype: 'loginNav',
 
     requires: [
-        'LernApp.view.login.WelcomePanel'
+        'LernApp.view.login.WelcomePanel',
+        'LernApp.view.login.LoginPanel'
     ],
     
     config: {

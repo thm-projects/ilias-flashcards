@@ -63,17 +63,18 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                 
                 /** disable saveButton */
                 this.disable();
+                answerPanel.showOnlyAnswers = false;
                 
-                if(answerPanel.selection && !answerPanel.showOnlyAnswers) {
+                if(/*answerPanel.selection &&*/ !answerPanel.showOnlyAnswers) {
                     /** 
                      * show confirm panel over saveButton,
                      * align panel slightly over the button,
                      * mask out navigation view
                      */
-                    saveConfirmPanel.showBy(this, 'bc-tc');
-                    saveConfirmPanel.setTop(me.saveConfirmPanel.getTop() - 10);
+                    me.saveConfirmPanel.showBy(this, 'bc-tc');
+                    me.saveConfirmPanel.setTop(me.saveConfirmPanel.getTop() - 10);
                     LernApp.app.main.navigation.getActiveItem().mask();
-                    saveConfirmPanel.show();
+                    me.saveConfirmPanel.show();
                 } else {
                     /** show loadmask 'saving' */
                     Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.SAVING });
@@ -109,16 +110,16 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             
             items: [
                 {
-                    text: Messages.DIFFICULT,
+                    text: Messages.FLASHCARD_DIFFICULT,
                     badgeText: Messages.IN_THIS_SESSION
                 }, {
-                    text: Messages.COULD_BE_WORSE,
+                    text: Messages.FLASHCARD_COULD_BE_WORSE,
                     badgeText: Messages.IN_NEXT_SESSION
                 }, {
-                    text: Messages.EASY,
+                    text: Messages.FLASHCARD_EASY,
                     badgeText: Messages.AFTER_NEXT_SESSION
                 }, {
-                    text: Messages.LEARNED,
+                    text: Messages.FLASHCARD_LEARNED,
                     badgeText: Messages.NO_REPEAT
                 }
             ]

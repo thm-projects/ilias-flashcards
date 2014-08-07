@@ -35,7 +35,10 @@ Ext.define('LernApp.view.Main', {
     xtype: 'main',
 
     requires: [
-       'LernApp.view.TabPanel'
+       'LernApp.view.TabPanel',
+       'LernApp.view.about.AboutPanel',
+       'LernApp.view.login.LoginNavigation',
+       'LernApp.view.home.HomeNavigation'
     ],
     
     config: {
