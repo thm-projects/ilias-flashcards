@@ -64,14 +64,28 @@ Ext.define('LernApp.view.login.LoginPanel', {
             items: [
                 {
                     xtype   : 'textfield',
-                    name    : 'userName',
+                    name    : 'username',
+                    itemId  : 'username',
                     cls     : 'loginFields',
-                    placeHolder: Messages.USERNAME
+                    placeHolder: Messages.USERNAME,
+                    listeners: {
+                        action: function() {
+                            me.loginFieldSet.getInnerItems()[1].focus();
+                        }
+                    }
                 }, {
                     xtype   : 'passwordfield',
                     name    : 'password',
+                    itemId  : 'password',
                     cls     : 'loginFields',
-                    placeHolder: Messages.PASSWORD
+                    placeHolder: Messages.PASSWORD,
+                    listeners: {
+                        action: function() {
+                            me.confirmButton.config.handler(
+                                    me.confirmButton
+                            );
+                        }
+                    }
                 }
             ]
         });
@@ -80,8 +94,8 @@ Ext.define('LernApp.view.login.LoginPanel', {
             text    : 'Anmelden',
             ui      : 'confirm',
             style   : 'overflow: visible',
-            handler : function() {
-                this.disable();
+            handler : function(button) {
+                button.disable();
                 Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });
                 var fieldsetItems = me.loginFieldSet.getInnerItems();
                 LernApp.app.getController('LoginController').login(
