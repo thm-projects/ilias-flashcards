@@ -68,7 +68,6 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             handler : function() {
                 this.disable();
                 LernApp.app.getController('LoginController').logout();
-                console.log(LernApp.app.main.tabPanel.getInnerItems());
             }
         });
         
