@@ -79,7 +79,8 @@
             "x-bootstrap": true
         },
         {
-            "path": "lib/localforage.js"
+            "path": "lib/localforage.js",
+            "update": "full"
         },
         {
             "path": "app/internationalisation.js",

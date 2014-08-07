@@ -61,30 +61,7 @@ Ext.application({
         'Category',
         'Question'
     ],
-    
-    views: [
-        'Main',
-        'TabPanel',
         
-        'login.LoginNavigation',
-        'login.WelcomePanel',
-        'login.LoginPanel',
-        
-        'home.TestOverviewPanel',
-        'home.HomeNavigation',
-        'home.OverviewPanel',
-        'home.SettingsPanel',
-        'home.UserPanel',
-        
-        'learncard.CardCarousel',
-        'learncard.QuestionPanel',
-        'learncard.AnswerPanel',
-        
-        'cardindex.CardIndex',
-        
-        'about.AboutPanel'
-    ],
-    
     stores: [
         'CardIndexStore',
         'QuestionStore'
