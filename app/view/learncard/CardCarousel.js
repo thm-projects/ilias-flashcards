@@ -35,7 +35,9 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     xtype: 'cardCarousel',
 
     requires: [
-        'Ext.Button'
+        'Ext.Button',
+        'LernApp.view.learncard.QuestionPanel',
+        'LernApp.view.learncard.AnswerPanel'
     ],
     
     config: {
@@ -96,7 +98,14 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
              * add answer button to navigationBar
              */
             LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
-            if(!this.showOnlyQuestion) LernApp.app.main.navigation.getNavigationBar().down('#answerButton').show();
+            if(!this.showOnlyQuestion) this.answerButton.show();
+        });
+        
+        /**
+         * actions to perform on panel deactivate
+         */
+        this.onBefore('deactivate', function() {
+            this.answerButton.hide();
         });
         
         /**
@@ -110,7 +119,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
          * actions to perform on panel destroy
          */
         this.on('destroy', function() {
-            LernApp.app.main.navigation.getNavigationBar().remove(this.answerButton);
+            LernApp.app.main.navigation.getNavigationBar().remove(this.answerButton); 
         });
     }
 });
