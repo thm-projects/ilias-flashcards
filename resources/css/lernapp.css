@@ -164,6 +164,12 @@
 	margin-bottom: 20px;
 }
 
+.flashCardFieldSet {
+	max-width: 80%;
+	min-width: 300px;
+	margin-bottom: 10px;
+}
+
 .saveConfirmPanel .x-panel-inner {
 	max-width: 80%;
 	min-width: 290px;
@@ -172,7 +178,8 @@
 }
 
 
-.saveConfirmPanel .x-button-label {
+.saveConfirmPanel .x-button-label,
+.flashCardFieldSet .x-button-label {
 	display: inline;
 	text-align: left;
 	font-weight: bold;
@@ -200,7 +207,8 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
 }
 
-.saveConfirmPanel .saveAnswerButtonBadge {
+.saveConfirmPanel .saveAnswerButtonBadge,
+.flashCardFieldSet .saveAnswerButtonBadge {
 	position: absolute !important;
 	margin-right: 12px;
 	margin-top: 6px;

@@ -752,6 +752,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.model.CardIndexModel": [],
   "LernApp.model.Category": [],
   "LernApp.model.Question": [],
+  "LernApp.prototype.CustomButton": [],
   "LernApp.prototype.CustomMask": [],
   "LernApp.prototype.CustomMessageBox": [],
   "LernApp.prototype.NavigationView": [],
@@ -768,6 +769,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "LernApp.view.home.SettingsPanel": [],
   "LernApp.view.home.TestOverviewPanel": [],
   "LernApp.view.home.UserPanel": [],
+  "LernApp.view.learn.LearnPanel": [],
   "LernApp.view.learncard.AnswerPanel": [],
   "LernApp.view.learncard.CardCarousel": [],
   "LernApp.view.learncard.QuestionPanel": [],
@@ -1725,6 +1727,9 @@ Ext.ClassManager.addNameAliasMappings({
   "LernApp.model.CardIndexModel": [],
   "LernApp.model.Category": [],
   "LernApp.model.Question": [],
+  "LernApp.prototype.CustomButton": [
+    "widget.customButton"
+  ],
   "LernApp.prototype.CustomMask": [
     "widget.customMask"
   ],
@@ -1770,6 +1775,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "LernApp.view.home.UserPanel": [
     "widget.userPanel"
+  ],
+  "LernApp.view.learn.LearnPanel": [
+    "widget.learnPanel"
   ],
   "LernApp.view.learncard.AnswerPanel": [
     "widget.answerPanel"
