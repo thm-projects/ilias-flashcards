@@ -101,6 +101,11 @@ Ext.application({
             Ext.Viewport.add(me.main);
         });
     },
+    
+    setMasked: function(message, promise) {
+        Ext.Viewport.setMasked({xtype:'loadmask', message: message});
+        Ext.create('Ext.util.DelayedTask', promise, this).delay(1);
+    },
 
     onUpdated: function() {
         Ext.Msg.confirm(

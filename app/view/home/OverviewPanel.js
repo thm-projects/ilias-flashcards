@@ -40,7 +40,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         'Ext.Button',
         'LernApp.view.home.TestOverviewPanel',
         'LernApp.view.learncard.CardCarousel',
-        'LernApp.view.cardindex.CardIndex'
+        'LernApp.view.cardindex.CardIndex',
+        'LernApp.view.learn.LearnPanel'
     ],
     
     config: {
@@ -92,7 +93,10 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     text    : Messages.LEARN_LEARN_CARDS,
                     cls     : 'forwardListButton',
                     disabled: false,
-                    handler : function() { me.messageBox.show() } 
+                    handler : function() {
+                        var panel = Ext.create('LernApp.view.learn.LearnPanel');
+                        LernApp.app.main.navigation.push(panel);
+                    } 
                 }, {
                     xtype   : 'button',
                     name    : 'showCards',
@@ -108,12 +112,14 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                                 me.messageBox.show();
                                 button.enable();
                             } else {
-                                var panel = Ext.create('LernApp.view.home.TestOverviewPanel', {
-                                    testObj: testObj
+                                LernApp.app.setMasked('Lade Fragen', function() {
+                                    var panel = Ext.create('LernApp.view.home.TestOverviewPanel', {
+                                        testObj: testObj
+                                    });
+                                    LernApp.app.main.navigation.push(panel);
+                                    Ext.Viewport.setMasked(false);
                                 });
-                                LernApp.app.main.navigation.push(panel);
                             }
-                            Ext.Viewport.setMasked(false);
                         });
                     }
                 }, {
@@ -124,20 +130,20 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        Ext.Viewport.setMasked({xtype:'loadmask'});
                         LernApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
                             if(Object.keys(questions).length == 0) {
                                 me.messageBox.show();
                                 button.enable();
                             } else {
-                                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
-                                    questions: questions,
-                                    showOnlyAnswers: true,
-                                    showOnlyQuestion: false
+                                LernApp.app.setMasked('Lade Fragen', function() {
+                                    var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                                        questions: questions,
+                                        showOnlyAnswers: true,
+                                        showOnlyQuestion: false
+                                    });
+                                    LernApp.app.main.navigation.push(panel);
                                 });
-                                LernApp.app.main.navigation.push(panel);
                             }
-                            Ext.Viewport.setMasked(false);
                         });
                     }
                 }
@@ -159,9 +165,10 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        Ext.Viewport.setMasked({xtype:'loadmask'});
-                        var panel = Ext.create('LernApp.view.cardindex.CardIndex')
-                        LernApp.app.main.navigation.push(panel);
+                        LernApp.app.setMasked('Lade Fragen', function() {
+                            var panel = Ext.create('LernApp.view.cardindex.CardIndex')
+                            LernApp.app.main.navigation.push(panel);
+                        });
                     }
                 }, {
                     xtype   : 'button',
@@ -171,9 +178,10 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        Ext.Viewport.setMasked({xtype:'loadmask'});
-                        var panel = Ext.create('LernApp.view.cardindex.CardIndex', {edit: true});
-                        LernApp.app.main.navigation.push(panel);
+                        LernApp.app.setMasked('Lade Fragen', function() {
+                            var panel = Ext.create('LernApp.view.cardindex.CardIndex', {edit: true});
+                            LernApp.app.main.navigation.push(panel);
+                        });
                     }
                 }
             ]

@@ -81,20 +81,16 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
                 text    : me.testObj[key].title,
                 itemId  : key,
                 cls     : 'forwardListButton', 
-                handler : function() {
-                    Ext.Viewport.add({
-                        masked: {
-                           xtype: 'loadmask'
-                        }
-                    });
-                    
-                    LernApp.app.storageController.getStoredQuestions(this.getItemId(), function(questions) {
-                        var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
-                            questions: questions,
-                            showOnlyAnswers: true,
-                            showOnlyQuestion: false
+                handler : function(obj) {
+                    LernApp.app.setMasked('Lade Fragen', function() {
+                        LernApp.app.storageController.getStoredQuestions(obj.getItemId(), function(questions) {
+                            var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                                questions: questions,
+                                showOnlyAnswers: true,
+                                showOnlyQuestion: false
+                            });
+                            LernApp.app.main.navigation.push(panel);
                         });
-                        LernApp.app.main.navigation.push(panel);
                     });
                 }
             });

@@ -170,6 +170,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             });
             actions(newData);
         };
+        
         LernApp.app.storageController.storeCardIndexTree(function(online) {
             LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
                 if(online) {
@@ -310,16 +311,17 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             me.selectListItem(node);
         }
         else if (node.isLeaf()) {
-            Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade Fragen'});
-            me.fireEvent('leafitemtap', this, list, index, target, record, e);
-            me.goToLeaf(node);
+            LernApp.app.setMasked('Lade Fragen', function() {
+                me.fireEvent('leafitemtap', this, list, index, target, record, e);
+                me.goToLeaf(node);
 
-            LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
-                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
-                    questions: questions,
-                    showOnlyQuestion: true
+                LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
+                    var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                        questions: questions,
+                        showOnlyQuestion: true
+                    });
+                    LernApp.app.main.navigation.push(panel);
                 });
-                LernApp.app.main.navigation.push(panel);
             });
         }
         else {
