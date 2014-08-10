@@ -173,6 +173,26 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         
         LernApp.app.storageController.storeCardIndexTree(function(online) {
             LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
+                
+                me.treeStructure = {};
+                
+                var recursiveTree = function(subTree) {
+                    var subSubTree = me.treeStructure[subTree.id] = {};
+                    subSubTree.parent = subTree.parent;
+                    
+                    if(subTree.hasOwnProperty('leaf')) {
+                        subSubTree.leaf = true;
+                    } else {
+                        subSubTree.children = [];
+                        subTree.children.forEach(function(child, index) {
+                            subSubTree.children[index] = child.id;
+                            recursiveTree(child);
+                        });
+                    }
+                };
+                
+                recursiveTree(treeObj);
+                
                 if(online) {
                     LernApp.app.storageController.storeTests(treeObj);
                 }
@@ -343,13 +363,15 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         /** the user will need to confirm a removal, if the selected 
          *  item is no leaf item  
          */
-        if(!node.isLeaf() && localStorage.getItem(category) == "true") {
-            Ext.Msg.confirm(Messages.ATTENTION, Messages.DELETION_NOTICE, function(button){
-                if (button == 'yes') me.performEditOnItem(node);
-            });
-        } else {
-            me.performEditOnItem(node);
-        }
+        LernApp.app.storageController.getStoredCategories(function(categories) {
+            if(!node.isLeaf() && typeof categories[category] !== "undefined") {
+                Ext.Msg.confirm(Messages.ATTENTION, Messages.DELETION_NOTICE, function(button){
+                    if (button == 'yes') me.performEditOnItem(node);
+                });
+            } else {
+                me.performEditOnItem(node);
+            }
+        });
     },
     
     /**
@@ -359,40 +381,42 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      */
     performEditOnItem: function(node) {
         var me = this,
-            leaf = node.isLeaf(),
-            category = node.getData().id,
-            parentId = node.parentNode.getData().id,
-            listDepth = node.parentNode.getData().depth;
-            
+            deleteFlag = false,
+            id = node.getData().id,
+            category = me.treeStructure[id],
+            parentId = category.parent,
+            leaf = category.hasOwnProperty('leaf') ? true : false;
+        
         var categoryModification = {
             added: new Object(),
             deleted: new Object()
         }
-
-        LernApp.app.storageController.getStoredCategories(function(categories) {
-            if(typeof categories[category] === 'undefined') {
-                Ext.Viewport.setMasked({xtype:'loadmask', message:'Lade...'});
-                categoryModification.added[category] = { leaf: leaf, 
-                    parent: listDepth > 0 ? parentId : listDepth
-                };
-                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, false);
-            } 
-            else {
-                Ext.Viewport.setMasked({xtype:'loadmask', message:'Lösche...'});
-                categoryModification.deleted[category] = { leaf: leaf, 
-                    parent: listDepth > 0 ? parentId : listDepth
-                };
-                categoryModification = me.performEditOnChildItem(node.childNodes, categoryModification, true);
-            }
-            
-            LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
-                LernApp.app.storageController.addStoredCategories(categoryModification.added, function() {
-                    LernApp.app.storageController.storeQuestions(categoryModification.added, function() {
-                        me.updateListIcons();
-                        Ext.Viewport.setMasked(false);
+        
+        LernApp.app.setMasked('Speichere', function() {
+            LernApp.app.storageController.getStoredCategories(function(categories) {
+                if(typeof categories[id] !== 'undefined') {
+                    deleteFlag = true;
+                }
+                
+                if(!leaf) {
+                    categoryModification = 
+                        me.performEditOnChildItems(id, categoryModification, deleteFlag);
+                }
+                
+                if(parentId != 1) {
+                    categoryModification = 
+                        me.completeEditOnParentItems(id, categoryModification, deleteFlag);
+                }
+                
+                LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
+                    LernApp.app.storageController.addStoredCategories(categoryModification.added, function() {
+                        LernApp.app.storageController.storeQuestions(categoryModification.added, function() {
+                            me.updateListIcons();
+                            Ext.Viewport.setMasked(false);
+                        });
                     });
-                });
-            })
+                })
+            });
         });
     },
     
@@ -404,22 +428,73 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * @param {Boolean} deleteFlag
      * @param {Object} categoryModification
      */
-    performEditOnChildItem: function (childNodes, categoryModification, deleteFlag) {
-        var me = this;
-        
-        childNodes.forEach(function(element, index, array) {
-            var leaf = element.isLeaf(),
-                category = element.getData().id,
-                parentId = element.parentNode.getData().id;
+    performEditOnChildItems: function(item, categoryModification, deleteFlag) {
+        var me = this,
+            array = [];
             
-            if(!deleteFlag) categoryModification.added[category] = { parent: parentId, leaf: leaf };
-            else categoryModification.deleted[category] = { parent: parentId, leaf: leaf };
+        /** arrange array */
+        if(Ext.isArray(item)) array = item;
+        else array[0] = item;
+        
+        /** perform edit recursivly */
+        array.forEach(function(id, index, array) {
+            var category = me.treeStructure[id],
+                parent = category.parent,
+                leaf = category.hasOwnProperty('leaf') ? true : false,
+                children = typeof category.children == "undefined" ? [] : category.children;
+        
+            if(!deleteFlag) {
+                categoryModification.added[id] = { 
+                    parent: parent, 
+                    children: children,
+                    leaf: leaf
+                };
+            }
+            
+            else {
+                categoryModification.deleted[id] = { 
+                    parent: parent, 
+                    children: children,
+                    leaf: leaf
+                 };
+            }
             
             if(!leaf) {
-                categoryModification = me.performEditOnChildItem(
-                        element.childNodes, categoryModification, deleteFlag);
+                categoryModification = me.performEditOnChildItems(
+                        category.children, categoryModification, deleteFlag);
             }
         });
+        
+        return categoryModification;
+    },
+    
+    completeEditOnParentItems: function(parent, categoryModification, deleteFlag) {
+        var me = this,
+            category = me.treeStructure[parent],
+            parentOfParent = category.parent,
+            leaf = category.hasOwnProperty('leaf') ? true : false,
+            children = typeof category.children == "undefined" ? [] : category.children;
+            
+        if(!deleteFlag) {
+            categoryModification.added[parent] = { 
+                parent: parentOfParent, 
+                children: children, 
+                leaf: leaf
+            };
+        }
+        
+        else {
+            categoryModification.deleted[parent] = { 
+                parent: parentOfParent, 
+                children: children,
+                leaf: leaf
+            };
+        }
+
+        if(parent != 1) {
+            categoryModification = me.completeEditOnParentItems(
+                    parentOfParent, categoryModification, deleteFlag);
+        }
         
         return categoryModification;
     }
