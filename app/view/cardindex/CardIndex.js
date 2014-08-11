@@ -364,7 +364,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
          *  item is no leaf item  
          */
         LernApp.app.storageController.getStoredCategories(function(categories) {
-            if(!node.isLeaf() && typeof categories[category] !== "undefined") {
+            if(typeof categories[category] !== "undefined") {
                 Ext.Msg.confirm(Messages.ATTENTION, Messages.DELETION_NOTICE, function(button){
                     if (button == 'yes') me.performEditOnItem(node);
                 });
@@ -398,11 +398,9 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                     deleteFlag = true;
                 }
                 
-                if(!leaf) {
-                    categoryModification = 
-                        me.performEditOnChildItems(id, categoryModification, deleteFlag);
-                }
-                
+                categoryModification = 
+                    me.performEditOnChildItems(id, categoryModification, deleteFlag);
+                    
                 if(parentId != 1) {
                     categoryModification = 
                         me.completeEditOnParentItems(parentId, categories,categoryModification, deleteFlag);
