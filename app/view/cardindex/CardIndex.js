@@ -375,7 +375,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     },
     
     /**
-     * Adding/removing selected listItem and it's children to/from app database
+     * Adding/removing selected listItem and it's children to/from app database.
      * 
      * @param {Ext.data.NodeInterface} node The selected node (listItem).
      */
@@ -405,7 +405,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                 
                 if(parentId != 1) {
                     categoryModification = 
-                        me.completeEditOnParentItems(id, categoryModification, deleteFlag);
+                        me.completeEditOnParentItems(parentId, categories,categoryModification, deleteFlag);
                 }
                 
                 LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
@@ -421,12 +421,12 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     },
     
     /**
-     * Adding/removing (depends on deleteFlag) listItems and their children
+     * Adding/removing (depends on deleteFlag) categories and their children
      * recursively. Stops when a leaf item is performed.
      * 
-     * @param {Array} childNodes The childNodes which should be changed.
-     * @param {Boolean} deleteFlag
+     * @param {Int/Array} item The id/ids of the category.
      * @param {Object} categoryModification
+     * @param {Boolean} deleteFlag
      */
     performEditOnChildItems: function(item, categoryModification, deleteFlag) {
         var me = this,
@@ -468,19 +468,42 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         return categoryModification;
     },
     
-    completeEditOnParentItems: function(parent, categoryModification, deleteFlag) {
+    /**
+     * Adding/removing (depends on deleteFlag) categories and their parent
+     * recursively. A parent item is only added when all children of it are
+     * also added. Stops when a the topmost item is performed.
+     * 
+     * @param {Int} parent The id of the parent category.
+     * @param {Object} categories 
+     * @param {Object} categoryModification
+     * @param {Boolean} deleteFlag
+     */
+    completeEditOnParentItems: function(parent, categories, categoryModification, deleteFlag) {
         var me = this,
+            storedChildrenCount = 0,
+            areAllChildrenStored = false,
             category = me.treeStructure[parent],
             parentOfParent = category.parent,
             leaf = category.hasOwnProperty('leaf') ? true : false,
             children = typeof category.children == "undefined" ? [] : category.children;
             
         if(!deleteFlag) {
-            categoryModification.added[parent] = { 
-                parent: parentOfParent, 
-                children: children, 
-                leaf: leaf
-            };
+            children.forEach(function(child) {
+                if(categories.hasOwnProperty(child) ||
+                   categoryModification.added.hasOwnProperty(child)) {
+                    storedChildrenCount++;
+                }
+            });
+            
+            areAllChildrenStored = (storedChildrenCount == children.length);
+            
+            if(areAllChildrenStored) {
+                categoryModification.added[parent] = { 
+                    parent: parentOfParent, 
+                    children: children, 
+                    leaf: leaf
+                };
+            }
         }
         
         else {
@@ -490,10 +513,10 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                 leaf: leaf
             };
         }
-
-        if(parent != 1) {
+        
+        if(parent != 1 && (deleteFlag || areAllChildrenStored)) {
             categoryModification = me.completeEditOnParentItems(
-                    parentOfParent, categoryModification, deleteFlag);
+                    parentOfParent, categories, categoryModification, deleteFlag);
         }
         
         return categoryModification;
