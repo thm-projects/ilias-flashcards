@@ -258,6 +258,7 @@ Ext.define('LernApp.controller.StorageController', {
             for(var category in categories) {
                 storedCategories[category] = categories[category];
             }
+            
             me.setStoredCategories(storedCategories, promise);
         });
     },
@@ -327,45 +328,53 @@ Ext.define('LernApp.controller.StorageController', {
      */
     storeQuestions: function(categories, promise) {
         var me = this,
-            questionIds = {},
             allQuestions = {};
-
+        
         if(Object.keys(categories).length == 0) {
             promise();
             return;
         }
-
-        this.getStoredTestObject(function(testObj) {
-            for(var category in testObj) {
-                if(testObj[category]) {
-                    var cat = testObj[category];
-                    
-                    Object.keys(cat.questions).map(function(value, index) {
-                        allQuestions[value] = cat.questions[value];
-                    });
-                    
-                    var questionSet = Object.keys(cat.questions).map(function(key) {
-                        return cat.questions[key].id;
-                    });
-                    
-                    if(cat.isRandomTest) {
-                        var randomIds = {};
-                        questionIds[category] = new Array();
+        
+        me.getStoredQuestionIdObject(function(questionIds) {
+            me.getStoredTestObject(function(testObj) {
+                Object.keys(categories).map(function(category) {
+                    if(categories[category].leaf) {
+                        var cat = testObj[category];
                         
-                        while(Object.keys(randomIds).length < cat.randomQuestionCount) {
-                            var value = Math.floor(Math.random() * cat.questionCount);
-                            randomIds[value] = true;
+                        Object.keys(cat.questions).map(function(value, index) {
+                            allQuestions[value] = cat.questions[value];
+                        });
+                        
+                        var questionSet = Object.keys(cat.questions).map(function(key) {
+                            return cat.questions[key].id;
+                        });
+                        
+                        if(cat.isRandomTest) {
+                            var randomIds = {};
+                            questionIds[category] = new Array();
+                            
+                            while(Object.keys(randomIds).length < cat.randomQuestionCount) {
+                                var value = Math.floor(Math.random() * cat.questionCount);
+                                randomIds[value] = true;
+                            }
+    
+                            for(id in randomIds) {
+                                questionIds[category].push(questionSet[id]);
+                            }
                         }
-
-                        for(id in randomIds) {
-                            questionIds[category].push(questionSet[id]);
-                        }
+                        else { questionIds[category] = questionSet; }
                     }
-                    else { questionIds[category] = questionSet; }
-                }
-            } 
-            me.setStoredQuestionIdObject(questionIds, function() {
-                me.setAllSelectedQuestionsObject(allQuestions, promise);
+                });
+            
+                me.setStoredQuestionIdObject(questionIds, function() {
+                    me.getAllSelectedQuestionsObject(function(selQuestionObject) {
+                        Object.keys(allQuestions).map(function(questions) {
+                            selQuestionObject[questions] = allQuestions[questions];
+                        });
+                        me.setAllSelectedQuestionsObject(selQuestionObject, promise);
+                    });
+                    
+                });
             });
         });
     },
@@ -526,16 +535,45 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** 
+     * Removes selected and stored questions from local database.
+     * @param {Array} Array of category ids.
+     * @param {Function} promise Function to call after processing.
+     */
+    removeQuestionsFromSelection: function(categories, promise) {
+        var me = this;
+        
+        me.getStoredTestObject(function(testObj) {
+            me.getAllSelectedQuestionsObject(function(questionObj) {
+                categories.forEach(function(id) {
+                    for(var questionId in testObj[id].questions) {
+                        delete questionObj[questionId];
+                    }
+                });
+                me.setAllSelectedQuestionsObject(questionObj, promise);
+            });
+        });
+    },
+    
+    /** 
      * Removes stored questions from local database.
      * @param {Object} categories Object with categorie refIds to remove.
      * @param {Function} promise Function to call after processing.
      */
     removeStoredQuestions: function(categories, promise) {
-        var me = this;
+        var me = this,
+            leafCategories = [];
                 
         me.getStoredQuestionIdObject(function(questionObj) {
-            for(var category in categories) delete questionObj[category];
-            me.setStoredQuestionIdObject(questionObj, promise);
+            for(var category in categories) {
+                if(questionObj.hasOwnProperty(category)) {
+                    leafCategories.push(category);
+                    delete questionObj[category];
+                }
+            }
+
+            me.removeQuestionsFromSelection(leafCategories, function() {
+                me.setStoredQuestionIdObject(questionObj, promise);
+            });
         });
     },
     

@@ -321,6 +321,12 @@
     position: absolute;
 }
 
+.badgefixed_button {
+	top: 4px;
+    right: 20px;
+    position: absolute;
+}
+
 .badgeicon, .redbadgeicon {
     font-weight: bold;
     /* @alternate */ background: rgba(0, 0, 0, .50);

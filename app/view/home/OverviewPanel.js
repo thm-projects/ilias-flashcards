@@ -106,7 +106,6 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        Ext.Viewport.setMasked({xtype:'loadmask'});
                         LernApp.app.storageController.getStoredSelectedTests(function(testObj) {
                             if(Object.keys(testObj).length == 0) {
                                 me.messageBox.show();
