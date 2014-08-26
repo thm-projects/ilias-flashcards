@@ -64,7 +64,7 @@ Ext.define('LernApp.view.learn.LearnPanel', {
                 handler: function(button) {
                     var flashcardBox = me.config.flashcardObject[button.getItemId()];
 
-                    if(flashcardBox.length > 0) {
+                    if(Object.keys(flashcardBox).length > 0) {
                         me.prepareTest(flashcardBox);
                     }
                 }
@@ -115,7 +115,8 @@ Ext.define('LernApp.view.learn.LearnPanel', {
             buttons = this.flashcardFieldSet.getInnerItems();
         
         buttons.forEach(function(button) {
-            var length = String(me.config.flashcardObject[button.getItemId()].length);
+            var flashcardBox = me.config.flashcardObject[button.getItemId()];
+            var length = String(Object.keys(flashcardBox).length);
             button.setBadgeText(length);
         });
     },
