@@ -94,8 +94,13 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     cls     : 'forwardListButton',
                     disabled: false,
                     handler : function() {
-                        var panel = Ext.create('LernApp.view.learn.LearnPanel');
-                        LernApp.app.main.navigation.push(panel);
+                        LernApp.app.storageController.getFlashcardObject(function(flashcardObject) {
+                            var panel = Ext.create('LernApp.view.learn.LearnPanel', {
+                                flashcardObject: flashcardObject
+                            });
+                            LernApp.app.main.navigation.push(panel);
+                        });
+                        
                     } 
                 }, {
                     xtype   : 'button',
