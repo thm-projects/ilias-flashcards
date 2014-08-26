@@ -124,6 +124,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
                             me.viewChangePanel.hideTask.cancel();
                             me.viewChangePanel.hideTask.delay(3000);
                             panel.setDisplayMode(button.getItemId());
+                            panel.editToggleField.setValue(0);
                         }
                     }
                 }
