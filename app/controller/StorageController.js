@@ -450,7 +450,6 @@ Ext.define('LernApp.controller.StorageController', {
                         box[questionId]--;
                         
                         if(box[questionId] < 1) {
-                            console.log("deleted: " + questionId);
                             delete box[questionId];
                         }
                     }

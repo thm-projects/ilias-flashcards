@@ -80,14 +80,10 @@ Ext.define('LernApp.controller.LoginController', {
     
     checkLogin: function(promise) {
         if(LernApp.app.storageController.isUserLoggedIn()) {
-            LernApp.app.proxy.checkLogin({
-                success: function() { 
-                    LernApp.app.storageController.initializeSession();
-                    promise(true); 
-                },
-                failure: function() { promise(false); }
-            });
-        } else promise(false);
+            LernApp.app.storageController.initializeSession();
+            promise(true);
+        } 
+        else promise(false);
     },
     
     /**
