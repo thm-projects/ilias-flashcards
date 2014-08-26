@@ -52,8 +52,9 @@ Ext.define('LernApp.view.learn.LearnPanel', {
     },
     
     initialize: function() {
+        var me = this;
         
-        this.learnCardFieldSet = Ext.create('Ext.form.FieldSet', {
+        this.flashcardFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.FLASHCARD_BOXES,
             cls: 'standardForm flashCardFieldSet',
         
@@ -61,32 +62,41 @@ Ext.define('LernApp.view.learn.LearnPanel', {
                 xtype: 'customButton',
                 cls: 'forwardListButton',
                 handler: function(button) {
-                    
+                    var flashcardBox = me.config.flashcardObject[button.getItemId()];
+
+                    if(flashcardBox.length > 0) {
+                        me.prepareTest(flashcardBox);
+                    }
                 }
             },
             
             items: [
                 {
+                    itemId: 'box5',
                     text: Messages.FLASHCARD_BOX5,
                     subText: Messages.FLASHCARD_LEARNED,
                     badgeCls: 'badgeicon badgefixed_button',
                     badgeText: '0'
                 }, {
+                    itemId: 'box4',
                     text: Messages.FLASHCARD_BOX4,
                     subText: Messages.FLASHCARD_EASY,
                     badgeCls: 'badgeicon badgefixed_button',
                     badgeText: '0'
                 }, {
+                    itemId: 'box3',
                     text: Messages.FLASHCARD_BOX3,
                     subText: Messages.FLASHCARD_COULD_BE_WORSE,
                     badgeCls: 'badgeicon badgefixed_button',
                     badgeText: '0'
                 }, {
+                    itemId: 'box2',
                     text: Messages.FLASHCARD_BOX2,
                     subText: Messages.FLASHCARD_DIFFICULT,
                     badgeCls: 'badgeicon badgefixed_button',
                     badgeText: '0'
                 }, {
+                    itemId: 'box1',
                     text: Messages.FLASHCARD_BOX1,
                     subText: Messages.FLASHCARD_NOTEDITED,
                     badgeCls: 'badgeicon badgefixed_button',
@@ -95,6 +105,35 @@ Ext.define('LernApp.view.learn.LearnPanel', {
             ]
         });
         
-        this.add([this.learnCardFieldSet]);
-    }
+        this.add([this.flashcardFieldSet]);
+        
+        this.on('initialize', this.updateBadges);
+    },
+    
+    updateBadges: function() {
+        var me = this,
+            buttons = this.flashcardFieldSet.getInnerItems();
+        
+        buttons.forEach(function(button) {
+            var length = String(me.config.flashcardObject[button.getItemId()].length);
+            button.setBadgeText(length);
+        });
+    },
+    
+    prepareTest: function(questionIds) {
+        var index = 0,
+            testData = new Array();
+
+        LernApp.app.storageController.getStoredTestObject(function(tests) {
+            for(var test in tests) {
+                Object.keys(tests[test].questions).map(function(question) {
+                    if(questionIds.lastIndexOf(parseInt(question)) != -1) {
+                        testData[index++] = tests[test].questions[question];
+                    }
+                });
+            };
+            
+            console.log(testData);
+        });
+    },
 });
