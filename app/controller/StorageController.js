@@ -99,6 +99,11 @@ Ext.define('LernApp.controller.StorageController', {
                 
                 /** initialize allSelectedQuestionsObject */
                 me.setAllSelectedQuestionsObject(new Object());
+                
+                /** inizialize flashcardObject */
+                me.setFlashcardObject({
+                    box1: {}, box2: {},  box3: {}, box4: {}, box5: {}
+                });
             }
         });
     },
@@ -190,6 +195,16 @@ Ext.define('LernApp.controller.StorageController', {
     /** setter for lastUpdate */
     setStoredTimestamp: function(object, promise) {
         this.genericSetterMethod('lastUpdate', object, promise);
+    },
+    
+    /** setter for flashcardObject */
+    getFlashcardObject: function(promise) {
+        this.genericGetterMethod('flashCardSet', promise);
+    },
+    
+    /** getter for flashcardObject */
+    setFlashcardObject: function(object, promise) {
+        this.genericSetterMethod('flashCardSet', object, promise);
     },
     
     /** getter for loggedInUser */
@@ -328,7 +343,8 @@ Ext.define('LernApp.controller.StorageController', {
      */
     storeQuestions: function(categories, promise) {
         var me = this,
-            allQuestions = {};
+            allQuestions = {},
+            allQuestionIds = [];
         
         if(Object.keys(categories).length == 0) {
             promise();
@@ -342,6 +358,7 @@ Ext.define('LernApp.controller.StorageController', {
                         var cat = testObj[category];
                         
                         Object.keys(cat.questions).map(function(value, index) {
+                            allQuestionIds.push(parseInt(value));
                             allQuestions[value] = cat.questions[value];
                         });
                         
@@ -365,19 +382,85 @@ Ext.define('LernApp.controller.StorageController', {
                         else { questionIds[category] = questionSet; }
                     }
                 });
-            
+                
                 me.setStoredQuestionIdObject(questionIds, function() {
-                    me.getAllSelectedQuestionsObject(function(selQuestionObject) {
-                        Object.keys(allQuestions).map(function(questions) {
-                            selQuestionObject[questions] = allQuestions[questions];
+                    me.storeQuestionsToFlashcardSet(allQuestionIds, function() {
+                        me.getAllSelectedQuestionsObject(function(selQuestionObject) {
+                            Object.keys(allQuestions).map(function(questions) {
+                                selQuestionObject[questions] = allQuestions[questions];
+                            });
+                            me.setAllSelectedQuestionsObject(selQuestionObject, promise);
                         });
-                        me.setAllSelectedQuestionsObject(selQuestionObject, promise);
                     });
-                    
                 });
             });
         });
     },
+    
+    /**
+     * Initial storage of questionIds for flashcardSet in local database.
+     * @param {Array} questionIds List of questionIds to add to flashcardSet.
+     * @param {Function} promise Function to call after processing.
+     */
+    storeQuestionsToFlashcardSet: function(questionIds, promise) {
+        var me = this,
+            included = false,
+            questionList = new Array();
+        
+        Object.keys(questionIds).map(function(testId) {
+            questionList = questionList.concat(questionIds[testId]);
+        });
+        
+        me.getFlashcardObject(function(flashcardObject) {
+            questionList.forEach(function(questionId) {
+                included = false;
+                
+                for(boxId in flashcardObject) {
+                    var box = flashcardObject[boxId];
+
+                    if(typeof box[questionId] !== "undefined") {
+                        box[questionId]++;
+                        included = true;
+                    }
+                }
+                
+                if(!included) {
+                    flashcardObject.box1[questionId] = 1;
+                }
+            });
+            
+            me.setFlashcardObject(flashcardObject, promise);
+        });
+    },
+    
+    /** 
+     * Filters all questionIds from questionList in local database from flashcardSet.
+     * @param {Array} questionList List of question to remove from flashcardSet.
+     * @param {Function} promise Function to call after processing.
+     */
+    filterQuestionsInFlashcardSet: function(questionList, promise) {
+        var me = this;
+        
+        me.getFlashcardObject(function(flashcardObject) {
+            questionList.forEach(function(questionId) {
+                for(boxId in flashcardObject) {
+                    var box = flashcardObject[boxId];
+                    
+                    if(typeof box[questionId] !== "undefined") {
+                        box[questionId]--;
+                        
+                        if(box[questionId] < 1) {
+                            console.log("deleted: " + questionId);
+                            delete box[questionId];
+                        }
+                    }
+                }
+            });
+
+            me.setFlashcardObject(flashcardObject, promise);
+        });
+    },
+    
     
     /** 
      * Stores all available tests to local database.
@@ -540,16 +623,21 @@ Ext.define('LernApp.controller.StorageController', {
      * @param {Function} promise Function to call after processing.
      */
     removeQuestionsFromSelection: function(categories, promise) {
-        var me = this;
+        var me = this,
+            questionList = new Array();
         
         me.getStoredTestObject(function(testObj) {
             me.getAllSelectedQuestionsObject(function(questionObj) {
                 categories.forEach(function(id) {
                     for(var questionId in testObj[id].questions) {
                         delete questionObj[questionId];
+                        questionList.push(parseInt(questionId));
                     }
                 });
-                me.setAllSelectedQuestionsObject(questionObj, promise);
+                
+                me.filterQuestionsInFlashcardSet(questionList, function() {
+                    me.setAllSelectedQuestionsObject(questionObj, promise);
+                });
             });
         });
     },
