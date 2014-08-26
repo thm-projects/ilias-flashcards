@@ -124,17 +124,24 @@ Ext.define('LernApp.view.learn.LearnPanel', {
     prepareTest: function(questionIds) {
         var index = 0,
             testData = new Array();
-
-        LernApp.app.storageController.getStoredTestObject(function(tests) {
-            for(var test in tests) {
-                Object.keys(tests[test].questions).map(function(question) {
-                    if(questionIds.lastIndexOf(parseInt(question)) != -1) {
-                        testData[index++] = tests[test].questions[question];
-                    }
+        
+        LernApp.app.setMasked('Lade Fragen', function() {
+            LernApp.app.storageController.getStoredTestObject(function(tests) {
+                for(var test in tests) {
+                    Object.keys(tests[test].questions).map(function(question) {
+                        if(typeof questionIds[question] !== "undefined") {
+                            testData.push(tests[test].questions[question]);
+                        }
+                    });
+                };
+                
+                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                    questions: testData,
+                    showOnlyAnswers: false,
+                    showOnlyQuestion: false
                 });
-            };
-            
-            console.log(testData);
+                LernApp.app.main.navigation.push(panel);
+            });
         });
     },
 });
