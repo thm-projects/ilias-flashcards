@@ -42,6 +42,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     
     config: {
         title: Messages.LEARN_CARD,
+        itemId: 'CardCarousel',
         fullscreen: true
     },
     
@@ -50,6 +51,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         
         for(var key in this.questions) {
             panel.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
+                itemId: this.questions[key].id,
                 questionObj: this.questions[key]
             }));
         }
@@ -60,6 +62,8 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         this.callParent(arguments);
         
         var me = this;
+        
+        this.disabledQuestions = 0;
         
         this.instanciateComponents();
         
@@ -80,8 +84,10 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
                 navigation.saveAnimation();
                 navigation.getNavigationBar().down('#answerButton').hide();
                 navigation.getLayout().setAnimation({ type: 'flip', duration: 500 });
-
-                navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', { 
+                
+                navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', {
+                    boxId: me.config.boxId,
+                    questionId: activeItem.questionObj.id,
                     answers: activeItem.questionObj.answers,
                     feedback: activeItem.questionObj.feedback,
                     showOnlyAnswers: me.showOnlyAnswers,
@@ -121,5 +127,20 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         this.on('destroy', function() {
             LernApp.app.main.navigation.getNavigationBar().remove(this.answerButton); 
         });
+    },
+    
+    disableActiveQuestion: function() {
+        var questionPanel = this.getActiveItem();
+        this.remove(questionPanel);
+    },
+    
+    checkForEmptyItems: function() {
+        if(this.getInnerItems().length === 0) {
+            Ext.Msg.alert('', 'Keine weiteren Fragen vorhanden!', function() {
+                Ext.create('Ext.util.DelayedTask', function () {
+                    LernApp.app.main.navigation.pop();
+                }).delay(200);
+            });
+        }
     }
 });

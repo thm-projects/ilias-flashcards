@@ -89,14 +89,5 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
             this.questionTitle,
             this.answerList
         ]);
-    },
-    
-    /**
-     * disables this panel and set a mask as overlay
-     */
-    disableQuestion: function() {
-        this.unmask();
-        this.setDisabled(true);
-        this.mask(Ext.create('LernApp.prototype.CustomMask'));
     }
 });

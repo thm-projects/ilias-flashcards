@@ -63,22 +63,54 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                 
                 /** disable saveButton */
                 this.disable();
-                answerPanel.showOnlyAnswers = false;
                 
-                if(/*answerPanel.selection &&*/ !answerPanel.showOnlyAnswers) {
-                    /** 
-                     * show confirm panel over saveButton,
-                     * align panel slightly over the button,
-                     * mask out navigation view
-                     */
-                    me.saveConfirmPanel.showBy(this, 'bc-tc');
-                    me.saveConfirmPanel.setTop(me.saveConfirmPanel.getTop() - 10);
-                    LernApp.app.main.navigation.getActiveItem().mask();
-                    me.saveConfirmPanel.show();
-                } else {
-                    /** show loadmask 'saving' */
-                    Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.SAVING });
+                if(!answerPanel.showOnlyAnswers) {
                     
+                    /** set animation to 'slide' */
+                    main.navigation.getLayout().setAnimation({
+                        type: 'slide', 
+                        direction:'right', 
+                        duration: 1200 
+                    });
+                    
+                    if(answerPanel.selection) {
+                        /** 
+                         * show confirm panel over saveButton,
+                         * align panel slightly over the button,
+                         * mask out navigation view
+                         */
+                        me.saveConfirmPanel.showBy(this, 'bc-tc');
+                        me.saveConfirmPanel.setTop(me.saveConfirmPanel.getTop() - 10);
+                        LernApp.app.main.navigation.getActiveItem().mask();
+                        me.saveConfirmPanel.show();
+                    } 
+                    else {
+                        var previousBox;
+                        
+                        switch(me.boxId) {
+                            case 'box5':
+                                previousBox = 'box4';
+                                break;
+                            case 'box4':
+                                previousBox = 'box3';
+                                break;
+                            default:
+                                previousBox = 'box2';
+                                break;
+                        }
+                        
+                        answerPanel.saveAnswer(previousBox, function() {
+                            /** 
+                             * remove saveButton from tab bar,
+                             * unhide all tabs in tab panel,
+                             * pop answer panel from navigation view
+                             */
+                            main.tabPanel.getTabBar().remove(answerPanel.saveButton);
+                            main.tabPanel.showAllTabs();
+                            main.navigation.pop();
+                        });
+                    }
+                } else {
                     /** 
                      * remove saveButton from tab bar,
                      * unhide all tabs in tab panel,
@@ -102,23 +134,29 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                     var main = LernApp.app.main;
                     var answerPanel = main.navigation.getActiveItem();
                     
-                    /** save answer to database */
-                    answerPanel.saveAnswer(button);
+                    /** save pressed button **/
+                    answerPanel.pressedButton = button;
+                    
+                    /** hide answerPanel and save answer to database (see hideanimation) */
                     answerPanel.saveConfirmPanel.hide();
                 }
             },
             
             items: [
                 {
+                    itemId: 'box2',
                     text: Messages.FLASHCARD_DIFFICULT,
                     badgeText: Messages.IN_THIS_SESSION
                 }, {
+                    itemId: 'box3',
                     text: Messages.FLASHCARD_COULD_BE_WORSE,
                     badgeText: Messages.IN_NEXT_SESSION
                 }, {
+                    itemId: 'box4',
                     text: Messages.FLASHCARD_EASY,
                     badgeText: Messages.AFTER_NEXT_SESSION
                 }, {
+                    itemId: 'box5',
                     text: Messages.FLASHCARD_LEARNED,
                     badgeText: Messages.NO_REPEAT
                 }
@@ -143,22 +181,22 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                 listeners: {
                     animationend: function() {
                         var main = LernApp.app.main;
-                        var answerPanel = main.navigation.getActiveItem();
-                        
-                        /** show loadmask 'saving' */
-                        Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.SAVING });
-                        
+                        var answerPanel = main.navigation.getActiveItem(); 
+                    
                         /** destroy saveConfirmPanel */
                         answerPanel.saveConfirmPanel.destroy();
                         
-                        /** 
-                         * remove saveButton from tab bar,
-                         * unhide all tabs in tab panel,
-                         * pop answer panel from navigation view
-                         */
-                        main.tabPanel.getTabBar().remove(answerPanel.saveButton);
-                        main.tabPanel.showAllTabs();
-                        main.navigation.pop();
+                        /** save answer to database **/
+                        answerPanel.saveAnswer(answerPanel.pressedButton.getItemId(), function() {
+                            /** 
+                             * remove saveButton from tab bar,
+                             * unhide all tabs in tab panel,
+                             * pop answer panel from navigation view
+                             */
+                            main.tabPanel.getTabBar().remove(answerPanel.saveButton);
+                            main.tabPanel.showAllTabs();
+                            main.navigation.pop();
+                        });
                     }
                 }
             },  
@@ -260,14 +298,11 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             LernApp.app.main.navigation.getNavigationBar().getBackButton().show();
             
             /** destroy loadingmask and restore saved animation */
-            var task = Ext.create('Ext.util.DelayedTask', function () {
-                Ext.Viewport.setMasked(false);
-                LernApp.app.main.navigation.getLayout().setAnimation(
-                    LernApp.app.main.navigation.getSavedAnimation()
-                );
-            });
+            LernApp.app.main.navigation.getLayout().setAnimation(
+                LernApp.app.main.navigation.getSavedAnimation()
+            );
             
-            task.delay(1000);
+            Ext.Viewport.setMasked(false);
         });
     },
     
@@ -305,7 +340,11 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     /**
      * TODO: implement save answer to database
      */
-    saveAnswer: function(button) {
-        console.log('saved: ' + button.getText());
+    saveAnswer: function(boxId, promise) {
+        LernApp.app.getController('AnswerController').saveAnswerToDatabase(
+                this.config.questionId, 
+                boxId, 
+                promise
+        );
     }
 });

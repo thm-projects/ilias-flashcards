@@ -62,10 +62,10 @@ Ext.define('LernApp.view.learn.LearnPanel', {
                 xtype: 'customButton',
                 cls: 'forwardListButton',
                 handler: function(button) {
-                    var flashcardBox = me.config.flashcardObject[button.getItemId()];
+                    var questionIds = me.config.flashcardObject[button.getItemId()];
 
-                    if(Object.keys(flashcardBox).length > 0) {
-                        me.prepareTest(flashcardBox);
+                    if(Object.keys(questionIds).length > 0) {
+                        me.prepareTest(questionIds, button.getItemId());
                     }
                 }
             },
@@ -106,8 +106,7 @@ Ext.define('LernApp.view.learn.LearnPanel', {
         });
         
         this.add([this.flashcardFieldSet]);
-        
-        this.on('initialize', this.updateBadges);
+        this.onBefore('painted', this.updateBadges);
     },
     
     updateBadges: function() {
@@ -121,7 +120,11 @@ Ext.define('LernApp.view.learn.LearnPanel', {
         });
     },
     
-    prepareTest: function(questionIds) {
+    updateFlashcardObject: function(flashcardObject) {
+        this.config.flashcardObject = flashcardObject;
+    },
+    
+    prepareTest: function(questionIds, boxId) {
         var index = 0,
             testData = new Array();
         
@@ -135,7 +138,8 @@ Ext.define('LernApp.view.learn.LearnPanel', {
                     });
                 };
                 
-                var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                var panel = Ext.create('LernApp.view.learncard.CardCarousel', {
+                    boxId: boxId,
                     questions: testData,
                     showOnlyAnswers: false,
                     showOnlyQuestion: false
