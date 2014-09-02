@@ -157,53 +157,70 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     setStoreData: function() {
         var me = this;
         
-        var actions = function(data) {
+        var setDataActions = function(data) {
             if(data == null) me.editToggleField.setHidden(true);
             me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
             Ext.Viewport.setMasked(false);
         };
         
-        var actions2 = function(data) {
+        var setTestsAsData = function(data) {
             var newData = [];
             Object.keys(data).map(function(value, index) {
                 newData[index] = data[value];
             });
-            actions(newData);
+            setDataActions(newData);
         };
         
+        var evaluateDisplayMode = function(data) {
+            /** differ actions depending on displayMode */
+            if(me.config.selectedDisplayMode === me.config.displayModes.tree) {
+                setDataActions(data);
+            }
+            else {
+                LernApp.app.storageController.getStoredTestObject(function(tests) {
+                    setTestsAsData(tests);
+                });
+            }
+        };
+
         LernApp.app.storageController.storeCardIndexTree(function(online) {
             LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
-                
-                me.treeStructure = {};
-                
-                var recursiveTree = function(subTree) {
-                    var subSubTree = me.treeStructure[subTree.id] = {};
-                    subSubTree.parent = subTree.parent;
-                    
-                    if(subTree.hasOwnProperty('leaf')) {
-                        subSubTree.leaf = true;
-                    } else {
-                        subSubTree.children = [];
-                        subTree.children.forEach(function(child, index) {
-                            subSubTree.children[index] = child.id;
-                            recursiveTree(child);
-                        });
-                    }
-                };
-                
-                recursiveTree(treeObj);
-                
+                me.buildTreeStructureRecursively(treeObj);
+
                 if(online) {
-                    LernApp.app.storageController.storeTests(treeObj);
+                    LernApp.app.storageController.storeTests(treeObj, function() {
+                        evaluateDisplayMode(treeObj);
+                    });
+                } else {
+                    evaluateDisplayMode(treeObj);
                 }
-                if(me.config.selectedDisplayMode === me.config.displayModes.tree) {
-                    actions(treeObj);
-                }
-                else LernApp.app.storageController.getStoredTestObject(function(tests) {
-                    actions2(tests);
-                });
             });
         });
+    },
+    
+    /**
+     * rebuild tree structure to evaluate tests and categorys local
+     */
+    buildTreeStructureRecursively: function(treeObj) {
+        var me = this;
+        me.treeStructure = {};
+        
+        var recursiveTree = function(subTree) {
+            var subSubTree = me.treeStructure[subTree.id] = {};
+            subSubTree.parent = subTree.parent;
+            
+            if(subTree.hasOwnProperty('leaf')) {
+                subSubTree.leaf = true;
+            } else {
+                subSubTree.children = [];
+                subTree.children.forEach(function(child, index) {
+                    subSubTree.children[index] = child.id;
+                    recursiveTree(child);
+                });
+            }
+        };
+        
+        recursiveTree(treeObj);
     },
     
     /**
