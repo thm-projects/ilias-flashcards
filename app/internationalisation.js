@@ -90,6 +90,7 @@ switch (lang) {
             LEARN_CARD: 'Lernkarten',
             CARD_INDEX: 'Fragenkatalog',
             LEARN_LEARN_CARDS: 'Lernen',
+            LEARNOVERVIEW: 'Lernkartei',
             SHOW_LEARN_CARDS: 'Durchblättern',
             SHOW_RANDOM_CARDS: 'Zufallstest generieren',
             SHOW_CARD_INDEX: 'Anzeigen',

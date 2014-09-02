@@ -745,6 +745,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.viewport.WindowsPhone": [
     "Ext.viewport.WP"
   ],
+  "LernApp.controller.AnswerController": [],
   "LernApp.controller.LoginController": [],
   "LernApp.controller.Navigation": [],
   "LernApp.controller.Question": [],
@@ -1720,6 +1721,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
+  "LernApp.controller.AnswerController": [],
   "LernApp.controller.LoginController": [],
   "LernApp.controller.Navigation": [],
   "LernApp.controller.Question": [],

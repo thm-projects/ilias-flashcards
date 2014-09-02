@@ -70,6 +70,7 @@ Ext.application({
     controllers: [
         'Navigation',
         'LoginController',
+        'AnswerController',
         'StorageController'
     ],
     
@@ -77,14 +78,12 @@ Ext.application({
     isIconPrecomposed: true,
     statusBarStyle: 'default',
     
-    
     /**
      * app configuration
      */
     daysUntilReloadData:    7,
     daysUntilLoginExpires:  14,
     randomQuestionCount:    10,
-
     
     launch: function() {    
         var me = this;

@@ -384,7 +384,7 @@ Ext.define('LernApp.controller.StorageController', {
                 });
                 
                 me.setStoredQuestionIdObject(questionIds, function() {
-                    me.storeQuestionsToFlashcardSet(allQuestionIds, function() {
+                    me.storeQuestionsToFlashcardSet(allQuestionIds, 'box1', function() {
                         me.getAllSelectedQuestionsObject(function(selQuestionObject) {
                             Object.keys(allQuestions).map(function(questions) {
                                 selQuestionObject[questions] = allQuestions[questions];
@@ -400,9 +400,10 @@ Ext.define('LernApp.controller.StorageController', {
     /**
      * Initial storage of questionIds for flashcardSet in local database.
      * @param {Array} questionIds List of questionIds to add to flashcardSet.
+     * @param {String} flashcardBoxId ItemId of flashcardbox where questions should be saved.
      * @param {Function} promise Function to call after processing.
      */
-    storeQuestionsToFlashcardSet: function(questionIds, promise) {
+    storeQuestionsToFlashcardSet: function(questionIds, flashcardBoxId, promise) {
         var me = this,
             included = false,
             questionList = new Array();
@@ -425,7 +426,8 @@ Ext.define('LernApp.controller.StorageController', {
                 }
                 
                 if(!included) {
-                    flashcardObject.box1[questionId] = 1;
+                    var flashcardBox = flashcardObject[flashcardBoxId];
+                    flashcardBox[questionId] = 1;
                 }
             });
             
