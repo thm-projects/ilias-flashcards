@@ -82,6 +82,7 @@ Ext.define('LernApp.controller.AnswerController', {
                     
                     if(item.getTitle() === Messages.LEARNOVERVIEW) {
                         item.updateFlashcardObject(flashcardObject);
+                        LernApp.app.main.navigation.userPanel.loadAllStores();
                     }
                 });
             });

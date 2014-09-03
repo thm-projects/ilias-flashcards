@@ -149,58 +149,11 @@ Ext.define('LernApp.view.home.UserPanel', {
             }
         });
         
-        this.allCategoryStore = Ext.create('Ext.data.Store', {
-            model: "ChartDataModel"
-        });
-        
-        this.publicLawStore = Ext.create('Ext.data.Store', {
-            model: "ChartDataModel",
-            id: 'publicLawStore',
-            
-            proxy: {
-                type:   'ajax',
-                url:    'app/data/ChartData.json',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'publicLawItems'
-                }
-            }
-        });
-        
-        this.criminalLawStore = Ext.create('Ext.data.Store', {
-            model: "ChartDataModel",
-            id: 'criminalLawStore',
-            
-            proxy: {
-                type:   'ajax',
-                url:    'app/data/ChartData.json',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'criminalLawItems'
-                }
-            }
-        });
-            
-            
-        this.civilianLawStore = Ext.create('Ext.data.Store', {
-            model: "ChartDataModel",
-            id: 'civilianLawStore',
-            
-            proxy: {
-                type:   'ajax',
-                url:    'app/data/ChartData.json',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'civilLawItems'
-                }
-            }
-        });
-
         this.statisticChart = Ext.create('Ext.chart.PolarChart', {
             animate: true,
             innerPadding: 10,
             interactions: ['rotate', 'itemhighlight'],
-            colors: ['#00FF00', '#FFFF00', '#FF9900', '#FF0000'],
+            colors: ['#00FF00', '#FFFF00', '#FF9900', '#FF0000', '#999999'],
 
             store: Ext.create('Ext.data.Store', {
                 model: 'ChartDataModel' ,
@@ -208,7 +161,8 @@ Ext.define('LernApp.view.home.UserPanel', {
                        {'name': 'Erlernt',  'data': 0},
                        {'name': 'Leicht',   'data': 0},
                        {'name': 'Geht so',  'data': 0},
-                       {'name': 'Schwer',   'data': 0}
+                       {'name': 'Schwer',   'data': 0},
+                       {'name': 'Rest',     'data': 0}
                 ]
             }),
             
@@ -285,28 +239,29 @@ Ext.define('LernApp.view.home.UserPanel', {
      * reloads all stores and call summerizeCategoryData for each store
      */
     loadAllStores: function() {
-        var me = this;
-        this.allCategoryStore.removeAll();
+        var me = this,
+            statisticArray = [];
         
-        /** load publicLawStore */
-        this.publicLawStore.load({
-            callback: function(records, operation, success) {
-                this.allCategoryStore.addData(records);
-            }, scope: this
-        });
-        
-        /** load criminalLawStore */
-        this.criminalLawStore.load({
-            callback: function(records, operation, success) {
-                me.summerizeCategoryData(records, me);
+        LernApp.app.storageController.getFlashcardObject(function(flashcardObject) {
+            for(box in flashcardObject) {
+                var statisticObject = {};
+                
+                switch(box) {
+                    case 'box1': statisticObject.name = 'Rest';         break;
+                    case 'box2': statisticObject.name = 'Schwer';       break;
+                    case 'box3': statisticObject.name = 'Geht so';      break;
+                    case 'box4': statisticObject.name = 'Leicht';       break;
+                    case 'box5': statisticObject.name = 'Erlernt';      break;
+                }
+                
+                statisticObject.data = Object.keys(flashcardObject[box]).length;
+                statisticArray.push(statisticObject);
             }
-        });
-        
-        /** load civilianLawStore */
-        this.civilianLawStore.load({
-            callback: function(records, operation, success) {
-                me.summerizeCategoryData(records, me);
-            }
+            
+            me.allCategoryStore = Ext.create("Ext.data.Store", {
+                model: 'ChartDataModel',
+                data : statisticArray
+            });
         });
     },
     

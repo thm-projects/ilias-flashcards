@@ -71,7 +71,7 @@ Ext.define('LernApp.controller.StorageController', {
     },
     
     /** user specific initialization */
-    initializeUserStorage: function(username) {
+    initializeUserStorage: function(username, promise) {
         var me = this;
         
         localforage.getItem('initialized', function(initObject) {
@@ -103,7 +103,7 @@ Ext.define('LernApp.controller.StorageController', {
                 /** inizialize flashcardObject */
                 me.setFlashcardObject({
                     box1: {}, box2: {},  box3: {}, box4: {}, box5: {}
-                });
+                }, promise);
             }
         });
     },
@@ -216,17 +216,18 @@ Ext.define('LernApp.controller.StorageController', {
     
     /** setter for loggedInUser */
     setLoggedInUser: function(username, authObj, promise) {
-        var date = new Date();
+        var me = this,
+            date = new Date();
             obj = new Object();
-        
-        this.setUsername(btoa(username));
-        this.initializeUserStorage(this.getUsername());
-        
-        obj.user = this.getUsername();
+                
+        obj.user = btoa(username);
         obj.authObj = authObj;
         
-        localStorage.setItem('login', date.getTime());
-        localforage.setItem('loginObj', obj).then(promise);
+        localforage.setItem('loginObj', obj, function() {
+            me.setUsername(obj.user);
+            localStorage.setItem('login', date.getTime());
+            me.initializeUserStorage(obj.user, promise); 
+        });
     },
     
     /** removes loginObj */
@@ -366,10 +367,10 @@ Ext.define('LernApp.controller.StorageController', {
                             return cat.questions[key].id;
                         });
                         
-                        if(cat.isRandomTest) {
+                        if(cat.isRandomTest && cat.randomQuestionCount > 0) {
                             var randomIds = {};
                             questionIds[category] = new Array();
-                            
+
                             while(Object.keys(randomIds).length < cat.randomQuestionCount) {
                                 var value = Math.floor(Math.random() * cat.questionCount);
                                 randomIds[value] = true;

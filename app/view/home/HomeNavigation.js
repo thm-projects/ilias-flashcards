@@ -141,7 +141,6 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         this.on('destroy', this.onDestroy);
     },
     
-    
     /** actions to fulfill after navigation change (Navigation controller) */
     afterNavigationChange: function() {
         this.afterInsertionToViewport();

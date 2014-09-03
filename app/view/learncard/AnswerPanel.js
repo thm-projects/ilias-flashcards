@@ -70,7 +70,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                     main.navigation.getLayout().setAnimation({
                         type: 'slide', 
                         direction:'right', 
-                        duration: 1200 
+                        duration: 800 
                     });
                     
                     if(answerPanel.selection) {
@@ -182,7 +182,10 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                     animationend: function() {
                         var main = LernApp.app.main;
                         var answerPanel = main.navigation.getActiveItem(); 
-                    
+                        
+                        /** unmask answerPanel */
+                        answerPanel.unmask();
+                        
                         /** destroy saveConfirmPanel */
                         answerPanel.saveConfirmPanel.destroy();
                         
