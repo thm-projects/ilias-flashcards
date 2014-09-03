@@ -63,8 +63,9 @@ Ext.define('LernApp.view.learn.LearnPanel', {
                 cls: 'forwardListButton',
                 handler: function(button) {
                     var questionIds = me.config.flashcardObject[button.getItemId()];
-
+                    
                     if(Object.keys(questionIds).length > 0) {
+                        me.disableAllButtons();
                         me.prepareTest(questionIds, button.getItemId());
                     }
                 }
@@ -117,11 +118,18 @@ Ext.define('LernApp.view.learn.LearnPanel', {
             var flashcardBox = me.config.flashcardObject[button.getItemId()];
             var length = String(Object.keys(flashcardBox).length);
             button.setBadgeText(length);
+            button.enable();
         });
     },
     
     updateFlashcardObject: function(flashcardObject) {
         this.config.flashcardObject = flashcardObject;
+    },
+
+    disableAllButtons: function() {
+        this.flashcardFieldSet.getInnerItems().forEach(function(button) {
+            button.disable();
+        });
     },
     
     prepareTest: function(questionIds, boxId) {

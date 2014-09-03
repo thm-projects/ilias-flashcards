@@ -116,6 +116,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
          * show viewchange button when panel is painted
          */
         this.onAfter('painted', function() {
+            this.blockedInput = false;
             LernApp.app.main.navigation.viewButton.show();
         });
         
@@ -344,22 +345,29 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             store = list.getStore(),
             node = store.getAt(index);
         
+        if(typeof me.blockedInput === 'undefined') {
+            me.blockedInput = false;
+        }
+        
         if(this.getEditMode()) {
             me.selectListItem(node);
         }
         else if (node.isLeaf()) {
-            LernApp.app.setMasked('Lade Fragen', function() {
-                me.fireEvent('leafitemtap', this, list, index, target, record, e);
-                me.goToLeaf(node);
-
-                LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {
-                    var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
-                        questions: questions,
-                        showOnlyQuestion: true
+            if(!me.blockedInput) {
+                LernApp.app.setMasked('Lade Fragen', function() { 
+                    me.blockedInput = true;
+                    me.fireEvent('leafitemtap', this, list, index, target, record, e);
+                    me.goToLeaf(node);
+                    
+                    LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {                    
+                        var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                            questions: questions,
+                            showOnlyQuestion: true
+                        });
+                        LernApp.app.main.navigation.push(panel);
                     });
-                    LernApp.app.main.navigation.push(panel);
                 });
-            });
+            }
         }
         else {
             this.goToNode(node);
