@@ -57,6 +57,8 @@ Ext.define('LernApp.view.home.UserPanel', {
     initialize: function() {
         this.callParent(arguments);
         
+        var me = this;
+        
         this.backButton = Ext.create('Ext.Button', {
             text: Messages.HOME,
             align: 'left', 
@@ -73,37 +75,16 @@ Ext.define('LernApp.view.home.UserPanel', {
             hidden: true,
             doneButton: Messages.CHOOSE,
             cancelButton: Messages.CANCEL,
-            slots: [
-                {
-                    name : 'categoryPicker',
-                    title: Messages.CATEGORYS,
-                    data : [
-                        {text: Messages.ALL_CATEGORYS, value: Messages.ALL_CATEGORYS},
-                        {text: Messages.PUBLIC_LAW, value: Messages.PUBLIC_LAW},
-                        {text: Messages.CRIMINAL_LAW, value: Messages.CRIMINAL_LAW},
-                        {text: Messages.CIVIL_LAW, value: Messages.CIVIL_LAW}
-                    ]
-                }
-            ],
             listeners: {
                 scope: this,
                 change: function (picker, newValue) {
                     this.titleBar.setTitle(newValue.categoryPicker);
                     
                     /** update chart data to selected category */
-                    switch(newValue.categoryPicker) {
-                        case Messages.ALL_CATEGORYS:
-                            this.updateChartData(this.allCategoryStore);
-                            break;
-                        case Messages.PUBLIC_LAW:
-                            this.updateChartData(this.publicLawStore);
-                            break;
-                        case Messages.CRIMINAL_LAW:
-                            this.updateChartData(this.criminalLawStore);
-                            break;
-                        case Messages.CIVIL_LAW:
-                            this.updateChartData(this.civilianLawStore);
-                            break;
+                    if(newValue.categoryPicker === Messages.ALL_CATEGORYS) {
+                        this.updateChartData(this.allCategoryStore);
+                    } else {
+                        this.updateChartData(this[newValue.categoryPicker]);
                     }
                 }
             }
@@ -122,9 +103,8 @@ Ext.define('LernApp.view.home.UserPanel', {
             ui: 'action',
             align: 'center',
             handler: function(button) {
-                var userPanel = LernApp.app.main.tabPanel.down('#userPanel');
-                Ext.Viewport.add(userPanel.picker);
-                userPanel.picker.show();
+                Ext.Viewport.add(me.picker);
+                me.picker.show();
             }
         });
         
@@ -160,9 +140,9 @@ Ext.define('LernApp.view.home.UserPanel', {
                 data: [
                        {'name': 'Erlernt',  'data': 0},
                        {'name': 'Leicht',   'data': 0},
-                       {'name': 'Geht so',  'data': 0},
+                       {'name': 'Geht',     'data': 0},
                        {'name': 'Schwer',   'data': 0},
-                       {'name': 'Rest',     'data': 0}
+                       {'name': 'Unb.',     'data': 0}
                 ]
             }),
             
@@ -239,49 +219,99 @@ Ext.define('LernApp.view.home.UserPanel', {
      * reloads all stores and call summerizeCategoryData for each store
      */
     loadAllStores: function() {
-        var me = this,
-            statisticArray = [];
+        var me = this;
         
         LernApp.app.storageController.getFlashcardObject(function(flashcardObject) {
-            for(box in flashcardObject) {
-                var statisticObject = {};
-                
-                switch(box) {
-                    case 'box1': statisticObject.name = 'Rest';         break;
-                    case 'box2': statisticObject.name = 'Schwer';       break;
-                    case 'box3': statisticObject.name = 'Geht so';      break;
-                    case 'box4': statisticObject.name = 'Leicht';       break;
-                    case 'box5': statisticObject.name = 'Erlernt';      break;
-                }
-                
-                statisticObject.data = Object.keys(flashcardObject[box]).length;
-                statisticArray.push(statisticObject);
-            }
-            
-            me.allCategoryStore = Ext.create("Ext.data.Store", {
-                model: 'ChartDataModel',
-                data : statisticArray
+            LernApp.app.storageController.getStoredTestObject(function(storedTestObject) {
+                LernApp.app.storageController.getStoredSelectedTests(function(selectedTests) {
+                    me.statisticCalculations(flashcardObject, storedTestObject, selectedTests);
+                });
             });
         });
     },
     
     /**
-     * function callback to summerize data from stores
+     * sets slots of picker
      */
-    summerizeCategoryData: function(records, me) {
-        var store    = me.allCategoryStore;
-        var data     = store.getData();
-
-        data.each(function(element, index, array) {
-            records.forEach(function(recElement, recIndex, recArray) {
-                if(element.getData().name === recElement.data.name) {
-                    store.add({
-                        name: element.getData().name, 
-                        data: element.getData().data + recElement.data.data
-                    });
-                    store.remove(element);
+    setPickerSlots: function(categoryArray) {
+        this.picker.setSlots([{
+            name : 'categoryPicker',
+            title: Messages.CATEGORYS,
+            data: categoryArray
+        }]);
+    },
+    
+    /**
+     * calculates and counts all needed statistics for the pie chart
+     */
+    statisticCalculations: function(flashcardObject, storedTestObject, selectedTests) {
+        var me = this,
+            statisticArray,
+            statisticObject,
+            allStatisticArray = [],
+            allStatisticObject = {},
+            allStatisticsCalc = false,
+            statisticCategoryArray = [{
+                text: Messages.ALL_CATEGORYS,
+                value: Messages.ALL_CATEGORYS
+            }];
+        
+        var evaluateBoxName = function(box) {
+            switch(box) {
+                case 'box1': return 'Unb.';   
+                case 'box2': return 'Schwer'; 
+                case 'box3': return 'Geht'; 
+                case 'box4': return 'Leicht';
+                case 'box5': return 'Erlernt';
+            }   
+        };
+        
+        for(test in storedTestObject) {
+            if(test in selectedTests) {
+                statisticArray = [];
+                
+                for(box in flashcardObject) {
+                    statisticObject = {};
+                    
+                    statisticObject.data = 0;
+                    statisticObject.name = evaluateBoxName(box);
+                
+                    for(question in flashcardObject[box]) {
+                        if(question in storedTestObject[test].questions) {
+                            statisticObject.data++;
+                        }
+                    }
+                    
+                    if(!allStatisticsCalc) {
+                        allStatisticObject = {};
+                        allStatisticObject.name = evaluateBoxName(box);
+                        allStatisticObject.data = Object.keys(flashcardObject[box]).length;
+                        allStatisticArray.push(allStatisticObject);
+                    }
+                    
+                    statisticArray.push(statisticObject);
                 }
-            });
-        });
+                
+                if(!allStatisticsCalc) {
+                    allStatisticsCalc = true;
+                    me.allCategoryStore = Ext.create("Ext.data.Store", {
+                        model: 'ChartDataModel',
+                        data : allStatisticArray
+                    });
+                }
+                
+                statisticCategoryArray.push({
+                    text: storedTestObject[test].title,
+                    value: storedTestObject[test].title
+                });
+                
+                me[storedTestObject[test].title] = Ext.create("Ext.data.Store", {
+                    model: 'ChartDataModel',
+                    data : statisticArray
+                });
+            }
+        }
+
+        me.setPickerSlots(statisticCategoryArray);
     }
 });
