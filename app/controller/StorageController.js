@@ -104,6 +104,8 @@ Ext.define('LernApp.controller.StorageController', {
                 me.setFlashcardObject({
                     box1: {}, box2: {},  box3: {}, box4: {}, box5: {}
                 }, promise);
+            } else {
+                promise();
             }
         });
     },
@@ -206,7 +208,7 @@ Ext.define('LernApp.controller.StorageController', {
     setFlashcardObject: function(object, promise) {
         this.genericSetterMethod('flashCardSet', object, promise);
     },
-    
+	
     /** getter for loggedInUser */
     getLoggedInUserObj: function(promise) {
         localforage.getItem('loginObj', function(loginObj) {
