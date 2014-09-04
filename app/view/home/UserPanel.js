@@ -179,6 +179,11 @@ Ext.define('LernApp.view.home.UserPanel', {
             }]
         });
         
+        this.allCategoryStore = Ext.create("Ext.data.Store", {
+            model: 'ChartDataModel',
+            data: this.statisticChart.getStore().getData().all
+        });
+        
         this.add([
             this.titleBar,
             this.buttonToolbar,
