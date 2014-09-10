@@ -78,8 +78,8 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
                 var navigation = LernApp.app.main.navigation;
                 var activeItem = navigation.getActiveItem().getActiveItem();
                 
-                /** quickhack */
-                var sel = activeItem.answerList.getSelection()[0].data.points;
+                /** get list selection */
+                var sel = activeItem.answerList.getSelection();
                 
                 navigation.saveAnimation();
                 navigation.getNavigationBar().down('#answerButton').hide();
@@ -88,8 +88,9 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
                 navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', {
                     boxId: me.config.boxId,
                     questionId: activeItem.questionObj.id,
-                    answers: activeItem.questionObj.answers,
+                    questionType: activeItem.questionObj.type,
                     feedback: activeItem.questionObj.feedback,
+                    answers: activeItem.questionObj.answers,
                     showOnlyAnswers: me.showOnlyAnswers,
                     selection: sel 
                 }));

@@ -61,6 +61,7 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
             scrollable: { disabled: true },
             
             data: this.questionObj.answers,
+            mode: this.questionObj.type === 2 ? 'MULTI': 'SINGLE',
             
             listeners: {
                 scope: this,

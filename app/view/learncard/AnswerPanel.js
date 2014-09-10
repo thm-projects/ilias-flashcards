@@ -73,7 +73,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                         duration: 800 
                     });
                     
-                    if(answerPanel.selection) {
+                    if(answerPanel.evaluationObj.rate >= 0.7) {
                         /** 
                          * show confirm panel over saveButton,
                          * align panel slightly over the button,
@@ -258,14 +258,14 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         }
         
         if(this.answerList.getData() == null || this.answerList.getData().length == 1) {
-            this.answerTitle = Ext.create('Ext.Panel', {
-                html: '<p class="title">' + Ext.util.Format.htmlEncode('Die richtige Antwort lautet:') + '<p/>'
-            });
+            var answerTitle = 'Die richtige Antwort lautet:';
         } else {
-            this.answerTitle = Ext.create('Ext.Panel', {
-                html: '<p class="title">' + Ext.util.Format.htmlEncode('Die richtigen Antworten lauten:') + '<p/>'
-            });
+            var answerTitle = 'Die richtigen Antworten lauten:';
         }
+        
+        this.answerTitle = Ext.create('Ext.Panel', {
+            html: '<p class="title">' + Ext.util.Format.htmlEncode(answerTitle) + '<p/>'
+        });
         
         this.answerBox = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
@@ -309,12 +309,60 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         });
     },
     
-    evaluateAnswer: function() {        
-        if(this.selection) {
-            Ext.Msg.alert('Richtig!', 'Die Antwort war richtig.', Ext.emptyFn);
-        } else {
-            Ext.Msg.alert('Falsch!', 'Die Antwort war leider falsch.', Ext.emptyFn);
+    getEvaluationObject: function() {
+        return this.evaluationObj;
+    },
+    
+    evaluateAnswer: function() {
+        var alertTitle = '',
+            alertText = '',
+            evalObj = {
+                correctSelectionCount: 0,
+                falseSelectionCount: 0,
+                correctAnswerCount: 0
+            };
+        
+        /** multiple choice */
+        if(this.questionType == 2) { 
+            evalObj.correctAnswerCount = this.getCorrectAnswers().length;
+            
+            for(sel in this.selection) {
+                if(this.selection[sel].data.points > 0) evalObj.correctSelectionCount++;
+                else evalObj.falseSelectionCount++;
+            }
+            
+            if(evalObj.correctSelectionCount == (evalObj.correctAnswerCount - evalObj.falseSelectionCount)) {
+                alertText = 'Die Antworten waren alle richtig!';
+                alertTitle = 'Richtig!';
+            } else {
+                alertTitle = 'Leider falsch!';
+                alertText = 'Richtige Antworten: ' + evalObj.correctSelectionCount + '/' + 
+                            evalObj.correctAnswerCount + '<br>' + 'Falsche Antworten: ' +
+                            evalObj.falseSelectionCount;
+            }
+        } 
+        
+        /** single choice */
+        else {
+            var selectionPoint = this.selection[0].data.points > 0;
+            evalObj.correctAnswerCount = 1;
+            
+            if(selectionPoint) {
+                evalObj.correctSelectionCount++;
+                alertText = 'Die Antwort war richtig.';
+                alertTitle = 'Richtig!';
+            } else {
+                evalObj.falseSelectionCount++;
+                alertText = 'Die Antwort war leider falsch.';
+                alertTitle = 'Falsch!';
+            }
         }
+        
+        var answerValue = evalObj.correctSelectionCount - evalObj.falseSelectionCount;
+        evalObj.rate = (1 / evalObj.correctAnswerCount) * answerValue;
+        
+        this.evaluationObj = evalObj;
+        Ext.Msg.alert(alertTitle, alertText, Ext.emptyFn);
     },
     
     getCorrectAnswers: function() {
