@@ -170,7 +170,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                         var button = this;
                         button.disable();
                         LernApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LernApp.view.cardindex.CardIndex');
+                            var panel = Ext.create('LernApp.view.cardindex.CardIndex', {view: 'test'});
                             LernApp.app.main.navigation.push(panel);
                         });
                     }
@@ -183,7 +183,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                         var button = this;
                         button.disable();
                         LernApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LernApp.view.cardindex.CardIndex', {view: 'test'});
+                            var panel = Ext.create('LernApp.view.cardindex.CardIndex');
                             LernApp.app.main.navigation.push(panel);
                         });
                     }
