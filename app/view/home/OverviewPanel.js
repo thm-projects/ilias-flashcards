@@ -164,26 +164,26 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                 {
                     xtype   : 'button',
                     name    : 'showCardIndex',
-                    text    : Messages.SHOW_CARD_INDEX,
-                    cls     : 'forwardListButton',
-                    handler : function() {
-                        var button = this;
-                        button.disable();
-                        LernApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LernApp.view.cardindex.CardIndex')
-                            LernApp.app.main.navigation.push(panel);
-                        });
-                    }
-                }, {
-                    xtype   : 'button',
-                    name    : 'showCardIndex',
                     text    : Messages.EDIT_CARD_INDEX,
                     cls     : 'forwardListButton',
                     handler : function() {
                         var button = this;
                         button.disable();
                         LernApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LernApp.view.cardindex.CardIndex', {edit: true});
+                            var panel = Ext.create('LernApp.view.cardindex.CardIndex');
+                            LernApp.app.main.navigation.push(panel);
+                        });
+                    }
+                }, {
+                    xtype   : 'button',
+                    name    : 'showCategoryIndex',
+                    text    : Messages.EDIT_CATEGORYS_INDEX,
+                    cls     : 'forwardListButton',
+                    handler : function() {
+                        var button = this;
+                        button.disable();
+                        LernApp.app.setMasked('Lade Fragen', function() {
+                            var panel = Ext.create('LernApp.view.cardindex.CardIndex', {view: 'test'});
                             LernApp.app.main.navigation.push(panel);
                         });
                     }

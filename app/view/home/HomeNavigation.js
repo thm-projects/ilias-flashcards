@@ -119,12 +119,19 @@ Ext.define('LernApp.view.home.HomeNavigation', {
                     }],
                     listeners: {
                         toggle: function(container, button, pressed){
-                            var main = LernApp.app.main;
-                            var panel = main.navigation.getActiveItem();
-                            me.viewChangePanel.hideTask.cancel();
-                            me.viewChangePanel.hideTask.delay(3000);
-                            panel.setDisplayMode(button.getItemId());
-                            panel.editToggleField.setValue(0);
+                            if(pressed) {
+                                var navigation = LernApp.app.main.navigation;
+                                var panel = navigation.getActiveItem();
+                                me.viewChangePanel.hideTask.cancel();
+                                me.viewChangePanel.hideTask.delay(3000);
+                                panel.editToggleField.setValue(0);
+                                
+                                if(panel.displayModeAlreadySet) {
+                                    panel.setDisplayMode(button.getItemId());
+                                } else {
+                                    panel.displayModeAlreadySet = true;
+                                }
+                            }
                         }
                     }
                 }
@@ -138,6 +145,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
         this.push(this.overviewPanel);
         
         /** initialize listeners */
+        this.on('back', this.onBack);
         this.on('destroy', this.onDestroy);
     },
     
@@ -153,27 +161,26 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     },
     
     /** sets pressed property of segmented button */
-    setPressedButton: function(promise) {
-        var me = this;
-
-        LernApp.app.storageController.getStoredSetting('preferedView', function(view) {
-            if(!me.viewChangePanel.isInitialized) {  
-                var selView, 
-                    viewChangeButton = me.viewChangePanel.down('#viewChangeButton'),
-                    innerButtons = viewChangeButton.getInnerItems();
-
-                if(view !== null) { selView = view; }
-                else { selView = innerButtons[0].getItemId() }
-                
-                innerButtons.forEach(function(item, index) {
-                    if(item.getItemId() == selView) viewChangeButton.setPressedButtons([index]);
-                });
-    
-                me.viewChangePanel.isInitialized = true;
-                promise(false);
-            }
-            else promise(true, view);
+    setPressedButton: function(view) {
+        var me = this,
+            selView = null,
+            activePanel = LernApp.app.main.navigation.getActiveItem(),
+            viewChangeButton = me.viewChangePanel.down('#viewChangeButton'),
+            innerButtons = viewChangeButton.getInnerItems();
+        
+        if(typeof view !== 'undefined') { selView = view; }
+        else { selView = innerButtons[0].getItemId() }
+        
+        innerButtons.forEach(function(item, index) {
+            if(item.getItemId() == selView) viewChangeButton.setPressedButtons([index]);
         });
+    },
+    
+    /** actions to fulfill on back button tap */
+    onBack: function() {
+        var viewChangeButton = this.viewChangePanel.down('#viewChangeButton');
+        viewChangeButton.setPressedButtons([]);
+        this.viewChangePanel.hide();
     },
     
     /** actions to fulfill on panel destroy */

@@ -77,8 +77,15 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     },
     
     initialize: function() {
+        this.callParent(arguments);
+        
         var me = this;
-        this.withEditFunction = this.edit;
+        
+        /** set pressedButton in navigation */
+        LernApp.app.main.navigation.setPressedButton(this.view);
+        
+        /** set displayMode */
+        this.setDisplayMode(this.view);
         
         /**
          * toggleField - enables/disables edit mode
@@ -102,16 +109,6 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             }
         });
         
-        /**
-         * get prefered view and set store data
-         */
-        this.on('initialize', function() {
-            var me = this;
-            LernApp.app.main.navigation.setPressedButton(function(isInitialized, view) {
-                if(isInitialized) me.setDisplayMode(view);
-            });
-        });
-
         /**
          * show viewchange button when panel is painted
          */
@@ -147,7 +144,6 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         } else {
             this.config.selectedDisplayMode = this.config.displayModes.tree;
         }
-        LernApp.app.storageController.storeSetting('preferedView', this.config.selectedDisplayMode);
         this.setStoreData();
     },
     
@@ -228,8 +224,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * actions to perform after panel activation and before panel is painted
      */
     onActivate: function() {
-        if(this.withEditFunction) this.getToolbar().add(this.editToggleField);
-        else this.getToolbar().setTitle('');
+        this.getToolbar().add(this.editToggleField);
         
         LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
         this.modifyToolbarTitles();
@@ -269,8 +264,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                 
         /** set navigationBar title */
         navigationBar.setTitle( this.getTitle() );
-        if(this.withEditFunction) this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
-        else this.getToolbar().setTitle('');
+        this.getToolbar().setTitle(Messages.EDIT_CARD_INDEX);
     },
     
     /**
