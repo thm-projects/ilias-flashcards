@@ -129,6 +129,14 @@ Ext.define('LernApp.view.home.UserPanel', {
             }
         });
         
+        this.allCategoryEmptyData = [
+            {'name': 'Erlernt',  'data': 0},
+            {'name': 'Leicht',   'data': 0},
+            {'name': 'Geht',     'data': 0},
+            {'name': 'Schwer',   'data': 0},
+            {'name': 'Unb.',     'data': 0}
+        ];
+        
         this.statisticChart = Ext.create('Ext.chart.PolarChart', {
             animate: true,
             innerPadding: 10,
@@ -136,14 +144,8 @@ Ext.define('LernApp.view.home.UserPanel', {
             colors: ['#00FF00', '#FFFF00', '#FF9900', '#FF0000', '#999999'],
 
             store: Ext.create('Ext.data.Store', {
-                model: 'ChartDataModel' ,
-                data: [
-                       {'name': 'Erlernt',  'data': 0},
-                       {'name': 'Leicht',   'data': 0},
-                       {'name': 'Geht',     'data': 0},
-                       {'name': 'Schwer',   'data': 0},
-                       {'name': 'Unb.',     'data': 0}
-                ]
+                model: 'ChartDataModel',
+                data: this.allCategoryEmptyData
             }),
             
             legend: {
@@ -255,6 +257,7 @@ Ext.define('LernApp.view.home.UserPanel', {
             statisticObject,
             allStatisticArray = [],
             allStatisticObject = {},
+            testsInSelectedCategories = false,
             allStatisticsCalc = false,
             statisticCategoryArray = [{
                 text: Messages.ALL_CATEGORYS,
@@ -313,6 +316,15 @@ Ext.define('LernApp.view.home.UserPanel', {
                 me[storedTestObject[test].title] = Ext.create("Ext.data.Store", {
                     model: 'ChartDataModel',
                     data : statisticArray
+                });
+                
+                testsInSelectedCategories = true;
+            }
+            
+            if(!testsInSelectedCategories) {
+                me.allCategoryStore = Ext.create("Ext.data.Store", {
+                    model: 'ChartDataModel',
+                    data : this.allCategoryEmptyData
                 });
             }
         }

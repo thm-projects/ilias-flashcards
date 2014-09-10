@@ -429,6 +429,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                     LernApp.app.storageController.addStoredCategories(categoryModification.added, function() {
                         LernApp.app.storageController.storeQuestions(categoryModification.added, function() {
                             me.updateListIcons();
+                            LernApp.app.main.navigation.userPanel.loadAllStores();
                             Ext.Viewport.setMasked(false);
                         });
                     });
