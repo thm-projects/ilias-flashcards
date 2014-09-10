@@ -78,27 +78,8 @@ Ext.define('LernApp.proxy.Proxy', {
     checkLogin: function(callback) {
         var me = this;
        
-        var checkLoginRequest = function() {
-            me.request({
-                url: me.getUrl() + "checklogin",
-                
-                success: function(response) {
-                    if(response.responseText = 'OK') {
-                        callback.success.call(this, arguments);
-                    }
-                },
-                
-                failure: function(response) {
-                    callback.failure.apply(this, arguments);
-                },
-                
-                scope: me
-            });
-        }
-        
         LernApp.app.storageController.getLoggedInUserObj(function(loginObj) {
             if(loginObj != null) me.setDefaultHeaders(loginObj.authObj);
-            checkLoginRequest();
         });
     },
     
@@ -151,9 +132,11 @@ Ext.define('LernApp.proxy.Proxy', {
                 Ext.Viewport.setMasked(false);
                 console.log(response.status);
                 if (response.status === 401) {
-                    console.log('unauthicated');
+                    Ext.Msg.alert('Login', 'Ihre Logindaten sind abgelaufen. Bitte erneut einloggen.', function() {
+                        LernApp.app.getController('LoginController').logout();
+                    });
                 } else {
-                    Ext.Msg.alert('Offline-Modus', 'Das Programm wird im Offline-Modus ausgeführt.')
+                    Ext.Msg.alert('Offline-Modus', 'Das Programm wird im Offline-Modus ausgeführt.');
                     callback.failure.apply(this, arguments);
                 }
             },

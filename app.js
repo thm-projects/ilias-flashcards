@@ -40,6 +40,11 @@ Ext.application({
         'LernApp.prototype.CustomMessageBox'
     ],
 
+    viewport: {
+        autoMaximize: Ext.os.is.iOS && !Ext.browser.is.webview && Ext.browser.version.isGreaterThan(3) &&
+                      Ext.browser.version.isLessThan(7)
+    },
+    
     icon: {
         '57': 'resources/icons/Icon.png',
         '72': 'resources/icons/Icon~ipad.png',
