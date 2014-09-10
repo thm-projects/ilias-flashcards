@@ -122,8 +122,8 @@ Ext.define('LernApp.view.home.HomeNavigation', {
                             if(pressed) {
                                 var navigation = LernApp.app.main.navigation;
                                 var panel = navigation.getActiveItem();
-                                me.viewChangePanel.hideTask.cancel();
-                                me.viewChangePanel.hideTask.delay(3000);
+                                me.viewChangePanel.config.hideTask.cancel();
+                                me.viewChangePanel.config.hideTask.delay(3000);
                                 panel.editToggleField.setValue(0);
                                 
                                 if(panel.displayModeAlreadySet) {

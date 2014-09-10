@@ -38,7 +38,6 @@ Ext.define('LernApp.store.QuestionStore', {
     ],
     
     config: {
-        model: 'LernApp.model.Question',
-        proxy: LernApp.app.proxy
+        model: 'LernApp.model.Question'
     }
 });

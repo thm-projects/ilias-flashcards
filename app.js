@@ -30,10 +30,14 @@
   +--------------------------------------------------------------------------------+
 */
 
+Ext.require([
+    'Ext.viewport.Viewport'
+]);
+
 Ext.application({
     name: 'LernApp',
     appFolder: 'app',
-
+    
     requires: [
         'LernApp.view.Main',
         'LernApp.proxy.Proxy',

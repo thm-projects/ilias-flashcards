@@ -39,7 +39,6 @@ Ext.define('LernApp.store.CardIndexStore', {
     
     config: {
         model: 'LernApp.model.CardIndexModel',
-        defaultRootProperty: 'children',
-        proxy: LernApp.app.proxy
+        defaultRootProperty: 'children'
     }
 });
