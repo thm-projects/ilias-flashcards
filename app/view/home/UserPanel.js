@@ -82,7 +82,7 @@ Ext.define('LernApp.view.home.UserPanel', {
                     
                     /** update chart data to selected category */
                     if(newValue.categoryPicker === Messages.ALL_CATEGORYS) {
-                        this.updateChartData(this.allCategoryStore);
+                        this.updateChartData(this.allCategoryData);
                     } else {
                         this.updateChartData(this[newValue.categoryPicker]);
                     }
@@ -181,10 +181,7 @@ Ext.define('LernApp.view.home.UserPanel', {
             }]
         });
         
-        this.allCategoryStore = Ext.create("Ext.data.Store", {
-            model: 'ChartDataModel',
-            data: this.statisticChart.getStore().getData().all
-        });
+        this.allCategoryData = this.statisticChart.getStore().getData().all;
         
         this.add([
             this.titleBar,
@@ -197,23 +194,26 @@ Ext.define('LernApp.view.home.UserPanel', {
         
         this.on('activate', function() {
             this.titleBar.setTitle(Messages.ALL_CATEGORYS);
-            this.updateChartData(this.allCategoryStore);
+            this.updateChartData(this.allCategoryData);
         });
     },
     
     /**
      * updates data of chart store and refreshes statisticChart
      * 
-     * param: store - data to write to chart store
+     * @param: data - data array to write to chart store
      */
-    updateChartData: function(store) {
+    updateChartData: function(data) {
         var statisticStore = this.statisticChart.getStore();
+        
+        /** reset statistics */
+        statisticStore.setData(this.allCategoryEmptyData);
         
         /** write data from store to chart store */
         statisticStore.each(function(record, index) {
-            store.each(function(catRecord, catIndex) {
-                if(record.getData().name === catRecord.getData().name) {
-                    record.set('data', catRecord.getData().data);
+            data.forEach(function(dataRow) {
+                if(record.getData().name === dataRow.name) {
+                    record.set('data', dataRow.data);
                 }
             });
         });
@@ -302,10 +302,7 @@ Ext.define('LernApp.view.home.UserPanel', {
                 
                 if(!allStatisticsCalc) {
                     allStatisticsCalc = true;
-                    me.allCategoryStore = Ext.create("Ext.data.Store", {
-                        model: 'ChartDataModel',
-                        data : allStatisticArray
-                    });
+                    me.allCategoryData = allStatisticArray;
                 }
                 
                 statisticCategoryArray.push({
@@ -313,19 +310,12 @@ Ext.define('LernApp.view.home.UserPanel', {
                     value: storedTestObject[test].title
                 });
                 
-                me[storedTestObject[test].title] = Ext.create("Ext.data.Store", {
-                    model: 'ChartDataModel',
-                    data : statisticArray
-                });
-                
+                me[storedTestObject[test].title] = statisticArray;
                 testsInSelectedCategories = true;
             }
             
             if(!testsInSelectedCategories) {
-                me.allCategoryStore = Ext.create("Ext.data.Store", {
-                    model: 'ChartDataModel',
-                    data : this.allCategoryEmptyData
-                });
+                me.allCategoryData = this.allCategoryEmptyData;
             }
         }
 
