@@ -87,7 +87,12 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
         });
         
         this.on('painted', function() {
-            var title = this.config.questionObj.type === 2 ? 'Multiple Choice' : 'Single Choice';
+            if(window.innerWidth < 340) {
+                var title = this.config.questionObj.type === 2 ? 'Multiple Ch.' : 'Single Ch.';
+            } else {
+                var title = this.config.questionObj.type === 2 ? 'Multiple Choice' : 'Single Choice';
+            }
+            
             LernApp.app.main.navigation.getNavigationBar().setTitle(title); 
         });
         
