@@ -58,13 +58,13 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             text: Messages.CONTINUE,
             ui: 'confirm',
             handler: function() {
-                var main = LernApp.app.main;
-                var answerPanel = main.navigation.getActiveItem();
+                var main = LernApp.app.main,
+                    answerPanel = main.navigation.getActiveItem();
                 
                 /** disable saveButton */
                 this.disable();
                 
-                if(!answerPanel.showOnlyAnswers) {
+                if(!answerPanel.config.showOnlyAnswers) {
                     
                     /** set animation to 'slide' */
                     main.navigation.getLayout().setAnimation({
@@ -73,7 +73,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                         duration: 800 
                     });
                     
-                    if(answerPanel.evaluationObj.rate >= 0.7) {
+                    if(answerPanel.config.evaluationObj.rate >= 0.7) {
                         /** 
                          * show confirm panel over saveButton,
                          * align panel slightly over the button,
@@ -323,11 +323,11 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             };
         
         /** multiple choice */
-        if(this.questionType == 2) { 
+        if(this.config.questionType == 2) { 
             evalObj.correctAnswerCount = this.getCorrectAnswers().length;
             
-            for(sel in this.selection) {
-                if(this.selection[sel].data.points > 0) evalObj.correctSelectionCount++;
+            for(sel in this.config.selection) {
+                if(this.config.selection[sel].data.points > 0) evalObj.correctSelectionCount++;
                 else evalObj.falseSelectionCount++;
             }
             
@@ -344,7 +344,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         
         /** single choice */
         else {
-            var selectionPoint = this.selection[0].data.points > 0;
+            var selectionPoint = this.config.selection[0].data.points > 0;
             evalObj.correctAnswerCount = 1;
             
             if(selectionPoint) {
@@ -361,14 +361,14 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         var answerValue = evalObj.correctSelectionCount - evalObj.falseSelectionCount;
         evalObj.rate = (1 / evalObj.correctAnswerCount) * answerValue;
         
-        this.evaluationObj = evalObj;
+        this.config.evaluationObj = evalObj;
         Ext.Msg.alert(alertTitle, alertText, Ext.emptyFn);
     },
     
     getCorrectAnswers: function() {
         var correctAnswers = [];
         
-        this.answers.forEach(function(answer) {
+        this.config.answers.forEach(function(answer) {
             if(answer.points) {
                 correctAnswers.push(answer);
             }
@@ -379,7 +379,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     
     getAppropriateFeedbackText: function() {
         var feedbackText;
-        this.feedback.forEach(function(possibility) {
+        this.config.feedback.forEach(function(possibility) {
             if(possibility.correct) {
                 feedbackText = possibility.feedback;
             }

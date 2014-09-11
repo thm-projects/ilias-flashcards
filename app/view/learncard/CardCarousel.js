@@ -47,15 +47,26 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     },
     
     instanciateComponents: function() {
-        var panel = [];
+        var me = this,
+            array = [],
+            panelCounter = 0,
+            questions = this.config.questions;
+                  
+        me.questionsArray = [];
         
-        for(var key in this.questions) {
-            panel.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
-                itemId: this.questions[key].id,
-                questionObj: this.questions[key]
-            }));
+        for(var key in questions) {
+            if(++panelCounter < 10) {
+                array.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
+                    itemId: questions[key].id,
+                    questionObj: questions[key]
+                }));
+            }
+            else if(panelCounter > 10) {
+                me.questionsArray.push(questions[key]);
+            }
         }
-        this.add(panel);
+        
+        this.add(array);
     },
     
     initialize: function(arguments) {
@@ -81,19 +92,21 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
                 /** get list selection */
                 var sel = activeItem.answerList.getSelection();
                 
-                navigation.saveAnimation();
-                navigation.getNavigationBar().down('#answerButton').hide();
-                navigation.getLayout().setAnimation({ type: 'flip', duration: 500 });
-                
-                navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', {
-                    boxId: me.config.boxId,
-                    questionId: activeItem.questionObj.id,
-                    questionType: activeItem.questionObj.type,
-                    feedback: activeItem.questionObj.feedback,
-                    answers: activeItem.questionObj.answers,
-                    showOnlyAnswers: me.showOnlyAnswers,
-                    selection: sel 
-                }));
+                if(sel.length > 0) {
+                    navigation.saveAnimation();
+                    navigation.getNavigationBar().down('#answerButton').hide();
+                    navigation.getLayout().setAnimation({ type: 'flip', duration: 500 });
+                    
+                    navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', {
+                        boxId: me.config.boxId,
+                        questionId: activeItem.config.questionObj.id,
+                        questionType: activeItem.config.questionObj.type,
+                        feedback: activeItem.config.questionObj.feedback,
+                        answers: activeItem.config.questionObj.answers,
+                        showOnlyAnswers: me.config.showOnlyAnswers,
+                        selection: sel 
+                    }));
+                }
             }
         });
        
@@ -106,6 +119,13 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
              */
             LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
             if(!this.showOnlyQuestion) this.answerButton.show();
+        });
+        
+        /**
+         * preload next question on active item change
+         */
+        this.on('activeitemchange', function() {
+            this.preloadQuestion();
         });
         
         /**
@@ -133,6 +153,20 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     disableActiveQuestion: function() {
         var questionPanel = this.getActiveItem();
         this.remove(questionPanel);
+    },
+    
+    preloadQuestion: function() {
+        if(this.questionsArray.length > 0) {
+            if((this.getInnerItems().length - 3) == this.getActiveIndex()) {
+                var question = this.questionsArray.pop();
+                
+                this.add([Ext.create('LernApp.view.learncard.QuestionPanel', {
+                        itemId: question.id,
+                        questionObj: question
+                    })
+                ]);
+            }
+        }
     },
     
     checkForEmptyItems: function() {
