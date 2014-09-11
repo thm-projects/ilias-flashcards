@@ -183,7 +183,7 @@
 	display: inline;
 	text-align: left;
 	font-weight: bold;
-	margin-top: 6px !important;
+	flex: none !important;
 }
 
 .saveConfirmPanel .x-button {
