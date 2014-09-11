@@ -52,8 +52,9 @@ Ext.define('LernApp.controller.StorageController', {
     initializeStorage: function() {
         var me = this;
         
-        /** use localstorage as driver for debugging reasons */
-        localforage.setDriver('localStorageWrapper');
+        /** use localstorage as driver for debugging reasons 
+        * localforage.setDriver('localStorageWrapper');
+        */
         
         localforage.config({
             name        : 'LernAppDB',
@@ -260,7 +261,7 @@ Ext.define('LernApp.controller.StorageController', {
             
             object[me.username] = value;
             if(typeof promise === 'undefined') { localforage.setItem(key, object); }
-            else { localforage.setItem(key, object).then(promise); }; 
+            else { localforage.setItem(key, object, promise); }; 
         });
     },
         
