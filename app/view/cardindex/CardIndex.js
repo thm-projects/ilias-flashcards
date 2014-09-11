@@ -82,10 +82,10 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         var me = this;
         
         /** set pressedButton in navigation */
-        LernApp.app.main.navigation.setPressedButton(this.view);
+        LernApp.app.main.navigation.setPressedButton(this.config.view);
         
         /** set displayMode */
-        this.setDisplayMode(this.view);
+        this.setDisplayMode(this.config.view);
         
         /**
          * toggleField - enables/disables edit mode

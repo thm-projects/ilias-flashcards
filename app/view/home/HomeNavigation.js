@@ -81,7 +81,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
                 if(me.viewChangePanel.isHidden()) {                    
                     me.viewChangePanel.showBy(this);
                     me.viewChangePanel.show();
-                    me.viewChangePanel.hideTask.delay(3000);
+                    me.viewChangePanel.config.hideTask.delay(2000);
                 } else {
                     me.viewChangePanel.hide();
                 }
