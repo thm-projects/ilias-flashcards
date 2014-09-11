@@ -72,13 +72,14 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
     },
     
     initializeTestButtons: function() {
-        var me = this;
+        var me = this,
+            testObj = this.config.testObj;
         
-        for(var key in this.testObj) {
+        for(var key in this.config.testObj) {
             me.cardIndexFieldSet.add({
                 xtype   : 'button',
-                name    : me.testObj[key].title,
-                text    : me.testObj[key].title,
+                name    : testObj[key].title,
+                text    : testObj[key].title,
                 itemId  : key,
                 cls     : 'forwardListButton', 
                 handler : function(obj) {

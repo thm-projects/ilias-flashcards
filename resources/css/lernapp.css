@@ -44,11 +44,11 @@
 }
 
 .addIcon {
-    background-image: url(/resources/icons/icon_add.png) !important;
+    background-image: url(../icons/icon_add.png) !important;
 }
 
 .deleteIcon {
-    background-image: url(/resources/icons/icon_delete.png) !important;
+    background-image: url(../icons/icon_delete.png) !important;
 }
 
 .formInvalid::-moz-placeholder {

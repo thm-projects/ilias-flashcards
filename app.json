@@ -129,7 +129,10 @@
          */
         "cache": [
             "index.html",
-            "lib/localforage.js"
+            "lib/localforage.js",
+            "resources/icons/icon_delete.png",
+            "resources/icons/icon_add.png",
+            "resources/images/UniRep-Logo.jpg"
         ],
         /**
          * List of items in the NETWORK section
@@ -147,7 +150,6 @@
      * Extra resources to be copied along when build
      */
     "resources": [
-        "app/data",
         "resources/images",
         "resources/icons",
         "resources/startup"
