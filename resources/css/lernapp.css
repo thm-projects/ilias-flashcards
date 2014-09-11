@@ -51,7 +51,17 @@
     background-image: url(/resources/icons/icon_delete.png) !important;
 }
 
+.formInvalid::-moz-placeholder {
+    color: #900;
+    opacity: 0.5;
+}
+
 .formInvalid::-webkit-input-placeholder {
+    color: #900;
+    opacity: 0.5;
+}
+
+.formInvalid:-ms-input-placeholder {
     color: #900;
     opacity: 0.5;
 }
