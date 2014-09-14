@@ -42,6 +42,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     
     config: {
         title: Messages.LEARN_CARD,
+        preloadedQuestionCount: 10,
         itemId: 'CardCarousel',
         fullscreen: true
     },
@@ -53,19 +54,30 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
             questions = this.config.questions;
                   
         me.questionsArray = [];
+        me.statisticObject = {};
         
-        for(var key in questions) {
-            if(++panelCounter < 10) {
+        for(var key in questions) {            
+            if(++panelCounter < this.config.preloadedQuestionCount) {
                 array.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
                     itemId: questions[key].id,
                     questionObj: questions[key]
                 }));
             }
-            else if(panelCounter > 10) {
+            else if(panelCounter > this.config.preloadedQuestionCount) {
                 me.questionsArray.push(questions[key]);
             }
+            
+            me.statisticObject[panelCounter] = {
+                reachedPoints: 0,
+                maxPoint: questions[key].points
+            };
         }
         
+        /** reverse questionsArray in order to get the question 
+         * in the right order when using pop */
+        this.questionsArray.reverse();
+        
+        /** add preloaded questions to carousel */
         this.add(array);
     },
     
@@ -99,11 +111,8 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
                     
                     navigation.push( Ext.create('LernApp.view.learncard.AnswerPanel', {
                         boxId: me.config.boxId,
-                        questionId: activeItem.config.questionObj.id,
-                        questionType: activeItem.config.questionObj.type,
-                        feedback: activeItem.config.questionObj.feedback,
-                        answers: activeItem.config.questionObj.answers,
-                        showOnlyAnswers: me.config.showOnlyAnswers,
+                        questionObj: activeItem.config.questionObj,
+                        testMode: me.config.testMode,
                         selection: sel 
                     }));
                 }
@@ -114,11 +123,11 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
          * actions to perform after panel is activated
          */
         this.onAfter('activate', function() {
-            /**
-             * add answer button to navigationBar
-             */
+            LernApp.app.main.cardCarousel = this;
+            
+            /** add answer button to navigationBar */
             LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
-            if(!this.showOnlyQuestion) this.answerButton.show();
+            if(!this.config.showOnlyQuestion) this.answerButton.show();
         });
         
         /**
@@ -146,13 +155,20 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
          * actions to perform on panel destroy
          */
         this.on('destroy', function() {
+            console.log(this.statisticObject);
             LernApp.app.main.navigation.getNavigationBar().remove(this.answerButton); 
+            delete LernApp.app.main.cardCarousel;
         });
     },
     
-    disableActiveQuestion: function() {
+    removeActiveQuestion: function() {
         var questionPanel = this.getActiveItem();
         this.remove(questionPanel);
+    },
+    
+    disableActiveQuestion: function() {
+        this.getActiveItem().isAnswered = true;
+        this.getActiveItem().answerList.setDisableSelection(true);
     },
     
     preloadQuestion: function() {

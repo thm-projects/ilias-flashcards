@@ -64,16 +64,15 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                 /** disable saveButton */
                 this.disable();
                 
-                if(!answerPanel.config.showOnlyAnswers) {
-                    
-                    /** set animation to 'slide' */
-                    main.navigation.getLayout().setAnimation({
-                        type: 'slide', 
-                        direction:'right', 
-                        duration: 800 
-                    });
-                    
-                    if(answerPanel.config.evaluationObj.rate >= 0.7) {
+                /** set animation to 'slide' */
+                main.navigation.getLayout().setAnimation({
+                    type: 'slide', 
+                    direction:'right', 
+                    duration: 800 
+                });
+                
+                if(!answerPanel.config.testMode) {                    
+                    if(answerPanel.evaluationObj.rate >= 0.7) {
                         /** 
                          * show confirm panel over saveButton,
                          * align panel slightly over the button,
@@ -111,6 +110,13 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
                         });
                     }
                 } else {
+                    var index = LernApp.app.main.cardCarousel.getActiveIndex() + 1,
+                        statObj = LernApp.app.main.cardCarousel.statisticObject,
+                        reachedPoints = answerPanel.evaluationObj.reachedPoints;
+                    
+                    statObj[index].reachedPoints = parseFloat(reachedPoints);
+                    LernApp.app.getController('AnswerController').disableActiveItemInCarousel();
+                    
                     /** 
                      * remove saveButton from tab bar,
                      * unhide all tabs in tab panel,
@@ -314,8 +320,13 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     },
     
     evaluateAnswer: function() {
-        var alertTitle = '',
+        var me = this,
+            alertTitle = '',
             alertText = '',
+            selectedFlag = false,
+            reachedPoints = 0,
+            selectionData = {},
+            questionObj = this.config.questionObj,
             evalObj = {
                 correctSelectionCount: 0,
                 falseSelectionCount: 0,
@@ -323,15 +334,33 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
             };
         
         /** multiple choice */
-        if(this.config.questionType == 2) { 
+        if(questionObj.type == 2) { 
             evalObj.correctAnswerCount = this.getCorrectAnswers().length;
+
+            questionObj.answers.forEach(function(answer) {
+                selectedFlag = false;
+                
+                for(sel in me.config.selection) {
+                    selectionData = me.config.selection[sel].data;
+                   
+                    if(answer.text === selectionData.text) {
+                        selectedFlag = true;
+                        
+                        if(answer.points > 0) {
+                            reachedPoints += answer.points;
+                            evalObj.correctSelectionCount++;
+                        } else {
+                            evalObj.falseSelectionCount++;
+                        }
+                    }
+                }
+                
+                if(!selectedFlag) {
+                    reachedPoints += answer.pointsUnchecked;
+                }
+            });
             
-            for(sel in this.config.selection) {
-                if(this.config.selection[sel].data.points > 0) evalObj.correctSelectionCount++;
-                else evalObj.falseSelectionCount++;
-            }
-            
-            if(evalObj.correctSelectionCount == (evalObj.correctAnswerCount - evalObj.falseSelectionCount)) {
+            if(reachedPoints === me.questionObj.points) {
                 alertText = 'Die Antworten waren alle richtig!';
                 alertTitle = 'Richtig!';
             } else {
@@ -344,10 +373,11 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         
         /** single choice */
         else {
-            var selectionPoint = this.config.selection[0].data.points > 0;
+            var selectionPoints = me.config.selection[0].data.points;
             evalObj.correctAnswerCount = 1;
             
-            if(selectionPoint) {
+            if(selectionPoints > 0) {
+                reachedPoints = selectionPoints;
                 evalObj.correctSelectionCount++;
                 alertText = 'Die Antwort war richtig.';
                 alertTitle = 'Richtig!';
@@ -360,15 +390,16 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         
         var answerValue = evalObj.correctSelectionCount - evalObj.falseSelectionCount;
         evalObj.rate = (1 / evalObj.correctAnswerCount) * answerValue;
+        evalObj.reachedPoints = reachedPoints.toFixed(3);
         
-        this.config.evaluationObj = evalObj;
+        this.evaluationObj = evalObj;
         Ext.Msg.alert(alertTitle, alertText, Ext.emptyFn);
     },
     
     getCorrectAnswers: function() {
         var correctAnswers = [];
         
-        this.config.answers.forEach(function(answer) {
+        this.config.questionObj.answers.forEach(function(answer) {
             if(answer.points) {
                 correctAnswers.push(answer);
             }
@@ -379,7 +410,7 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
     
     getAppropriateFeedbackText: function() {
         var feedbackText;
-        this.config.feedback.forEach(function(possibility) {
+        this.config.questionObj.feedback.forEach(function(possibility) {
             if(possibility.correct) {
                 feedbackText = possibility.feedback;
             }
@@ -388,12 +419,9 @@ Ext.define('LernApp.view.learncard.AnswerPanel', {
         return feedbackText;
     },
     
-    /**
-     * TODO: implement save answer to database
-     */
     saveAnswer: function(boxId, promise) {
         LernApp.app.getController('AnswerController').saveAnswerToDatabase(
-                this.config.questionId, 
+                this.config.questionObj.id, 
                 boxId, 
                 promise
         );

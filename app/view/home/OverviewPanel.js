@@ -141,8 +141,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                             } else {
                                 LernApp.app.setMasked('Lade Fragen', function() {
                                     var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                                        testMode: true,
                                         questions: questions,
-                                        showOnlyAnswers: true,
                                         showOnlyQuestion: false
                                     });
                                     LernApp.app.main.navigation.push(panel);

@@ -52,8 +52,8 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
         this.questionTitle = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
-                '<p class="title">' + Ext.util.Format.htmlEncode(this.config.questionObj.title) + '<p/><br>' +
-                this.config.questionObj.text
+                '<p class="title">' + Ext.util.Format.htmlEncode(this.config.questionObj.title) + 
+                '<p/><br>' + this.config.questionObj.text
         });
         
         this.answerList = Ext.create('Ext.List', {            
@@ -86,14 +86,20 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
             }
         });
         
-        this.on('painted', function() {
+        this.onAfter('activate', function() {
+            var me = this;
+            
             if(window.innerWidth < 340) {
                 var title = this.config.questionObj.type === 2 ? 'Multiple Ch.' : 'Single Ch.';
             } else {
                 var title = this.config.questionObj.type === 2 ? 'Multiple Choice' : 'Single Choice';
             }
             
-            LernApp.app.main.navigation.getNavigationBar().setTitle(title); 
+            Ext.create('Ext.util.DelayedTask', function() {
+                LernApp.app.main.cardCarousel.answerButton.show();
+                if(me.isAnswered) LernApp.app.main.cardCarousel.answerButton.hide();
+                LernApp.app.main.navigation.getNavigationBar().setTitle(title); 
+            }).delay(1);
         });
         
         this.add([
