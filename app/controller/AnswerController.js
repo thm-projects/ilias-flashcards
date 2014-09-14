@@ -87,7 +87,7 @@ Ext.define('LernApp.controller.AnswerController', {
         index = panel.getActiveIndex();
         
         panel.disableActiveQuestion();
-        panel.setActiveItem(index + 1);
+        panel.next();
     },
     
     removeActiveItemInCarousel: function() {

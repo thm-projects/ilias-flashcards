@@ -57,7 +57,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         me.statisticObject = {};
         
         for(var key in questions) {            
-            if(++panelCounter < this.config.preloadedQuestionCount) {
+            if(panelCounter++ < this.config.preloadedQuestionCount) {
                 array.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
                     itemId: questions[key].id,
                     questionObj: questions[key]
@@ -173,7 +173,8 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
     
     preloadQuestion: function() {
         if(this.questionsArray.length > 0) {
-            if((this.getInnerItems().length - 3) == this.getActiveIndex()) {
+            if(     (this.getInnerItems().length - 3 == this.getActiveIndex())
+                ||  (this.getInnerItems().length - 1 < this.config.preloadedQuestionCount)) {
                 var question = this.questionsArray.pop();
                 
                 this.add([Ext.create('LernApp.view.learncard.QuestionPanel', {
