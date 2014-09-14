@@ -67,25 +67,35 @@ Ext.define('LernApp.controller.AnswerController', {
             /** set value of question entry to flashcard box */
             var flashcardBox = flashcardObject[flashcardBoxId];
             flashcardBox[questionId] = flashcardEntry;
-
+            
             /** store modified flashcard object to local database */
             LernApp.app.storageController.setFlashcardObject(flashcardObject, function() {
                 LernApp.app.main.navigation.getInnerItems().forEach(function(item) {
-                   
-                    if(item.getItemId() === 'CardCarousel') {
-                        var index = item.getActiveIndex();
-                        item.disableActiveQuestion();
-                        item.setActiveItem(index);
-                        item.checkForEmptyItems();
-                        promise();
-                    }
-                    
                     if(item.getTitle() === Messages.LEARNOVERVIEW) {
-                        item.updateFlashcardObject(flashcardObject);
                         LernApp.app.main.navigation.userPanel.loadAllStores();
+                        item.updateFlashcardObject(flashcardObject);
+                        me.removeActiveItemInCarousel();
+                        promise();
                     }
                 });
             });
         });
+    },
+    
+    disableActiveItemInCarousel: function() {
+        var panel = LernApp.app.main.cardCarousel,
+        index = panel.getActiveIndex();
+        
+        panel.disableActiveQuestion();
+        panel.setActiveItem(index + 1);
+    },
+    
+    removeActiveItemInCarousel: function() {
+        var panel = LernApp.app.main.cardCarousel,
+        index = panel.getActiveIndex();
+    
+        panel.removeActiveQuestion();
+        panel.setActiveItem(index);
+        panel.checkForEmptyItems();
     }
 });
