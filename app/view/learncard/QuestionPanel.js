@@ -96,7 +96,7 @@ Ext.define('LernApp.view.learncard.QuestionPanel', {
             }
             
             Ext.create('Ext.util.DelayedTask', function() {
-                LernApp.app.main.cardCarousel.answerButton.show();
+                if(!me.config.showOnlyQuestion) LernApp.app.main.cardCarousel.answerButton.show();
                 if(me.isAnswered) LernApp.app.main.cardCarousel.answerButton.hide();
                 LernApp.app.main.navigation.getNavigationBar().setTitle(title); 
             }).delay(1);

@@ -60,7 +60,8 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
             if(panelCounter++ < this.config.preloadedQuestionCount) {
                 array.push(Ext.create('LernApp.view.learncard.QuestionPanel', {
                     itemId: questions[key].id,
-                    questionObj: questions[key]
+                    questionObj: questions[key],
+                    showOnlyQuestion: me.config.showOnlyQuestion,
                 }));
             }
             else if(panelCounter > this.config.preloadedQuestionCount) {
@@ -127,7 +128,6 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
             
             /** add answer button to navigationBar */
             LernApp.app.main.navigation.getNavigationBar().add(this.answerButton);
-            if(!this.config.showOnlyQuestion) this.answerButton.show();
         });
         
         /**
