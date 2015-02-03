@@ -34,9 +34,12 @@ Ext.define('LernApp.proxy.Proxy', {
     xtype: 'proxy',
 
     config: {
-        url: "http://ilias-staging.mni.thm.de:8080/connector-service/ilias/",
+        //url: "http://ilias-staging.mni.thm.de:8080/connector/ilias/",
+        //url: "http://localhost:8080/connector-service/ilias/",
+        url: "https://quizapp.uni-giessen.de/connector/ilias/",
         useDefaultXhrHeader: false,
         withCredentials: true,
+        disableCaching: false,
         method: 'GET',
     },
     
@@ -130,7 +133,6 @@ Ext.define('LernApp.proxy.Proxy', {
             
             failure: function(response) {
                 Ext.Viewport.setMasked(false);
-                console.log(response.status);
                 if (response.status === 401) {
                     Ext.Msg.alert('Login', 'Ihre Logindaten sind abgelaufen. Bitte erneut einloggen.', function() {
                         LernApp.app.getController('LoginController').logout();
