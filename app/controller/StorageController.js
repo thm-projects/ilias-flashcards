@@ -52,9 +52,8 @@ Ext.define('LernApp.controller.StorageController', {
     initializeStorage: function() {
         var me = this;
         
-        /** use localstorage as driver for debugging reasons 
-        * localforage.setDriver('localStorageWrapper');
-        */
+        /** use localstorage as driver for debugging reasons */
+        localforage.setDriver('localStorageWrapper');
         
         localforage.config({
             name        : 'LernAppDB',
@@ -388,13 +387,11 @@ Ext.define('LernApp.controller.StorageController', {
                 });
                 
                 me.setStoredQuestionIdObject(questionIds, function() {
-                    me.storeQuestionsToFlashcardSet(allQuestionIds, 'box1', function() {
-                        me.getAllSelectedQuestionsObject(function(selQuestionObject) {
-                            Object.keys(allQuestions).map(function(questions) {
-                                selQuestionObject[questions] = allQuestions[questions];
-                            });
-                            me.setAllSelectedQuestionsObject(selQuestionObject, promise);
+                    me.getAllSelectedQuestionsObject(function(selQuestionObject) {
+                        Object.keys(allQuestions).map(function(questions) {
+                            selQuestionObject[questions] = allQuestions[questions];
                         });
+                        me.setAllSelectedQuestionsObject(selQuestionObject, promise);
                     });
                 });
             });
@@ -407,6 +404,7 @@ Ext.define('LernApp.controller.StorageController', {
      * @param {String} flashcardBoxId ItemId of flashcardbox where questions should be saved.
      * @param {Function} promise Function to call after processing.
      */
+    /**TODO: add questionstoflashcardset after test retrieval */
     storeQuestionsToFlashcardSet: function(questionIds, flashcardBoxId, promise) {
         var me = this,
             included = false,
