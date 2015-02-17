@@ -171,6 +171,7 @@ Ext.define('LernApp.view.learncard.CardCarousel', {
         this.getActiveItem().answerList.setDisableSelection(true);
     },
     
+    /** TODO: load just several panels, but show all in indicator bar. Load other panels asynchron.
     preloadQuestion: function() {
         if(this.questionsArray.length > 0) {
             if(     (this.getInnerItems().length - 3 == this.getActiveIndex())

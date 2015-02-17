@@ -387,11 +387,13 @@ Ext.define('LernApp.controller.StorageController', {
                 });
                 
                 me.setStoredQuestionIdObject(questionIds, function() {
-                    me.getAllSelectedQuestionsObject(function(selQuestionObject) {
-                        Object.keys(allQuestions).map(function(questions) {
-                            selQuestionObject[questions] = allQuestions[questions];
+                    storeQuestionsToFlashcardSet(allQUestionIds, function() {
+                        me.getAllSelectedQuestionsObject(function(selQuestionObject) {
+                            Object.keys(allQuestions).map(function(questions) {
+                                selQuestionObject[questions] = allQuestions[questions];
+                            });
+                            me.setAllSelectedQuestionsObject(selQuestionObject, promise);
                         });
-                        me.setAllSelectedQuestionsObject(selQuestionObject, promise);
                     });
                 });
             });
@@ -404,7 +406,6 @@ Ext.define('LernApp.controller.StorageController', {
      * @param {String} flashcardBoxId ItemId of flashcardbox where questions should be saved.
      * @param {Function} promise Function to call after processing.
      */
-    /**TODO: add questionstoflashcardset after test retrieval */
     storeQuestionsToFlashcardSet: function(questionIds, flashcardBoxId, promise) {
         var me = this,
             included = false,
