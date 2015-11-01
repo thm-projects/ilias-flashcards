@@ -1,0 +1,182 @@
+/*--------------------------------------------------------------------------------+
+  - Dateiname:		/app.json 
+  - Datum:			25.11.2013
+  - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
+  +--------------------------------------------------------------------------------+
+  This program is free software; you can redistribute it and/or modify it under 
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation; either version 3 of the License, or any later version.
+  +--------------------------------------------------------------------------------+
+  This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+  PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License along with 
+  this program; if not, see <http://www.gnu.org/licenses/>.
+  +--------------------------------------------------------------------------------+
+  Inoffizielle deutsche Übersetzung (http://www.gnu.de/documents/gpl.de.html):
+
+  Dieses Programm ist freie Software. Sie können es unter den Bedingungen der 
+  GNU General Public License, wie von der Free Software Foundation veröffentlicht,
+  weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder 
+  jeder späteren Version.
+  +--------------------------------------------------------------------------------+
+  Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von
+  Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie
+  der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden
+  Sie in der GNU General Public License.
+  Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm
+  erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
+  +--------------------------------------------------------------------------------+
+*/
+
+{
+    /**
+     * The application's namespace, used by Sencha Command to generate classes
+     */
+    "name": "LernApp",
+
+    /**
+     * The file path to this application's front HTML document, relative to this app.json file
+     */
+    "indexHtmlPath": "index.html",
+
+    /**
+     * The absolute URL to this application in development environment, i.e: the URL to run this application
+     * on your web browser during development, e.g: "http://localhost/myapp/index.html".
+     *
+     * This value is needed when build to resolve your application's dependencies if it requires server-side resources
+     * that are not accessible via file system protocol.
+     */
+    "url": "81.89.100.95",
+
+    /**
+     * List of all JavaScript assets in the right execution order.
+     * Each item is an object with the following format:
+     *      {
+     *          "path": "path/to/script.js" // Path to file, if local file it must be relative to this app.json file
+     *          "remote": true              // (Optional)
+     *                                      // - Defaults to undefined (falsey) to signal a local file which will be copied
+     *                                      // - Specify true if this file is a remote file which will not to be copied
+     *          "update": "delta"           // (Optional)
+     *                                      //  - If not specified, this file will only be loaded once, and
+     *                                      //    cached inside localStorage until this value is changed.
+     *                                      //  - "delta" to enable over-the-air delta update for this file
+     *                                      //  - "full" means full update will be made when this file changes
+     *          "x-bootstrap": true         // (Optional)
+     *                                      // Indicates a development mode only dependency.  
+     *                                      // These files will not be copied into the build directory or referenced
+     *                                      // in the generate app.json manifest for the micro loader.
+     *
+     *      }
+     */
+    "js": [
+        {
+            "path": "touch/sencha-touch.js",
+            "x-bootstrap": true
+        },
+        {
+            "path": "bootstrap.js",
+            "x-bootstrap": true
+        },
+        {
+            "path": "lib/localforage.js",
+            "update": "full"
+        },
+        {
+            "path": "app/internationalisation.js",
+            "update": "full"
+        },
+        {
+            "path": "app.js",
+            "bundle": true,  /* Indicates that all class dependencies are concatenated into this file when build */
+            "update": "full"
+        }
+    ],
+
+    /**
+     * List of all CSS assets in the right inclusion order.
+     * Each item is an object with the following format:
+     *      {
+     *          "path": "path/to/item.css" // Path to file, if local file it must be relative to this app.json file
+     *          "remote": true             // (Optional)
+     *                                     // - Defaults to undefined (falsey) to signal a local file which will be copied
+     *                                     // - Specify true if this file is a remote file which will not to be copied
+     *          "update": "delta"          // (Optional)
+     *                                     //  - If not specified, this file will only be loaded once, and
+     *                                     //    cached inside localStorage until this value is changed to either one below
+     *                                     //  - "delta" to enable over-the-air delta update for this file
+     *                                     //  - "full" means full update will be made when this file changes
+     *
+     *      }
+     */
+    "css": [
+        {
+            "path": "resources/css/app.css",
+            "update": "full"
+        },
+        {
+            "path": "resources/css/lernapp.css",
+            "update": "full"
+        }
+    ],
+
+    /**
+     * Used to automatically generate cache.manifest (HTML 5 application cache manifest) file when you build
+     */
+    "appCache": {
+        /**
+         * List of items in the CACHE MANIFEST section
+         */
+        "cache": [
+            "index.html",
+            "lib/localforage.js",
+            "resources/icons/icon_delete.png",
+            "resources/icons/icon_add.png",
+            "resources/images/UniRep-Logo.jpg"
+        ],
+        /**
+         * List of items in the NETWORK section
+         */
+        "network": [
+            "*"
+        ],
+        /**
+         * List of items in the FALLBACK section
+         */
+        "fallback": []
+    },
+
+    /**
+     * Extra resources to be copied along when build
+     */
+    "resources": [
+        "resources/images",
+        "resources/icons",
+        "resources/startup"
+    ],
+
+    /**
+     * File / directory name matchers to ignore when copying to the builds, must be valid regular expressions
+     */
+    "ignore": [
+        "\.svn$"
+    ],
+
+    /**
+     * Directory path to store all previous production builds. Note that the content generated inside this directory
+     * must be kept intact for proper generation of deltas between updates
+     */
+    "archivePath": "archive",
+
+    /**
+     * List of package names to require for the cmd build process
+     */
+    "requires": [
+    ],
+
+    /**
+     * Uniquely generated id for this application, used as prefix for localStorage keys.
+     * Normally you should never change this value.
+     */
+    "id": "e611bee2-7f07-4c5c-bd10-00fdf14386ff"
+}

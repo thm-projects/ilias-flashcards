@@ -68,6 +68,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.Template": [],
   "Ext.Title": [],
   "Ext.TitleBar": [],
+  "Ext.Toast": [],
   "Ext.Toolbar": [],
   "Ext.Video": [],
   "Ext.XTemplate": [],
@@ -436,7 +437,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.draw.Color": [],
   "Ext.draw.Component": [],
   "Ext.draw.Draw": [],
-  "Ext.draw.Group": [],
   "Ext.draw.LimitedCache": [],
   "Ext.draw.Matrix": [],
   "Ext.draw.Path": [],
@@ -451,6 +451,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.draw.engine.SvgContext.Gradient": [],
   "Ext.draw.engine.SvgExporter": [],
   "Ext.draw.gradient.Gradient": [],
+  "Ext.draw.gradient.GradientDefinition": [],
   "Ext.draw.gradient.Linear": [],
   "Ext.draw.gradient.Radial": [],
   "Ext.draw.modifier.Animation": [],
@@ -465,7 +466,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.draw.sprite.Composite": [],
   "Ext.draw.sprite.Ellipse": [],
   "Ext.draw.sprite.EllipticalArc": [],
-  "Ext.draw.sprite.GradientDefinition": [],
   "Ext.draw.sprite.Image": [],
   "Ext.draw.sprite.Instancing": [],
   "Ext.draw.sprite.Line": [],
@@ -621,17 +621,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.layout.wrapper.BoxDock": [],
   "Ext.layout.wrapper.Dock": [],
   "Ext.layout.wrapper.Inner": [],
-  "Ext.log.Base": [],
-  "Ext.log.Logger": [],
-  "Ext.log.filter.Filter": [],
-  "Ext.log.filter.Priority": [],
-  "Ext.log.formatter.Default": [],
-  "Ext.log.formatter.Formatter": [],
-  "Ext.log.formatter.Identity": [],
-  "Ext.log.writer.Console": [],
-  "Ext.log.writer.DocumentTitle": [],
-  "Ext.log.writer.Remote": [],
-  "Ext.log.writer.Writer": [],
   "Ext.mixin.Bindable": [],
   "Ext.mixin.Filterable": [],
   "Ext.mixin.Mixin": [],
@@ -656,7 +645,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.picker.Slot": [
     "Ext.Picker.Slot"
   ],
-  "Ext.plugin.BufferedList": [],
   "Ext.plugin.ListPaging": [],
   "Ext.plugin.PullRefresh": [],
   "Ext.plugin.SortableList": [],
@@ -749,7 +737,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.parse.Store": [],
   "Ext.ux.parse.association.Pointer": [],
   "Ext.ux.parse.association.Relation": [],
-  "Ext.viewport.Android": [],
+  "Ext.viewport.AndroidStock": [
+    "Ext.viewport.Android"
+  ],
   "Ext.viewport.Default": [],
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
@@ -868,6 +858,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.TitleBar": [
     "widget.titlebar"
   ],
+  "Ext.Toast": [],
   "Ext.Toolbar": [
     "widget.toolbar"
   ],
@@ -1311,7 +1302,6 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.draw"
   ],
   "Ext.draw.Draw": [],
-  "Ext.draw.Group": [],
   "Ext.draw.LimitedCache": [],
   "Ext.draw.Matrix": [],
   "Ext.draw.Path": [],
@@ -1328,6 +1318,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.draw.engine.SvgContext.Gradient": [],
   "Ext.draw.engine.SvgExporter": [],
   "Ext.draw.gradient.Gradient": [],
+  "Ext.draw.gradient.GradientDefinition": [],
   "Ext.draw.gradient.Linear": [],
   "Ext.draw.gradient.Radial": [],
   "Ext.draw.modifier.Animation": [
@@ -1358,7 +1349,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.draw.sprite.EllipticalArc": [
     "sprite.ellipticalArc"
   ],
-  "Ext.draw.sprite.GradientDefinition": [],
   "Ext.draw.sprite.Image": [
     "sprite.image"
   ],
@@ -1592,17 +1582,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.layout.wrapper.BoxDock": [],
   "Ext.layout.wrapper.Dock": [],
   "Ext.layout.wrapper.Inner": [],
-  "Ext.log.Base": [],
-  "Ext.log.Logger": [],
-  "Ext.log.filter.Filter": [],
-  "Ext.log.filter.Priority": [],
-  "Ext.log.formatter.Default": [],
-  "Ext.log.formatter.Formatter": [],
-  "Ext.log.formatter.Identity": [],
-  "Ext.log.writer.Console": [],
-  "Ext.log.writer.DocumentTitle": [],
-  "Ext.log.writer.Remote": [],
-  "Ext.log.writer.Writer": [],
   "Ext.mixin.Bindable": [],
   "Ext.mixin.Filterable": [],
   "Ext.mixin.Mixin": [],
@@ -1624,9 +1603,6 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "Ext.picker.Slot": [
     "widget.pickerslot"
-  ],
-  "Ext.plugin.BufferedList": [
-    "plugin.bufferedlist"
   ],
   "Ext.plugin.ListPaging": [
     "plugin.listpaging"
@@ -1736,7 +1712,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.parse.association.Relation": [
     "association.relation"
   ],
-  "Ext.viewport.Android": [],
+  "Ext.viewport.AndroidStock": [],
   "Ext.viewport.Default": [
     "widget.viewport"
   ],

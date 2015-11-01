@@ -63,7 +63,7 @@ Ext.define('LernApp.controller.StorageController', {
         });
         
         /** initalize 'initialized' object */
-        localforage.getItem('initialized', function(isInitialized) {
+        localforage.getItem('initialized', function(err, isInitialized) {
             if(isInitialized == null) {
                 localforage.setItem('initialized', new Object());
             }
@@ -74,7 +74,7 @@ Ext.define('LernApp.controller.StorageController', {
     initializeUserStorage: function(username, promise) {
         var me = this;
         
-        localforage.getItem('initialized', function(initObject) {
+        localforage.getItem('initialized', function(err, initObject) {
             if(typeof initObject[username] === 'undefined') {
                 
                 /** set initialized object */
@@ -211,7 +211,7 @@ Ext.define('LernApp.controller.StorageController', {
 	
     /** getter for loggedInUser */
     getLoggedInUserObj: function(promise) {
-        localforage.getItem('loginObj', function(loginObj) {
+        localforage.getItem('loginObj', function(err, loginObj) {
             promise(loginObj);
         });
     },
@@ -247,7 +247,7 @@ Ext.define('LernApp.controller.StorageController', {
     /** generic getter method */
     genericGetterMethod: function(key, promise) {
         var me = this;
-        localforage.getItem(key, function(obj) {
+        localforage.getItem(key, function(err, obj) {
             promise(obj[me.username]);
         });
     },
@@ -255,7 +255,7 @@ Ext.define('LernApp.controller.StorageController', {
     /** generic setter method */
     genericSetterMethod: function(key, value, promise) {
         var me = this;
-        localforage.getItem(key, function(object) {
+        localforage.getItem(key, function(err, object) {
             if(object == null) object = {};
             
             object[me.username] = value;
@@ -387,7 +387,7 @@ Ext.define('LernApp.controller.StorageController', {
                 });
                 
                 me.setStoredQuestionIdObject(questionIds, function() {
-                    storeQuestionsToFlashcardSet(allQUestionIds, function() {
+                    me.storeQuestionsToFlashcardSet(allQuestionIds, 'box1', function() {
                         me.getAllSelectedQuestionsObject(function(selQuestionObject) {
                             Object.keys(allQuestions).map(function(questions) {
                                 selQuestionObject[questions] = allQuestions[questions];

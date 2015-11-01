@@ -1,7 +1,7 @@
 /*
-This file is part of Sencha Touch 2.3
+This file is part of Sencha Touch 2.4
 
-Copyright (c) 2011-2014 Sencha Inc
+Copyright (c) 2011-2015 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2014-01-08 14:23:30 (0a1d6f5016ee680fcd2e5dc6e9740d9e19920715)
+Build date: 2015-06-10 14:41:48 (dd5f81fb46d0676281fdd021ada1da3ef06abd27)
 */
 //@tag foundation,core
 //@define Ext
@@ -679,7 +679,7 @@ Build date: 2014-01-08 14:23:30 (0a1d6f5016ee680fcd2e5dc6e9740d9e19920715)
 (function() {
 
 // Current core version
-var version = '4.1.0', Version;
+var version = '2.4.2.571', Version;
     Ext.Version = Version = Ext.extend(Object, {
 
         /**
@@ -3715,7 +3715,7 @@ Ext.JSON = new(function() {
      * __The returned value includes enclosing double quotation marks.__
      *
      * The default return format is "yyyy-mm-ddThh:mm:ss".
-     * 
+     *
      * To override this:
      *
      *     Ext.JSON.encodeDate = function(d) {
@@ -3726,7 +3726,7 @@ Ext.JSON = new(function() {
      * @return {String} The string literal to use in a JSON string.
      */
     this.encodeDate = function(o) {
-        return '"' + o.getFullYear() + "-" 
+        return '"' + o.getFullYear() + "-"
         + pad(o.getMonth() + 1) + "-"
         + pad(o.getDate()) + "T"
         + pad(o.getHours()) + ":"
@@ -3782,6 +3782,13 @@ Ext.JSON = new(function() {
     }();
 
 })();
+
+//@private Alias for backwards compatibility
+if (!Ext.util) {
+    Ext.util = {};
+}
+Ext.util.JSON = Ext.JSON;
+
 /**
  * Shorthand for {@link Ext.JSON#encode}.
  * @member Ext
@@ -3846,17 +3853,14 @@ Ext.Date = {
 
 /**
  * @class Ext.Base
- *
  * @author Jacky Nguyen <jacky@sencha.com>
- * @aside guide class_system
- * @aside video class-system
  *
  * The root of all classes created with {@link Ext#define}.
  *
  * Ext.Base is the building block of all Ext classes. All classes in Ext inherit from Ext.Base. All prototype and static
  * members of this class are inherited by all other classes.
  *
- * See the [Class System Guide](#!/guide/class_system) for more.
+ * See the [Class System Guide](../../../core_concepts/class_system.html) for more.
  *
  */
 (function(flexSetter) {
@@ -5190,10 +5194,7 @@ var noArgs = [],
 
 /**
  * @class Ext.Class
- *
  * @author Jacky Nguyen <jacky@sencha.com>
- * @aside guide class_system
- * @aside video class-system
  *
  * Handles class creation throughout the framework. This is a low level factory that is used by Ext.ClassManager and generally
  * should not be used directly. If you choose to use Ext.Class you will lose out on the namespace, aliasing and dependency loading
@@ -5204,6 +5205,8 @@ var noArgs = [],
  *
  * Ext.Class is the factory and **not** the superclass of everything. For the base class that **all** Ext classes inherit
  * from, see {@link Ext.Base}.
+ *
+ * For more information about Sencha Touch's Class System, please check out the [class system guide](../../../core_concepts/class_system.html).
  */
 (function() {
     var ExtClass,
@@ -6086,10 +6089,7 @@ var noArgs = [],
 
 /**
  * @class  Ext.ClassManager
- *
  * @author Jacky Nguyen <jacky@sencha.com>
- * @aside guide class_system
- * @aside video class-system
  *
  * Ext.ClassManager manages all classes and handles mapping from string class name to
  * actual class objects throughout the whole framework. It is not generally accessed directly, rather through
@@ -6101,6 +6101,8 @@ var noArgs = [],
  * - {@link Ext#getClass Ext.getClass}
  * - {@link Ext#getClassName Ext.getClassName}
  *
+ * For more information about Sencha Touch's Class System, please check out the [class system guide](../../../core_concepts/class_system.html).
+ * 
  * ## Basic syntax:
  *
  *     Ext.define(className, properties);
@@ -7701,7 +7703,6 @@ var noArgs = [],
  *
  * @author Jacky Nguyen <jacky@sencha.com>
  * @docauthor Jacky Nguyen <jacky@sencha.com>
- * @aside guide mvc_dependencies
  *
  * Ext.Loader is the heart of the new dynamic dependency loading capability in Ext JS 4+. It is most commonly used
  * via the {@link Ext#require} shorthand. Ext.Loader supports both asynchronous and synchronous loading
@@ -7833,9 +7834,7 @@ var noArgs = [],
  * possible. Internally {@link Ext.Loader#history Ext.Loader.history} maintains the list of all dependencies your application
  * needs in the exact loading sequence. It's as simple as concatenating all files in this array into one,
  * then include it on top of your application.
- *
- * This process will be automated with Sencha Command, to be released and documented towards Ext JS 4 Final.
- *
+ * 
  * @singleton
  */
 (function(Manager, Class, flexSetter, alias, pass, arrayFrom, arrayErase, arrayInclude) {
@@ -9011,16 +9010,15 @@ var noArgs = [],
  * functions (like {@link #apply}, {@link #min} and others), but most of the framework that you use day to day exists
  * in specialized classes (for example {@link Ext.Panel}, {@link Ext.Carousel} and others).
  *
- * If you are new to Sencha Touch we recommend starting with the [Getting Started Guide][getting_started] to
+ * If you are new to Sencha Touch we recommend starting with the [Getting Started Guide][../../../getting_started/getting_started.html] to
  * get a feel for how the framework operates. After that, use the more focused guides on subjects like panels, forms and data
- * to broaden your understanding. The MVC guides take you through the process of building full applications using the
- * framework, and detail how to deploy them to production.
+ * to broaden your understanding. 
  *
  * The functions listed below are mostly utility functions used internally by many of the classes shipped in the
  * framework, but also often useful in your own apps.
  *
  * A method that is crucial to beginning your application is {@link #setup Ext.setup}. Please refer to it's documentation, or the
- * [Getting Started Guide][getting_started] as a reference on beginning your application.
+ * [Getting Started Guide][../../../getting_started/getting_started.html] as a reference on beginning your application.
  *
  *     Ext.setup({
  *         onReady: function() {
@@ -9031,9 +9029,10 @@ var noArgs = [],
  *         }
  *     });
  *
- * [getting_started]: #!/guide/getting_started
+ * ###Further Reading
+ * [Getting Started Guide](../../../getting_started/getting_started.html)
  */
-Ext.setVersion('touch', '2.3.1');
+Ext.setVersion('touch', '2.4.2.571');
 
 Ext.apply(Ext, {
     /**
@@ -9673,7 +9672,7 @@ Ext.apply(Ext, {
             addMeta('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0');
         }
         else {
-            addMeta('viewport', 'initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0');
+            addMeta('viewport', 'initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimum-ui');
         }
         addMeta('apple-mobile-web-app-capable', 'yes');
         addMeta('apple-touch-fullscreen', 'yes');
@@ -10661,6 +10660,10 @@ Ext.define('Ext.env.Browser', {
             browserVersion = new Ext.Version(browserMatch[1]);
         }
 
+        if(browserName === 'Safari' && userAgent.match(/BB10/)) {
+            browserName = 'BlackBerry';
+        }
+
         Ext.apply(this, {
             engineName: engineName,
             engineVersion: engineVersion,
@@ -10711,6 +10714,10 @@ Ext.define('Ext.env.Browser', {
         else if (!!window.isNK) {
             isWebView = true;
             this.setFlag('Sencha');
+        }
+
+        if (/(Glass)/i.test(userAgent)) {
+            this.setFlag('GoogleGlass');
         }
 
         // Check if running in UIWebView
@@ -10788,7 +10795,7 @@ Ext.define('Ext.env.Browser', {
      *
      * For a full list of supported values, refer to {@link #is} property/method.
      *
-     * @aside guide environment_package
+     * For more information, see the [Environment Detect Guide](../../../core_concepts/environment_detection.html)
      */
     var browserEnv = Ext.browser = new this(Ext.global.navigator.userAgent);
 
@@ -11034,7 +11041,7 @@ Ext.define('Ext.env.OS', {
      *
      * For a full list of supported values, refer to the {@link #is} property/method.
      *
-     * @aside guide environment_package
+     * For more information, see the [Environment Detect Guide](../../../core_concepts/environment_detection.html)
      */
     Ext.os = osEnv = new this(userAgent, navigation.platform);
 
@@ -11061,7 +11068,7 @@ Ext.define('Ext.env.OS', {
             // always set it to false when you are on a desktop not using Ripple Emulation
             Ext.browser.is.WebView = Ext.browser.is.Ripple ? true : false;
         }
-        else if (osEnv.is.iPad || osEnv.is.RIMTablet || osEnv.is.Android3 || Ext.browser.is.Silk || (osEnv.is.Android4 && userAgent.search(/mobile/i) == -1)) {
+        else if (osEnv.is.iPad || osEnv.is.RIMTablet || osEnv.is.Android3 || Ext.browser.is.Silk || (osEnv.is.Android && userAgent.search(/mobile/i) == -1)) {
             deviceType = 'Tablet';
         }
         else {
@@ -11248,7 +11255,7 @@ Ext.define('Ext.env.Feature', {
      *
      * See the {@link #has} property/method for details of the features that can be detected.
      *
-     * @aside guide environment_package
+     * For more information, see the [Environment Detect Guide](../../../core_concepts/environment_detection.html)
      */
     Ext.feature = new this;
 
@@ -11337,7 +11344,7 @@ Ext.define('Ext.env.Feature', {
         },
 
         Orientation: function() {
-            return ('orientation' in window) && this.isEventSupported('orientationchange');
+            return 'orientation' in window;
         },
 
         OrientationChange: function() {
@@ -11378,7 +11385,14 @@ Ext.define('Ext.env.Feature', {
         },
 
         CssTransformNoPrefix: function() {
-            return this.isStyleSupportedWithoutPrefix('transform');
+            // This extra check is needed to get around a browser bug where both 'transform' and '-webkit-transform' are present
+            // but the device really only uses '-webkit-transform'. This is seen on the HTC One for example.
+            // https://sencha.jira.com/browse/TOUCH-5029
+            if(!Ext.browser.is.AndroidStock) {
+                return this.isStyleSupportedWithoutPrefix('transform')
+            } else {
+                return this.isStyleSupportedWithoutPrefix('transform') && !this.isStyleSupportedWithoutPrefix('-webkit-transform');
+            }
         },
 
         Css3dTransforms: function() {
@@ -11420,6 +11434,10 @@ Ext.define('Ext.env.Feature', {
             } catch ( e ) {}
 
             return supported;
+        },
+
+        MatchMedia: function() {
+            return "matchMedia" in window;
         },
 
         XHR2 : function() {
@@ -11630,6 +11648,7 @@ Ext.define('Ext.dom.Query', {
 /**
  * @class Ext.DomHelper
  * @alternateClassName Ext.dom.Helper
+ * @singleton
  *
  * The DomHelper class provides a layer of abstraction from DOM and transparently supports creating elements via DOM or
  * using HTML fragments. It also has the ability to create HTML fragment templates from your DOM building code.
@@ -15132,6 +15151,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.Template": [],
   "Ext.Title": [],
   "Ext.TitleBar": [],
+  "Ext.Toast": [],
   "Ext.Toolbar": [],
   "Ext.Video": [],
   "Ext.XTemplate": [],
@@ -15499,7 +15519,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.draw.Color": [],
   "Ext.draw.Component": [],
   "Ext.draw.Draw": [],
-  "Ext.draw.Group": [],
   "Ext.draw.LimitedCache": [],
   "Ext.draw.Matrix": [],
   "Ext.draw.Path": [],
@@ -15514,6 +15533,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.draw.engine.SvgContext.Gradient": [],
   "Ext.draw.engine.SvgExporter": [],
   "Ext.draw.gradient.Gradient": [],
+  "Ext.draw.gradient.GradientDefinition": [],
   "Ext.draw.gradient.Linear": [],
   "Ext.draw.gradient.Radial": [],
   "Ext.draw.modifier.Animation": [],
@@ -15528,7 +15548,6 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.draw.sprite.Composite": [],
   "Ext.draw.sprite.Ellipse": [],
   "Ext.draw.sprite.EllipticalArc": [],
-  "Ext.draw.sprite.GradientDefinition": [],
   "Ext.draw.sprite.Image": [],
   "Ext.draw.sprite.Instancing": [],
   "Ext.draw.sprite.Line": [],
@@ -15810,7 +15829,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.parse.Store": [],
   "Ext.ux.parse.association.Pointer": [],
   "Ext.ux.parse.association.Relation": [],
-  "Ext.viewport.Android": [],
+  "Ext.viewport.AndroidStock": [
+    "Ext.viewport.Android"
+  ],
   "Ext.viewport.Default": [],
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
@@ -15896,6 +15917,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.TitleBar": [
     "widget.titlebar"
   ],
+  "Ext.Toast": [],
   "Ext.Toolbar": [
     "widget.toolbar"
   ],
@@ -16336,7 +16358,6 @@ Ext.ClassManager.addNameAliasMappings({
     "widget.draw"
   ],
   "Ext.draw.Draw": [],
-  "Ext.draw.Group": [],
   "Ext.draw.LimitedCache": [],
   "Ext.draw.Matrix": [],
   "Ext.draw.Path": [],
@@ -16353,6 +16374,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.draw.engine.SvgContext.Gradient": [],
   "Ext.draw.engine.SvgExporter": [],
   "Ext.draw.gradient.Gradient": [],
+  "Ext.draw.gradient.GradientDefinition": [],
   "Ext.draw.gradient.Linear": [],
   "Ext.draw.gradient.Radial": [],
   "Ext.draw.modifier.Animation": [
@@ -16383,7 +16405,6 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.draw.sprite.EllipticalArc": [
     "sprite.ellipticalArc"
   ],
-  "Ext.draw.sprite.GradientDefinition": [],
   "Ext.draw.sprite.Image": [
     "sprite.image"
   ],
@@ -16757,7 +16778,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.ux.parse.association.Relation": [
     "association.relation"
   ],
-  "Ext.viewport.Android": [],
+  "Ext.viewport.AndroidStock": [],
   "Ext.viewport.Default": [
     "widget.viewport"
   ],
