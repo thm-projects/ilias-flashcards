@@ -43,10 +43,9 @@ Ext.application({
         'LearningApp.proxy.Proxy',
         'LearningApp.prototype.CustomMessageBox'
     ],
-
+    
     viewport: {
-        autoMaximize: Ext.os.is.iOS && !Ext.browser.is.webview && Ext.browser.version.isGreaterThan(3) &&
-                      Ext.browser.version.isLessThan(7)
+        autoMaximize: Ext.os.is.iOS && Ext.browser.is.webview
     },
     
     icon: {
@@ -55,7 +54,7 @@ Ext.application({
         '114': 'resources/icons/Icon@2x.png',		// Retina iPhone
         '144': 'resources/icons/Icon~ipad@2x.png'	// Retina iPad
     },
-
+    
     startupImage: {
         '320x460': 'resources/startup/320x460.jpg',
         '640x920': 'resources/startup/640x920.png',	// Retina iPhone
@@ -64,13 +63,13 @@ Ext.application({
         '1536x2008': 'resources/startup/1536x2008.png',	// Retina iPad, Portrait
         '1496x2048': 'resources/startup/1496x2048.png'	// Retina iPad, Landscape
     },
-
+    
     models: [
         'CardIndexModel',
         'Category',
         'Question'
     ],
-        
+    
     stores: [
         'CardIndexStore',
         'QuestionStore'
@@ -98,7 +97,7 @@ Ext.application({
         var me = this;
         
         /** destroy loading indicator */
-        Ext.fly('appLoadingIndicator').destroy();
+        //Ext.fly('appLoadingIndicator').destroy();
         
         this.storageController = this.getController('StorageController');
         this.proxy = Ext.create('LearningApp.proxy.Proxy');
@@ -113,6 +112,13 @@ Ext.application({
     setMasked: function(message, promise) {
         Ext.Viewport.setMasked({xtype:'loadmask', message: message});
         Ext.create('Ext.util.DelayedTask', promise, this).delay(1);
+    },
+
+    closeSplashscreen: function () {
+        if (!LearningApp.app.scDestroyed && window.closeSplashscreen) {
+            LearningApp.app.scDestroyed = true;
+            Ext.fly('splashScreenContainer').destroy();
+        }
     },
     
     onUpdated: function() {

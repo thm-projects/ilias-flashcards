@@ -35,7 +35,6 @@ Ext.define('LearningApp.view.login.LoginNavigation', {
     xtype: 'loginNav',
 
     requires: [
-        'LearningApp.view.login.WelcomePanel',
         'LearningApp.view.login.LoginPanel'
     ],
     
@@ -45,15 +44,13 @@ Ext.define('LearningApp.view.login.LoginNavigation', {
     
     instanciateComponents: function() {
         this.loginPanel = Ext.create('LearningApp.view.login.LoginPanel')
-        this.welcomePanel = Ext.create('LearningApp.view.login.WelcomePanel');
     },
     
     initialize: function() {
         this.callParent(arguments);
         this.instanciateComponents();
         
-        this.push(this.welcomePanel);
-
+        this.push(this.loginPanel);
         this.on('destroy', this.onDestroy);
     },
     

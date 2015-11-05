@@ -2,59 +2,71 @@
 <html manifest="" lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>LernApp</title>
-    <style type="text/css">
-        html, body {
-            height: 100%;
-            background-color: #1985D0
-        }
-
-        #appLoadingIndicator {
-            position: absolute;
-            top: 50%;
-            margin-top: -15px;
-            text-align: center;
-            width: 100%;
-            height: 30px;
-            -webkit-animation-name: appLoadingIndicator;
-            -webkit-animation-duration: 0.5s;
-            -webkit-animation-iteration-count: infinite;
-            -webkit-animation-direction: linear;
-        }
-
-        #appLoadingIndicator > * {
-            background-color: #FFFFFF;
-            display: inline-block;
-            height: 30px;
-            -webkit-border-radius: 15px;
-            margin: 0 5px;
-            width: 30px;
-            opacity: 0.8;
-        }
-
-        @-webkit-keyframes appLoadingIndicator{
-            0% {
-                opacity: 0.8
-            }
-            50% {
-                opacity: 0
-            }
-            100% {
-                opacity: 0.8
-            }
-        }
-    </style>
-        
+    <title>UniRep</title>
+    <link rel="stylesheet" href="resources/css/index.css" type="text/css">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
+		user-scalable=no, minimal-ui">
+	
+    <script type="text/javascript">
+		function hideSplashscreen() {
+		    window.document.getElementById("splashScreenContainer").style.display = 'none';
+		}
+		
+		function showSplashscreen() {
+		    var scaleWidth = 0;
+		    var doc = window.document;
+		    var imgObject = new Image();
+		    var imgElement = doc.getElementById('splashScreenLogo');
+		    var innerSplashContainer = doc.getElementById('innerSplashScreenContainer');
+			
+		 	imgObject.src = "resources/icons/logo.png";
+		 	scaleWidth = imgObject.naturalWidth / imgObject.naturalHeight >= 2;
+			
+			imgElement.onload = function () { 
+				innerSplashContainer.style.width = scaleWidth ? '90%' : 'initial';
+				innerSplashContainer.children[0].classList.add('showSplashScreenElement');
+				
+				setTimeout(function () {
+					window.closeSplashscreen = true;
+					if (LearningApp && LearningApp.app && typeof LearningApp.app.closeSplashscreen === 'function') {
+					    LearningApp.app.closeSplashscreen();
+					} else {
+						hideSplashscreen();
+					}
+				}, 4000);
+			};
+			
+			doc.getElementById("loadingInd").classList.add('showSplashScreenElement');
+			imgElement.onerror = imgElement.onabort = hideSplashscreen;
+			imgElement.src = "resources/icons/logo.png";
+		}
+    </script>
+	
     <!-- The line below must be kept intact for Sencha Command to build your application -->
     <script id="microloader" type="text/javascript" src="touch/microloader/development.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
-     user-scalable=no, minimal-ui">
 </head>
-<body>
-    <div id="appLoadingIndicator">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+<body onload="showSplashscreen();">
+	<div class="splashScreenContainer" id="splashScreenContainer">
+		<div class="container" id="innerSplashScreenContainer">
+			<img id="splashScreenLogo">
+			<div class="folding-cube" id="loadingInd">
+				<div class="cube1 cube"></div>
+				<div class="cube2 cube"></div>
+				<div class="cube4 cube"></div>
+				<div class="cube3 cube"></div>
+			</div>
+		</div>
+	</div>
+	<noscript>
+		<div class="noScriptDiv">
+			<img src="resources/images/UniRep-Logo.svg" class="noSriptLogo"><br/>
+			<div style="margin: 12px; margin-top: 30px;">
+				For full functionality of this site it is necessary to enable JavaScript.<br/><br/>
+	 			Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+	 			instructions how to enable JavaScript in your web browser</a>.
+	 		</div>
+		</div>
+	</noscript>
 </body>
 </html>

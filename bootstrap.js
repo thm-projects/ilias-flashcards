@@ -776,8 +776,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "LearningApp.view.home.TestOverviewPanel": [],
   "LearningApp.view.home.UserPanel": [],
   "LearningApp.view.login.LoginNavigation": [],
-  "LearningApp.view.login.LoginPanel": [],
-  "LearningApp.view.login.WelcomePanel": []
+  "LearningApp.view.login.LoginPanel": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "ChartDataModel": [],
@@ -1793,8 +1792,5 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "LearningApp.view.login.LoginPanel": [
     "widget.loginPanel"
-  ],
-  "LearningApp.view.login.WelcomePanel": [
-    "widget.welcomePanel"
   ]
 });
