@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.prototype.CustomMessageBox', {
+Ext.define('LearningApp.prototype.CustomMessageBox', {
     override: 'Ext.MessageBox',
     
     /**

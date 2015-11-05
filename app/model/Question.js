@@ -29,7 +29,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.model.Question', {
+Ext.define('LearningApp.model.Question', {
     extend: 'Ext.data.Model',
     
     config: {

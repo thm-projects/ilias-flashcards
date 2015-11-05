@@ -29,7 +29,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.model.CardIndexModel', {
+Ext.define('LearningApp.model.CardIndexModel', {
     extend: 'Ext.data.Model',
     
     config: {

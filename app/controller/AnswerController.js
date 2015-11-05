@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.controller.AnswerController', {
+Ext.define('LearningApp.controller.AnswerController', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -54,7 +54,7 @@ Ext.define('LernApp.controller.AnswerController', {
             flashcardEntry = {};
         
         /** remove question from flashcard set */
-        LernApp.app.storageController.getFlashcardObject(function(flashcardObject) {
+        LearningApp.app.storageController.getFlashcardObject(function(flashcardObject) {
             for(boxId in flashcardObject) {
                 var box = flashcardObject[boxId];
                 
@@ -69,10 +69,10 @@ Ext.define('LernApp.controller.AnswerController', {
             flashcardBox[questionId] = flashcardEntry;
             
             /** store modified flashcard object to local database */
-            LernApp.app.storageController.setFlashcardObject(flashcardObject, function() {
-                LernApp.app.main.navigation.getInnerItems().forEach(function(item) {
-                    if(item.getTitle() === Messages.LEARNOVERVIEW) {
-                        LernApp.app.main.navigation.userPanel.loadAllStores();
+            LearningApp.app.storageController.setFlashcardObject(flashcardObject, function() {
+                LearningApp.app.main.navigation.getInnerItems().forEach(function(item) {
+                    if(item.getTitle() === Messages.FLASHCARD_BOX) {
+                        LearningApp.app.main.navigation.userPanel.loadAllStores();
                         item.updateFlashcardObject(flashcardObject);
                         me.removeActiveItemInCarousel();
                         promise();
@@ -83,7 +83,7 @@ Ext.define('LernApp.controller.AnswerController', {
     },
     
     disableActiveItemInCarousel: function() {
-        var panel = LernApp.app.main.cardCarousel,
+        var panel = LearningApp.app.main.cardCarousel,
         index = panel.getActiveIndex();
         
         panel.disableActiveQuestion();
@@ -91,7 +91,7 @@ Ext.define('LernApp.controller.AnswerController', {
     },
     
     removeActiveItemInCarousel: function() {
-        var panel = LernApp.app.main.cardCarousel,
+        var panel = LearningApp.app.main.cardCarousel,
         index = panel.getActiveIndex();
     
         panel.removeActiveQuestion();

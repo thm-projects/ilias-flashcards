@@ -29,15 +29,15 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.store.QuestionStore', {
+Ext.define('LearningApp.store.QuestionStore', {
     extend: 'Ext.data.TreeStore',
     xtype: 'questionStore',
 
     requires: [
-        'LernApp.model.Question'
+        'LearningApp.model.Question'
     ],
     
     config: {
-        model: 'LernApp.model.Question'
+        model: 'LearningApp.model.Question'
     }
 });

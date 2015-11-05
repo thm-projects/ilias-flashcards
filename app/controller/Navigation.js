@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.controller.Navigation', {
+Ext.define('LearningApp.controller.Navigation', {
     extend: 'Ext.app.Controller',
     
     requires: ['Ext.Anim'],
@@ -50,22 +50,22 @@ Ext.define('LernApp.controller.Navigation', {
      * @param: navigateBack  - true if navigating back
      */
     changeNavigation: function(newNavigation, navigateBack) {        
-        var oldNavigation = LernApp.app.main.navigation;
+        var oldNavigation = LearningApp.app.main.navigation;
         var animationDirection = navigateBack ? 'right' : 'left';
         
         /**
          * hide old navigation tab from tabpanel
          */
-        LernApp.app.main.tabPanel.hideTab(oldNavigation);
+        LearningApp.app.main.tabPanel.hideTab(oldNavigation);
         
         /**
          * overwrite old navigation,
          * launch afterNavigationChange method,
          * add new navigation to tabPanel (index 0 is reserved by tabBar)
          */
-        LernApp.app.main.navigation = newNavigation;
-        LernApp.app.main.navigation.afterNavigationChange();
-        LernApp.app.main.tabPanel.insert(1, newNavigation);
+        LearningApp.app.main.navigation = newNavigation;
+        LearningApp.app.main.navigation.afterNavigationChange();
+        LearningApp.app.main.tabPanel.insert(1, newNavigation);
         
         /**
          * switch to new navigation,
@@ -74,13 +74,13 @@ Ext.define('LernApp.controller.Navigation', {
          *  remove old navigation tab from tabpanel
          *  destroy old navigation
          */
-        LernApp.app.main.tabPanel.animateActiveItem(newNavigation, {
+        LearningApp.app.main.tabPanel.animateActiveItem(newNavigation, {
             type: 'slide',
             duration: 600,
             direction: animationDirection,
             listeners: {
                 animationend: function() {
-                    LernApp.app.main.tabPanel.remove(oldNavigation)
+                    LearningApp.app.main.tabPanel.remove(oldNavigation)
                     Ext.Viewport.setMasked(false);
                     oldNavigation.destroy();
                 }

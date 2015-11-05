@@ -29,14 +29,14 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.cardindex.CardIndex', {
+Ext.define('LearningApp.view.cardindex.CardIndex', {
     extend: 'Ext.NestedList',
     xtype: 'cardIndex',
 
     requires: [
         'Ext.field.Toggle',
         'Ext.MessageBox',
-        'LernApp.store.CardIndexStore'
+        'LearningApp.store.CardIndexStore'
     ],
     
     config: {
@@ -82,7 +82,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         var me = this;
         
         /** set pressedButton in navigation */
-        LernApp.app.main.navigation.setPressedButton(this.config.view);
+        LearningApp.app.main.navigation.setPressedButton(this.config.view);
         
         /** set displayMode */
         this.setDisplayMode(this.config.view);
@@ -114,14 +114,14 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
          */
         this.onAfter('painted', function() {
             this.blockedInput = false;
-            LernApp.app.main.navigation.viewButton.show();
+            LearningApp.app.main.navigation.viewButton.show();
         });
         
         /**
          * hide viewchange button when panel is deactivated
          */
         this.on('deactivate', function() {
-            LernApp.app.main.navigation.viewButton.hide();
+            LearningApp.app.main.navigation.viewButton.hide();
         });
         
         /**
@@ -132,8 +132,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         this.onAfter('itemtap', this.modifyToolbarTitles);
         this.onBefore('activeitemchange', this.onListChange);
         this.element.on('tap', function(e) { 
-            if(!LernApp.app.main.navigation.viewChangePanel.isHidden()) {
-                LernApp.app.main.navigation.viewChangePanel.hide();
+            if(!LearningApp.app.main.navigation.viewChangePanel.isHidden()) {
+                LearningApp.app.main.navigation.viewChangePanel.hide();
             }
         });
     },
@@ -156,7 +156,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         
         var setDataActions = function(data) {
             if(data == null) me.editToggleField.setHidden(true);
-            me.setStore(Ext.create('LernApp.store.CardIndexStore').setData(data));
+            me.setStore(Ext.create('LearningApp.store.CardIndexStore').setData(data));
             Ext.Viewport.setMasked(false);
         };
         
@@ -174,18 +174,18 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                 setDataActions(data);
             }
             else {
-                LernApp.app.storageController.getStoredTestObject(function(tests) {
+                LearningApp.app.storageController.getStoredTestObject(function(tests) {
                     setTestsAsData(tests);
                 });
             }
         };
 
-        LernApp.app.storageController.storeCardIndexTree(function(online) {
-            LernApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
+        LearningApp.app.storageController.storeCardIndexTree(function(online) {
+            LearningApp.app.storageController.getStoredIndexTreeObject(function(treeObj) {
                 me.buildTreeStructureRecursively(treeObj);
 
                 if(online) {
-                    LernApp.app.storageController.storeTests(treeObj, function() {
+                    LearningApp.app.storageController.storeTests(treeObj, function() {
                         evaluateDisplayMode(treeObj);
                     });
                 } else {
@@ -226,7 +226,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
     onActivate: function() {
         this.getToolbar().add(this.editToggleField);
         
-        LernApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
+        LearningApp.app.main.navigation.getNavigationBar().getBackButton().setText(Messages.HOME);
         this.modifyToolbarTitles();
     },
     
@@ -247,7 +247,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                     element.removeCls('forwardListButton');
                 }
                 
-                LernApp.app.storageController.getStoredCategories(function(categories) {
+                LearningApp.app.storageController.getStoredCategories(function(categories) {
                     if(typeof categories[element.bodyElement.dom.nodeId] === 'undefined') {
                             element.bodyElement.down('.greenChecker').addCls('invisible');
                     } else  element.bodyElement.down('.greenChecker').removeCls('invisible');
@@ -260,7 +260,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
      * saves back button hidden state and sets toolbar titles
      */
     modifyToolbarTitles: function() {
-        var navigationBar = LernApp.app.main.navigation.getNavigationBar();
+        var navigationBar = LearningApp.app.main.navigation.getNavigationBar();
                 
         /** set navigationBar title */
         navigationBar.setTitle( this.getTitle() );
@@ -286,7 +286,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
 
         /** iterate through all listItems */
         list.forEach(function(element, index, array) {   
-            LernApp.app.storageController.getStoredCategories(function(categories) {
+            LearningApp.app.storageController.getStoredCategories(function(categories) {
                 var cat = element.bodyElement.dom.nodeId;
                
                 if(editMode) {
@@ -313,7 +313,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                         element.bodyElement.down('.redbadgeicon').removeCls('invisible');
                     }
                     
-                    LernApp.app.storageController.getStoredCategories(function(categories) {
+                    LearningApp.app.storageController.getStoredCategories(function(categories) {
                         if(typeof categories[cat] === 'undefined') {
                             element.bodyElement.down('.greenChecker').addCls('invisible');
                         }   else element.bodyElement.down('.greenChecker').removeCls('invisible');
@@ -348,17 +348,17 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         }
         else if (node.isLeaf()) {
             if(!me.blockedInput) {
-                LernApp.app.setMasked('Lade Fragen', function() { 
+                LearningApp.app.setMasked('Lade Fragen', function() { 
                     me.blockedInput = true;
                     me.fireEvent('leafitemtap', this, list, index, target, record, e);
                     me.goToLeaf(node);
                     
-                    LernApp.app.storageController.getStoredTest(node.getId(), function(questions) {                    
-                        var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                    LearningApp.app.storageController.getStoredTest(node.getId(), function(questions) {                    
+                        var panel = Ext.create('LearningApp.view.flashcard.CardCarousel', { 
                             questions: questions,
                             showOnlyQuestion: true
                         });
-                        LernApp.app.main.navigation.push(panel);
+                        LearningApp.app.main.navigation.push(panel);
                     });
                 });
             }
@@ -382,7 +382,7 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
         /** the user will need to confirm a removal, if the selected 
          *  item is no leaf item  
          */
-        LernApp.app.storageController.getStoredCategories(function(categories) {
+        LearningApp.app.storageController.getStoredCategories(function(categories) {
             if(typeof categories[category] !== "undefined") {
                 Ext.Msg.confirm(Messages.ATTENTION, Messages.DELETION_NOTICE, function(button){
                     if (button == 'yes') me.performEditOnItem(node);
@@ -411,8 +411,8 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
             deleted: new Object()
         }
         
-        LernApp.app.setMasked('Speichere', function() {
-            LernApp.app.storageController.getStoredCategories(function(categories) {
+        LearningApp.app.setMasked('Speichere', function() {
+            LearningApp.app.storageController.getStoredCategories(function(categories) {
                 if(typeof categories[id] !== 'undefined') {
                     deleteFlag = true;
                 }
@@ -425,11 +425,11 @@ Ext.define('LernApp.view.cardindex.CardIndex', {
                         me.completeEditOnParentItems(parentId, categories,categoryModification, deleteFlag);
                 }
                 
-                LernApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
-                    LernApp.app.storageController.addStoredCategories(categoryModification.added, function() {
-                        LernApp.app.storageController.storeQuestions(categoryModification.added, function() {
+                LearningApp.app.storageController.removeStoredCategories(categoryModification.deleted, function() {
+                    LearningApp.app.storageController.addStoredCategories(categoryModification.added, function() {
+                        LearningApp.app.storageController.storeQuestions(categoryModification.added, function() {
                             me.updateListIcons();
-                            LernApp.app.main.navigation.userPanel.loadAllStores();
+                            LearningApp.app.main.navigation.userPanel.loadAllStores();
                             Ext.Viewport.setMasked(false);
                         });
                     });

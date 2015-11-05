@@ -30,15 +30,15 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.Main', {
+Ext.define('LearningApp.view.Main', {
     extend: 'Ext.Container',
     xtype: 'main',
 
     requires: [
-       'LernApp.view.TabPanel',
-       'LernApp.view.about.AboutPanel',
-       'LernApp.view.login.LoginNavigation',
-       'LernApp.view.home.HomeNavigation'
+       'LearningApp.view.TabPanel',
+       'LearningApp.view.about.AboutPanel',
+       'LearningApp.view.login.LoginNavigation',
+       'LearningApp.view.home.HomeNavigation'
     ],
     
     config: {
@@ -50,8 +50,8 @@ Ext.define('LernApp.view.Main', {
     },
     
     instanciateComponents: function() {
-        this.tabPanel = Ext.create('LernApp.view.TabPanel');
-        this.aboutPanel = Ext.create('LernApp.view.about.AboutPanel');
+        this.tabPanel = Ext.create('LearningApp.view.TabPanel');
+        this.aboutPanel = Ext.create('LearningApp.view.about.AboutPanel');
     },
     
     initialize: function() {
@@ -60,11 +60,11 @@ Ext.define('LernApp.view.Main', {
     },
     
     initializeComponents: function(loginState) {
-        /** determine the navigation to loaded */    
+        /** determine the navigation to load */    
         if(!loginState) {
-            this.navigation = Ext.create('LernApp.view.login.LoginNavigation');
+            this.navigation = Ext.create('LearningApp.view.login.LoginNavigation');
         } else {
-            this.navigation = Ext.create('LernApp.view.home.HomeNavigation');
+            this.navigation = Ext.create('LearningApp.view.home.HomeNavigation');
         }
         
         /** add panels to tabpanel and show them */

@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.login.WelcomePanel', {
+Ext.define('LearningApp.view.login.WelcomePanel', {
     extend: 'Ext.Panel',
     xtype: 'welcomePanel',
 
@@ -67,8 +67,8 @@ Ext.define('LernApp.view.login.WelcomePanel', {
            ui: 'action',
            style: 'margin-top: 30px',
            handler: function() {
-               LernApp.app.main.navigation.push(
-                       LernApp.app.main.navigation.loginPanel
+               LearningApp.app.main.navigation.push(
+                       LearningApp.app.main.navigation.loginPanel
                );
            }
         });

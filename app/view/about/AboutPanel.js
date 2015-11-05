@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.about.AboutPanel', {
+Ext.define('LearningApp.view.about.AboutPanel', {
     extend: 'Ext.Panel',
     xtype: 'aboutPanel',
 
@@ -57,7 +57,7 @@ Ext.define('LernApp.view.about.AboutPanel', {
             align: 'left', 
             ui: 'back',
             handler : function(button) {
-                LernApp.app.main.tabPanel.animateActiveItem(0, {
+                LearningApp.app.main.tabPanel.animateActiveItem(0, {
                     type: 'slide', 
                     direction: 'right'
                 });

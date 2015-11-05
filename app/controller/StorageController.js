@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.controller.StorageController', {
+Ext.define('LearningApp.controller.StorageController', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -56,9 +56,9 @@ Ext.define('LernApp.controller.StorageController', {
         localforage.setDriver('localStorageWrapper');
         
         localforage.config({
-            name        : 'LernAppDB',
+            name        : 'AppDB',
             version     : 1.0,
-            storeName   : 'appDatabase',
+            storeName   : 'flashcards',
             description : 'Application Database'
         });
         
@@ -128,7 +128,7 @@ Ext.define('LernApp.controller.StorageController', {
     setUsername: function(username) {
         this.username = username;
     },
-                
+    
     /** getter for storedTree */
     getStoredIndexTreeObject: function(promise) {
         this.genericGetterMethod('storedTree', promise);
@@ -301,7 +301,7 @@ Ext.define('LernApp.controller.StorageController', {
             oneDay = 1000 * 60 * 60 * 24;
         
         this.getStoredTimestamp(function(timestamp) {
-            if(timestamp == null) promise(LernApp.app.daysUntilReloadData);
+            if(timestamp == null) promise(LearningApp.app.daysUntilReloadData);
             else { promise(Math.round((date.getTime() - timestamp) / oneDay)); }
         });
     },
@@ -327,8 +327,8 @@ Ext.define('LernApp.controller.StorageController', {
         };
         
         me.getLastUpdateInDays(function(days) {
-            if(days >= LernApp.app.daysUntilReloadData) {
-                LernApp.app.proxy.getCardIndexTree({
+            if(days >= LearningApp.app.daysUntilReloadData) {
+                LearningApp.app.proxy.getCardIndexTree({
                     success: onlineMode,
                     failure: offlineMode
                 });
@@ -501,7 +501,7 @@ Ext.define('LernApp.controller.StorageController', {
         
         this.getStoredTestObject(function(testObj) {
            for(var category in categories) {               
-               LernApp.app.proxy.getAllQuestions(category, {
+               LearningApp.app.proxy.getAllQuestions(category, {
                    success: function(test) {
                        var cat = categories[test.refId],
                            questions = {};
@@ -594,7 +594,7 @@ Ext.define('LernApp.controller.StorageController', {
     
     /** 
      * Returns a random set of stored questions through promise function.
-     * The amount of random questions is specified in LernApp.app.randomQuestionCount.
+     * The amount of random questions is specified in LearningApp.app.randomQuestionCount.
      * @param {Function} promise Function to call after processing.
      */
     getRandomSetofStoredQuestions: function(promise) {
@@ -608,7 +608,7 @@ Ext.define('LernApp.controller.StorageController', {
                     return key;
                 });
                 
-                while(Object.keys(randomIds).length < LernApp.app.randomQuestionCount) {
+                while(Object.keys(randomIds).length < LearningApp.app.randomQuestionCount) {
                     var value = Math.floor(Math.random() * Object.keys(allQuestions).length);
                     randomIds[value] = true;
                 }

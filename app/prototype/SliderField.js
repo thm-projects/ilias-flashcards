@@ -28,7 +28,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.prototype.SliderField', {
+Ext.define('LearningApp.prototype.SliderField', {
     extend  : 'Ext.field.Field',
     xtype   : 'sliderField',
     requires: [

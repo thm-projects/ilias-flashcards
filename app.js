@@ -35,13 +35,13 @@ Ext.require([
 ]);
 
 Ext.application({
-    name: 'LernApp',
+    name: 'LearningApp',
     appFolder: 'app',
     
     requires: [
-        'LernApp.view.Main',
-        'LernApp.proxy.Proxy',
-        'LernApp.prototype.CustomMessageBox'
+        'LearningApp.view.Main',
+        'LearningApp.proxy.Proxy',
+        'LearningApp.prototype.CustomMessageBox'
     ],
 
     viewport: {
@@ -101,8 +101,8 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
         
         this.storageController = this.getController('StorageController');
-        this.proxy = Ext.create('LernApp.proxy.Proxy');
-        this.main = Ext.create('LernApp.view.Main');
+        this.proxy = Ext.create('LearningApp.proxy.Proxy');
+        this.main = Ext.create('LearningApp.view.Main');
         
         this.getController('LoginController').checkLogin(function(loginState) {
             me.main.initializeComponents(loginState);
@@ -114,7 +114,7 @@ Ext.application({
         Ext.Viewport.setMasked({xtype:'loadmask', message: message});
         Ext.create('Ext.util.DelayedTask', promise, this).delay(1);
     },
-
+    
     onUpdated: function() {
         Ext.Msg.confirm(
             "Update",

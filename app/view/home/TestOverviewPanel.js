@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
         
-Ext.define('LernApp.view.home.TestOverviewPanel', {
+Ext.define('LearningApp.view.home.TestOverviewPanel', {
     extend: 'Ext.Panel',
     xtype: 'testOverviewPanel',
 
@@ -38,8 +38,8 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
         'Ext.Label',
         'Ext.Spacer',
         'Ext.Button',
-        'LernApp.view.learncard.CardCarousel',
-        'LernApp.view.cardindex.CardIndex'
+        'LearningApp.view.flashcard.CardCarousel',
+        'LearningApp.view.cardindex.CardIndex'
     ],
     
     config: {
@@ -61,7 +61,7 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
             title: Messages.CARD_INDEX,
             cls: 'standardForm',
             width: '310px',
-            style: 'margin-top: 20px',
+            style: 'margin-top: 20px'
         });
         
         this.add([
@@ -83,14 +83,15 @@ Ext.define('LernApp.view.home.TestOverviewPanel', {
                 itemId  : key,
                 cls     : 'forwardListButton', 
                 handler : function(obj) {
-                    LernApp.app.setMasked('Lade Fragen', function() {
-                        LernApp.app.storageController.getStoredQuestions(obj.getItemId(), function(questions) {
-                            var panel = Ext.create('LernApp.view.learncard.CardCarousel', {
+                    LearningApp.app.setMasked('Lade Fragen', function() {
+                        LearningApp.app.storageController.getStoredQuestions(obj.getItemId(), function(questions) {
+                            var panel = Ext.create('LearningApp.view.flashcard.CardCarousel', {
                                 testMode: true,
                                 questions: questions,
                                 showOnlyQuestion: false
                             });
-                            LernApp.app.main.navigation.push(panel);
+
+                            LearningApp.app.main.navigation.push(panel);
                         });
                     });
                 }

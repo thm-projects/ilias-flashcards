@@ -29,7 +29,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.home.SettingsPanel', {
+Ext.define('LearningApp.view.home.SettingsPanel', {
     extend: 'Ext.Panel',
     xtype: 'settingsPanel',
 
@@ -38,7 +38,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
         'Ext.Panel',
         'Ext.TitleBar',
         'Ext.form.FieldSet',
-        'LernApp.prototype.SliderField'
+        'LearningApp.prototype.SliderField'
     ],
     
     config: {
@@ -58,14 +58,14 @@ Ext.define('LernApp.view.home.SettingsPanel', {
         
         var me = this;
         
-        this.controller = LernApp.app.storageController;
+        this.controller = LearningApp.app.storageController;
         
         this.backButton = Ext.create('Ext.Button', {
             text: Messages.HOME,
             align: 'left', 
             ui: 'back',
             handler : function(button) {
-                LernApp.app.main.tabPanel.animateActiveItem(0, {
+                LearningApp.app.main.tabPanel.animateActiveItem(0, {
                     type: 'slide', 
                     direction: 'right'
                 });
@@ -97,7 +97,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             }
         });
         
-        this.firstSlider = Ext.create('LernApp.prototype.SliderField', {
+        this.firstSlider = Ext.create('LearningApp.prototype.SliderField', {
             label: Messages.FIRST_BOX,
             labelWidth: '30%',
             id: 'firstBox',
@@ -114,7 +114,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             }
         });
         
-        this.secondSlider = Ext.create('LernApp.prototype.SliderField', {
+        this.secondSlider = Ext.create('LearningApp.prototype.SliderField', {
             label: Messages.SECOND_BOX,
             labelWidth: '30%',
             id: 'secondBox',
@@ -131,7 +131,7 @@ Ext.define('LernApp.view.home.SettingsPanel', {
             }
         });
         
-        this.thirdSlider = Ext.create('LernApp.prototype.SliderField', {
+        this.thirdSlider = Ext.create('LearningApp.prototype.SliderField', {
             label: Messages.THIRD_BOX,
             labelWidth: '30%',
             id: 'thirdBox',

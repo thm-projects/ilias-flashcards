@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------------+
-  - Dateiname:		app/proxy/JsonProxy.js
+  - Dateiname:		app/proxy/Proxy.js
   - Beschreibung:	JsonP Proxy
   - Autor(en):		Andreas Gärtner <andreas.gaertner@hotmail.com>
   +--------------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.proxy.Proxy', {
+Ext.define('LearningApp.proxy.Proxy', {
     extend: 'Ext.data.Connection',
     xtype: 'proxy',
 
@@ -40,7 +40,7 @@ Ext.define('LernApp.proxy.Proxy', {
         useDefaultXhrHeader: false,
         withCredentials: true,
         disableCaching: false,
-        method: 'GET',
+        method: 'GET'
     },
     
     /**
@@ -81,7 +81,7 @@ Ext.define('LernApp.proxy.Proxy', {
     checkLogin: function(callback) {
         var me = this;
        
-        LernApp.app.storageController.getLoggedInUserObj(function(loginObj) {
+        LearningApp.app.storageController.getLoggedInUserObj(function(loginObj) {
             if(loginObj != null) me.setDefaultHeaders(loginObj.authObj);
         });
     },
@@ -135,7 +135,7 @@ Ext.define('LernApp.proxy.Proxy', {
                 Ext.Viewport.setMasked(false);
                 if (response.status === 401) {
                     Ext.Msg.alert('Login', 'Ihre Logindaten sind abgelaufen. Bitte erneut einloggen.', function() {
-                        LernApp.app.getController('LoginController').logout();
+                        LearningApp.app.getController('LoginController').logout();
                     });
                 } else {
                     Ext.Msg.alert('Offline-Modus', 'Das Programm wird im Offline-Modus ausgeführt.');

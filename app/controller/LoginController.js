@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.controller.LoginController', {
+Ext.define('LearningApp.controller.LoginController', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -52,17 +52,17 @@ Ext.define('LernApp.controller.LoginController', {
     login: function(uname, upass, loginPanel) {
         var me = this;
         
-        LernApp.app.proxy.login(uname, upass, {
+        LearningApp.app.proxy.login(uname, upass, {
             success: function(responseObj) {                
-                LernApp.app.storageController.setLoggedInUser(uname, responseObj, function() {
-                    LernApp.app.proxy.setDefaultHeaders(responseObj);
-                    var navigation = Ext.create('LernApp.view.home.HomeNavigation');
-                    LernApp.app.getController('Navigation').changeNavigation(navigation);
+                LearningApp.app.storageController.setLoggedInUser(uname, responseObj, function() {
+                    LearningApp.app.proxy.setDefaultHeaders(responseObj);
+                    var navigation = Ext.create('LearningApp.view.home.HomeNavigation');
+                    LearningApp.app.getController('Navigation').changeNavigation(navigation);
                     Ext.Viewport.setMasked(false);
                 });
             },         
             failure: function() {
-                LernApp.app.proxy.check({
+                LearningApp.app.proxy.check({
                     success: function() {
                         loginPanel.markLoginFieldSet();
                     },
@@ -79,9 +79,9 @@ Ext.define('LernApp.controller.LoginController', {
     },
     
     checkLogin: function(promise) {
-        if(LernApp.app.storageController.isUserLoggedIn()) {
-            LernApp.app.storageController.initializeSession();
-            LernApp.app.proxy.checkLogin();
+        if(LearningApp.app.storageController.isUserLoggedIn()) {
+            LearningApp.app.storageController.initializeSession();
+            LearningApp.app.proxy.checkLogin();
             promise(true);
         } 
         else promise(false);
@@ -91,10 +91,10 @@ Ext.define('LernApp.controller.LoginController', {
      * Logout handler. Performs action required for a logout.
      */
     logout: function() {
-        LernApp.app.storageController.removeLoggedInUser(function() {
-            LernApp.app.proxy.resetDefaultRequestHeaders();
-            var navigation = Ext.create('LernApp.view.login.LoginNavigation');
-            LernApp.app.getController('Navigation').changeNavigation(navigation, true);
+        LearningApp.app.storageController.removeLoggedInUser(function() {
+            LearningApp.app.proxy.resetDefaultRequestHeaders();
+            var navigation = Ext.create('LearningApp.view.login.LoginNavigation');
+            LearningApp.app.getController('Navigation').changeNavigation(navigation, true);
             localStorage.removeItem('login');
             Ext.Viewport.setMasked(false);
         });

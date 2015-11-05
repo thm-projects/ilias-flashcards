@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.controller.Question', {
+Ext.define('LearningApp.controller.Question', {
     extend: 'Ext.app.Controller',
     
     config: {

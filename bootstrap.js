@@ -18,7 +18,7 @@ Ext.Loader.addClassPathMappings({
   "Ext.device.sqlite.SQLResultSetRowList": "touch/src/device/sqlite/Sencha.js",
   "Ext.device.sqlite.SQLTransaction": "touch/src/device/sqlite/Sencha.js",
   "Ext.draw.engine.SvgContext.Gradient": "touch/src/draw/engine/SvgContext.js",
-  "LernApp": "app"
+  "LearningApp": "app"
 });
 Ext.ClassManager.addNameAlternateMappings({
   "ChartDataModel": [],
@@ -746,38 +746,38 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.viewport.WindowsPhone": [
     "Ext.viewport.WP"
   ],
-  "LernApp.controller.AnswerController": [],
-  "LernApp.controller.LoginController": [],
-  "LernApp.controller.Navigation": [],
-  "LernApp.controller.Question": [],
-  "LernApp.controller.StorageController": [],
-  "LernApp.model.CardIndexModel": [],
-  "LernApp.model.Category": [],
-  "LernApp.model.Question": [],
-  "LernApp.prototype.CustomButton": [],
-  "LernApp.prototype.CustomMask": [],
-  "LernApp.prototype.CustomMessageBox": [],
-  "LernApp.prototype.NavigationView": [],
-  "LernApp.prototype.SliderField": [],
-  "LernApp.proxy.Proxy": [],
-  "LernApp.store.CardIndexStore": [],
-  "LernApp.store.QuestionStore": [],
-  "LernApp.view.Main": [],
-  "LernApp.view.TabPanel": [],
-  "LernApp.view.about.AboutPanel": [],
-  "LernApp.view.cardindex.CardIndex": [],
-  "LernApp.view.home.HomeNavigation": [],
-  "LernApp.view.home.OverviewPanel": [],
-  "LernApp.view.home.SettingsPanel": [],
-  "LernApp.view.home.TestOverviewPanel": [],
-  "LernApp.view.home.UserPanel": [],
-  "LernApp.view.learn.LearnPanel": [],
-  "LernApp.view.learncard.AnswerPanel": [],
-  "LernApp.view.learncard.CardCarousel": [],
-  "LernApp.view.learncard.QuestionPanel": [],
-  "LernApp.view.login.LoginNavigation": [],
-  "LernApp.view.login.LoginPanel": [],
-  "LernApp.view.login.WelcomePanel": []
+  "LearningApp.controller.AnswerController": [],
+  "LearningApp.controller.LoginController": [],
+  "LearningApp.controller.Navigation": [],
+  "LearningApp.controller.Question": [],
+  "LearningApp.controller.StorageController": [],
+  "LearningApp.model.CardIndexModel": [],
+  "LearningApp.model.Category": [],
+  "LearningApp.model.Question": [],
+  "LearningApp.prototype.CustomMask": [],
+  "LearningApp.prototype.CustomMessageBox": [],
+  "LearningApp.prototype.NavigationView": [],
+  "LearningApp.prototype.SliderField": [],
+  "LearningApp.prototype.SubTextButton": [],
+  "LearningApp.proxy.Proxy": [],
+  "LearningApp.store.CardIndexStore": [],
+  "LearningApp.store.QuestionStore": [],
+  "LearningApp.view.Main": [],
+  "LearningApp.view.TabPanel": [],
+  "LearningApp.view.about.AboutPanel": [],
+  "LearningApp.view.cardindex.CardIndex": [],
+  "LearningApp.view.flashcard.AnswerPanel": [],
+  "LearningApp.view.flashcard.CardCarousel": [],
+  "LearningApp.view.flashcard.FlashcardBox": [],
+  "LearningApp.view.flashcard.QuestionPanel": [],
+  "LearningApp.view.home.HomeNavigation": [],
+  "LearningApp.view.home.OverviewPanel": [],
+  "LearningApp.view.home.SettingsPanel": [],
+  "LearningApp.view.home.TestOverviewPanel": [],
+  "LearningApp.view.home.UserPanel": [],
+  "LearningApp.view.login.LoginNavigation": [],
+  "LearningApp.view.login.LoginPanel": [],
+  "LearningApp.view.login.WelcomePanel": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "ChartDataModel": [],
@@ -1719,82 +1719,82 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
-  "LernApp.controller.AnswerController": [],
-  "LernApp.controller.LoginController": [],
-  "LernApp.controller.Navigation": [],
-  "LernApp.controller.Question": [],
-  "LernApp.controller.StorageController": [],
-  "LernApp.model.CardIndexModel": [],
-  "LernApp.model.Category": [],
-  "LernApp.model.Question": [],
-  "LernApp.prototype.CustomButton": [
-    "widget.customButton"
-  ],
-  "LernApp.prototype.CustomMask": [
+  "LearningApp.controller.AnswerController": [],
+  "LearningApp.controller.LoginController": [],
+  "LearningApp.controller.Navigation": [],
+  "LearningApp.controller.Question": [],
+  "LearningApp.controller.StorageController": [],
+  "LearningApp.model.CardIndexModel": [],
+  "LearningApp.model.Category": [],
+  "LearningApp.model.Question": [],
+  "LearningApp.prototype.CustomMask": [
     "widget.customMask"
   ],
-  "LernApp.prototype.CustomMessageBox": [],
-  "LernApp.prototype.NavigationView": [
+  "LearningApp.prototype.CustomMessageBox": [],
+  "LearningApp.prototype.NavigationView": [
     "widget.navView"
   ],
-  "LernApp.prototype.SliderField": [
+  "LearningApp.prototype.SliderField": [
     "widget.sliderField"
   ],
-  "LernApp.proxy.Proxy": [
+  "LearningApp.prototype.SubTextButton": [
+    "widget.subTextButton"
+  ],
+  "LearningApp.proxy.Proxy": [
     "widget.proxy"
   ],
-  "LernApp.store.CardIndexStore": [
+  "LearningApp.store.CardIndexStore": [
     "widget.cardIndexStore"
   ],
-  "LernApp.store.QuestionStore": [
+  "LearningApp.store.QuestionStore": [
     "widget.questionStore"
   ],
-  "LernApp.view.Main": [
+  "LearningApp.view.Main": [
     "widget.main"
   ],
-  "LernApp.view.TabPanel": [
+  "LearningApp.view.TabPanel": [
     "widget.TabPanel"
   ],
-  "LernApp.view.about.AboutPanel": [
+  "LearningApp.view.about.AboutPanel": [
     "widget.aboutPanel"
   ],
-  "LernApp.view.cardindex.CardIndex": [
+  "LearningApp.view.cardindex.CardIndex": [
     "widget.cardIndex"
   ],
-  "LernApp.view.home.HomeNavigation": [
-    "widget.homeNav"
-  ],
-  "LernApp.view.home.OverviewPanel": [
-    "widget.overviewPanel"
-  ],
-  "LernApp.view.home.SettingsPanel": [
-    "widget.settingsPanel"
-  ],
-  "LernApp.view.home.TestOverviewPanel": [
-    "widget.testOverviewPanel"
-  ],
-  "LernApp.view.home.UserPanel": [
-    "widget.userPanel"
-  ],
-  "LernApp.view.learn.LearnPanel": [
-    "widget.learnPanel"
-  ],
-  "LernApp.view.learncard.AnswerPanel": [
+  "LearningApp.view.flashcard.AnswerPanel": [
     "widget.answerPanel"
   ],
-  "LernApp.view.learncard.CardCarousel": [
+  "LearningApp.view.flashcard.CardCarousel": [
     "widget.cardCarousel"
   ],
-  "LernApp.view.learncard.QuestionPanel": [
+  "LearningApp.view.flashcard.FlashcardBox": [
+    "widget.flashcardBox"
+  ],
+  "LearningApp.view.flashcard.QuestionPanel": [
     "widget.questionPanel"
   ],
-  "LernApp.view.login.LoginNavigation": [
+  "LearningApp.view.home.HomeNavigation": [
+    "widget.homeNav"
+  ],
+  "LearningApp.view.home.OverviewPanel": [
+    "widget.overviewPanel"
+  ],
+  "LearningApp.view.home.SettingsPanel": [
+    "widget.settingsPanel"
+  ],
+  "LearningApp.view.home.TestOverviewPanel": [
+    "widget.testOverviewPanel"
+  ],
+  "LearningApp.view.home.UserPanel": [
+    "widget.userPanel"
+  ],
+  "LearningApp.view.login.LoginNavigation": [
     "widget.loginNav"
   ],
-  "LernApp.view.login.LoginPanel": [
+  "LearningApp.view.login.LoginPanel": [
     "widget.loginPanel"
   ],
-  "LernApp.view.login.WelcomePanel": [
+  "LearningApp.view.login.WelcomePanel": [
     "widget.welcomePanel"
   ]
 });

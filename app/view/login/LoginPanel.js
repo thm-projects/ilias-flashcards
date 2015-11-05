@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.login.LoginPanel', {
+Ext.define('LearningApp.view.login.LoginPanel', {
     extend: 'Ext.Panel',
     xtype: 'loginPanel',
 
@@ -38,7 +38,7 @@ Ext.define('LernApp.view.login.LoginPanel', {
         'Ext.field.Text',
         'Ext.form.FieldSet',
         'Ext.field.Password',
-        'LernApp.view.home.HomeNavigation'
+        'LearningApp.view.home.HomeNavigation'
     ],
     
     config: {
@@ -98,7 +98,7 @@ Ext.define('LernApp.view.login.LoginPanel', {
                 button.disable();
                 Ext.Viewport.setMasked({ xtype:'loadmask', message: Messages.LOADING });
                 var fieldsetItems = me.loginFieldSet.getInnerItems();
-                LernApp.app.getController('LoginController').login(
+                LearningApp.app.getController('LoginController').login(
                     fieldsetItems[0].getValue(), 
                     fieldsetItems[1].getValue(), me
                 );

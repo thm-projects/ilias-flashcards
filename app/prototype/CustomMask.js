@@ -29,7 +29,7 @@
   erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
   +--------------------------------------------------------------------------------+
 */
-Ext.define('LernApp.prototype.CustomMask', {
+Ext.define('LearningApp.prototype.CustomMask', {
     extend: 'Ext.Component',
     xtype: 'customMask',
 

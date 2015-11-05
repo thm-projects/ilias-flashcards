@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.home.UserPanel', {
+Ext.define('LearningApp.view.home.UserPanel', {
     extend: 'Ext.Panel',
     xtype: 'userPanel',
 
@@ -64,7 +64,7 @@ Ext.define('LernApp.view.home.UserPanel', {
             align: 'left', 
             ui: 'back',
             handler : function(button) {
-                LernApp.app.main.tabPanel.animateActiveItem(0, {
+                LearningApp.app.main.tabPanel.animateActiveItem(0, {
                     type: 'slide', 
                     direction: 'right'
                 });
@@ -228,9 +228,9 @@ Ext.define('LernApp.view.home.UserPanel', {
     loadAllStores: function() {
         var me = this;
         
-        LernApp.app.storageController.getFlashcardObject(function(flashcardObject) {
-            LernApp.app.storageController.getStoredTestObject(function(storedTestObject) {
-                LernApp.app.storageController.getStoredSelectedTests(function(selectedTests) {
+        LearningApp.app.storageController.getFlashcardObject(function(flashcardObject) {
+            LearningApp.app.storageController.getStoredTestObject(function(storedTestObject) {
+                LearningApp.app.storageController.getStoredSelectedTests(function(selectedTests) {
                     me.statisticCalculations(flashcardObject, storedTestObject, selectedTests);
                 });
             });

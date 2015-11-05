@@ -33,7 +33,7 @@
     /**
      * The application's namespace, used by Sencha Command to generate classes
      */
-    "name": "LernApp",
+    "name": "LearningApp",
 
     /**
      * The file path to this application's front HTML document, relative to this app.json file
@@ -47,7 +47,7 @@
      * This value is needed when build to resolve your application's dependencies if it requires server-side resources
      * that are not accessible via file system protocol.
      */
-    "url": "81.89.100.95",
+    "url": "https://localhost/app/index.html",
 
     /**
      * List of all JavaScript assets in the right execution order.
@@ -112,10 +112,6 @@
     "css": [
         {
             "path": "resources/css/app.css",
-            "update": "full"
-        },
-        {
-            "path": "resources/css/lernapp.css",
             "update": "full"
         }
     ],

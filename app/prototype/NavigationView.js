@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.prototype.NavigationView', {
+Ext.define('LearningApp.prototype.NavigationView', {
     extend: 'Ext.navigation.View',
     xtype: 'navView',
     
@@ -68,12 +68,8 @@ Ext.define('LernApp.prototype.NavigationView', {
      */
     
     /** to call after navigation change */
-    afterNavigationChange: function() {
-        
-    },
+    afterNavigationChange: Ext.emptyFn,
     
     /** to call after insertion of navigation to tabPanel or viewport */
-    afterInsertionToViewport: function() {
-        
-    },
+    afterInsertionToViewport: Ext.emptyFn
 });

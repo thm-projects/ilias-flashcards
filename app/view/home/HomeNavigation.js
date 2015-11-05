@@ -30,14 +30,14 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.home.HomeNavigation', {
-    extend: 'LernApp.prototype.NavigationView',
+Ext.define('LearningApp.view.home.HomeNavigation', {
+    extend: 'LearningApp.prototype.NavigationView',
     xtype: 'homeNav',
 
     requires: [
-        'LernApp.view.home.OverviewPanel',
-        'LernApp.view.home.SettingsPanel',
-        'LernApp.view.home.UserPanel',
+        'LearningApp.view.home.OverviewPanel',
+        'LearningApp.view.home.SettingsPanel',
+        'LearningApp.view.home.UserPanel',
         'Ext.util.DelayedTask',
         'Ext.SegmentedButton'
     ],
@@ -48,9 +48,9 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     },
     
     instanciateComponents: function() {
-        this.userPanel = Ext.create('LernApp.view.home.UserPanel');
-        this.settingsPanel = Ext.create('LernApp.view.home.SettingsPanel');
-        this.overviewPanel = Ext.create('LernApp.view.home.OverviewPanel');
+        this.userPanel = Ext.create('LearningApp.view.home.UserPanel');
+        this.settingsPanel = Ext.create('LearningApp.view.home.SettingsPanel');
+        this.overviewPanel = Ext.create('LearningApp.view.home.OverviewPanel');
     },
     
     initialize: function() {
@@ -67,7 +67,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
             hidden  : true,
             handler : function() {
                 this.disable();
-                LernApp.app.getController('LoginController').logout();
+                LearningApp.app.getController('LoginController').logout();
             }
         });
         
@@ -120,7 +120,7 @@ Ext.define('LernApp.view.home.HomeNavigation', {
                     listeners: {
                         toggle: function(container, button, pressed){
                             if(pressed) {
-                                var navigation = LernApp.app.main.navigation;
+                                var navigation = LearningApp.app.main.navigation;
                                 var panel = navigation.getActiveItem();
                                 me.viewChangePanel.config.hideTask.cancel();
                                 me.viewChangePanel.config.hideTask.delay(3000);
@@ -156,15 +156,15 @@ Ext.define('LernApp.view.home.HomeNavigation', {
     
     /** actions to fulfill after navigation is added to tabPanel */
     afterInsertionToViewport: function() {
-        LernApp.app.main.tabPanel.addItem(this.userPanel);
-        LernApp.app.main.tabPanel.addItem(this.settingsPanel);
+        LearningApp.app.main.tabPanel.addItem(this.userPanel);
+        LearningApp.app.main.tabPanel.addItem(this.settingsPanel);
     },
     
     /** sets pressed property of segmented button */
     setPressedButton: function(view) {
         var me = this,
             selView = null,
-            activePanel = LernApp.app.main.navigation.getActiveItem(),
+            activePanel = LearningApp.app.main.navigation.getActiveItem(),
             viewChangeButton = me.viewChangePanel.down('#viewChangeButton'),
             innerButtons = viewChangeButton.getInnerItems();
         

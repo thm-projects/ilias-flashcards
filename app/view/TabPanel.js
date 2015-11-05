@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.TabPanel', {
+Ext.define('LearningApp.view.TabPanel', {
     extend: 'Ext.tab.Panel',
     xtype: 'TabPanel',
     
@@ -101,7 +101,7 @@ Ext.define('LernApp.view.TabPanel', {
      * @param: tab panel to insert
      */
     addAfterFirstTab: function(tab) {
-        LernApp.app.main.tabPanel.insert(1, tab);
+        LearningApp.app.main.tabPanel.insert(1, tab);
     },
     
     /**
@@ -111,8 +111,8 @@ Ext.define('LernApp.view.TabPanel', {
      * @param: tab panel to insert
      */
     addBeforeLastTab: function(tab) {
-        var lastIndex = LernApp.app.main.tabPanel.getInnerItems().length + 1;
+        var lastIndex = LearningApp.app.main.tabPanel.getInnerItems().length + 1;
         if(lastIndex < 2) lastIndex = 2;
-        LernApp.app.main.tabPanel.insert(lastIndex - 1, tab);
+        LearningApp.app.main.tabPanel.insert(lastIndex - 1, tab);
     }
 });

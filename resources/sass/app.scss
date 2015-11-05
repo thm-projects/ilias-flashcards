@@ -1,13 +1,37 @@
-// The following two lines import the default Sencha Touch theme. If you are building
-// a new theme, remove them and the add your own CSS on top of the base CSS (which
-// is already included in your app.json file).
+/*--------------------------------------------------------------------------------+
+  - Dateiname:      resources/sass/app.scss
+  - Beschreibung:   Stylesheet Datei der App.
+  - Datum:          29.11.2013
+  - Autor(en):      Andreas Gärtner <andreas.gaertner@hotmail.com>
+  +--------------------------------------------------------------------------------+
+  This program is free software; you can redistribute it and/or modify it under 
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation; either version 3 of the License, or any later version.
+  +--------------------------------------------------------------------------------+
+  This program is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+  PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License along with 
+  this program; if not, see <http://www.gnu.org/licenses/>.
+  +--------------------------------------------------------------------------------+
+  Inoffizielle deutsche Übersetzung (http://www.gnu.de/documents/gpl.de.html):
+
+  Dieses Programm ist freie Software. Sie können es unter den Bedingungen der 
+  GNU General Public License, wie von der Free Software Foundation veröffentlicht,
+  weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder 
+  jeder späteren Version.
+  +--------------------------------------------------------------------------------+
+  Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von
+  Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie
+  der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden
+  Sie in der GNU General Public License.
+  Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm
+  erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>.
+  +--------------------------------------------------------------------------------+
+*/
+
 @import 'sencha-touch/default';
 @import 'sencha-touch/default/all';
-
-// Custom code goes here..
-
-// Examples of using the icon mixin:
-// @include icon('user');
 
 // fix hidden fieldsets in firefox
 .x-firefox .x-stretched.x-dock-vertical > .x-dock-body {
@@ -21,4 +45,351 @@
 
 .x-sub-text {
 	margin-left: 15px;
+}
+
+/* hide 'Sencha Touch GPL3' watermark from charts */
+.x-chart-watermark {
+	opacity: 0;
+}
+
+.loginFields .x-form-field {
+	text-align: center;
+}
+
+.loginFields .x-form-field {
+	text-align: center;
+}
+
+.addIcon {
+    background-image: url(../icons/icon_add.png) !important;
+}
+
+.deleteIcon {
+    background-image: url(../icons/icon_delete.png) !important;
+}
+
+.formInvalid::-moz-placeholder {
+    color: #900;
+    opacity: 0.5;
+}
+
+.formInvalid::-webkit-input-placeholder {
+    color: #900;
+    opacity: 0.5;
+}
+
+.formInvalid:-ms-input-placeholder {
+    color: #900;
+    opacity: 0.5;
+}
+
+.forwardListButton { 
+	background: white
+		url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAAZiS0dEALgAuAC41wNsvAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB9sGEQk7MbF1V5sAAAENSURBVCjPY2CgNigtLS0pKyubSEgdMxqfsbS0tJuRkbGBgYHB3NLS8s+xY8cO49LMhC7AyMgoA5dkYmopLS1NIVbz//v378f///9/D5LYjLKysgCibF69evWvr1+/Bv7///8M1CXMDAwMy0tLS20xXInLSbm5uaIcHBxHGRkZVaFCH//9+2fX09NzCafNMDB58uTXjIyM6UhC/ExMTPPwOhvZ5v///89EEvr479+/JIKas7KyeDg4OLYhOfnH////fZGdjFVzaGgoGw8PzzpGRkYTBgYGhv////9lYGCI7O7uPkwotBkVFRUXMjAwuCKJZXR1dW0gKqr+////BMb+9+9fTXd39xyapG2KAAAvqFz8khrpYwAAAABJRU5ErkJggg==")
+		no-repeat;
+	background-position: 99%;
+	border-radius: 0;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: thin;
+}
+
+.leafListItem {
+	background: white no-repeat;
+	background-position: 99%;
+	border-radius: 0;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: thin;
+}
+
+.invisible {
+	opacity: 0;
+}
+
+.x-button.forwardListButton
+{
+	height: 45px !important;
+}
+
+.x-list .x-list-item.x-list-item-tpl .x-innerhtml {
+	padding-right: 36px !important;
+}
+
+.listText {
+	/*padding: 20px !important;*/
+}
+
+.editToggleBox {
+	width: auto !important;
+	padding: .2em !important;
+}
+
+.forwardListButton>span {
+	text-align: left;
+}
+
+.standardForm {
+	margin-left: 12px;
+	margin-right: 12px;
+	margin: 0.5em 0.5em 0.5em;
+}
+
+.standardForm .x-form-fieldset-title {
+	text-align: center;
+}
+
+.standardForm .x-form-fieldset-inner {
+	background: none;
+	border: none;
+}
+
+.standardForm .x-form-fieldset-inner>div:first-child {
+	-webkit-border-top-left-radius: 15px;
+	-webkit-border-top-right-radius: 15px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+.standardForm .x-form-fieldset-inner>div:last-child {
+	-webkit-border-bottom-left-radius: 15px;
+	-webkit-border-bottom-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+.roundedBox {
+	margin: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	border-style: solid;
+	border-width: thin;
+	background-color: white;
+	font-weight: normal;
+}
+
+.roundedBox p.title {
+	font-weight: bold;
+}
+
+.roundedBox>.x-list-item:last-child {
+	border-bottom: none;
+}
+
+.viewChangePanel .x-panel-inner {
+	max-width: 80%;
+	min-width: 290px;
+	margin-bottom: 10px;
+	background: black !important;	
+}
+
+.viewChangePanel .titleLabel {
+	color: white;
+	text-align: center;
+	font-size: 1.1em;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.flashCardFieldSet {
+	max-width: 80%;
+	min-width: 300px;
+	margin-bottom: 10px;
+}
+
+.saveConfirmPanel .x-panel-inner {
+	max-width: 80%;
+	min-width: 290px;
+	margin-bottom: 10px;
+	background: black !important;	
+}
+
+
+.saveConfirmPanel .x-button-label,
+.flashCardFieldSet .x-button-label {
+	display: inline;
+	text-align: left;
+	font-weight: bold;
+	flex: none !important;
+}
+
+.saveConfirmPanel .x-button {
+	color: #606060;
+	background: #fff;
+	height: 45px !important;
+	align-items: stretch !important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+	background: -moz-linear-gradient(top, #fff, #ededed);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+	border-radius: 0;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: thin;
+}
+
+.saveConfirmPanel .x-button.x-button-pressing {
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+	background: -moz-linear-gradient(top, #fff, #dcdcdc);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+}
+
+.saveConfirmPanel .saveAnswerButtonBadge,
+.flashCardFieldSet .saveAnswerButtonBadge {
+	position: absolute !important;
+	margin-right: 12px;
+	margin-top: 6px;
+	right: 0;
+}
+
+.saveConfirmPanel .selfAssessmentLabel {
+	color: white;
+	text-align: center;
+	font-size: 1.2em;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.saveConfirmPanel .selfAssessmentInstruction {
+	border: none;
+	color: #909090;
+	background: transparent;
+}
+
+.saveConfirmPanel .selfAssessmentInstruction .x-button-label {
+	font-weight: normal;
+}
+
+.settingsPanel .x-form-fieldset-title {
+	margin: 0.3em 0.9em 0.3em;
+}
+
+/**
+ * chart legend style
+ */
+.x-legend .x-legend-inner .x-legend-container .x-legend-item {
+	padding: 0.95em 0.275em 0.5em 1.8em;
+}
+
+.x-legend .x-legend-inner .x-legend-container .x-legend-item .x-legend-item-marker {
+	left: 0.5em;
+}
+
+.buttonToolbar {
+	background: transparent !important;
+	margin-bottom: none !important;
+	border-bottom: none !important;
+}
+
+/**
+ * .confirmGreen x-button
+ */
+.x-button.confirmGreen, .x-button.x-button-back.confirmGreen::after, .x-button.x-button-forward.confirmGreen::after {
+	background-color: #6D9E00;
+	/* @alternate */ background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #A2EB00), color-stop(50%, #7FB700), color-stop(51%, #6D9E00), color-stop(100%, #5B8400) );
+	/* @alternate */ background-image: -webkit-linear-gradient(#A2EB00, #7FB700 50%, #6D9E00 51%, #5B8400);
+	/* @alternate */ background-image: linear-gradient(#A2EB00, #7FB700 50%, #6D9E00 51%, #5B8400);
+}
+
+/**
+ * .confirmGreen x-button-pressing
+ */
+.x-button.confirmGreen.x-button-pressing, .x-button.confirmGreen.x-button-pressing::after {
+	background-color: #547503;
+	/* @alternate */ background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #304402), color-stop(10%, #425C02), color-stop(65%, #547503), color-stop(100%, #557803));
+	/* @alternate */ background-image: -webkit-linear-gradient(#304402,#425C02 10%,#547503 65%,#557803);
+	/* @alternate */ background-image: linear-gradient(#304402,#425C02 10%,#547503 65%,#557803);
+}
+
+.x-slider {
+ 	width: 82%;
+}
+ 
+.sliderField .x-component-outer,
+.x-toggle-field .x-component-outer,
+.x-field .x-form-label {
+	padding: 0.3em;
+	background: white;
+}
+
+.x-field .x-form-label {
+	padding-top: 0.7em;
+	padding-bottom: 0.7em;
+}
+
+.x-field .x-form-label>span {
+	margin-left: 0.5em;
+}
+
+
+.sliderField .sliderInputField {
+	width: 18%;
+	float: right;
+}
+
+.sliderField .sliderInputField .sliderInputValue {
+	width: 100%;
+	border: none;
+	height: 2.0em;
+	text-align: center;
+	pointer-events: none;
+}
+
+.x-list-item .listBadge {
+    position: initial;
+    min-height: 0em;
+    border: none;
+    padding: 0;
+}
+
+.badgefixed {
+	top: 4px;
+    right: 5px;
+    position: absolute;
+}
+
+.badgefixed_button {
+	top: 4px;
+    right: 20px;
+    position: absolute;
+}
+
+.badgeicon, .redbadgeicon {
+    font-weight: bold;
+    /* @alternate */ background: rgba(0, 0, 0, .50);
+    /* @alternate */ background: -webkit-linear-gradient(top, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .70) 100%);
+    color: rgb(238, 238, 238);
+    -webkit-border-radius: 20px;
+    border-radius: 11px;
+    padding: 4px 10px 4px 10px;
+    border: 2px solid white;
+    box-shadow: 0 0 3px gray;
+}
+
+.redbadgeicon {
+    background: rgba(128, 0, 50, 1);
+    /* @alternate */ background: -webkit-linear-gradient(top, rgba(128, 0, 50, .7) 0%, rgba(128, 0, 50, 1) 100%);
+}
+
+.greenChecker {
+	color: green;
+	font-family: 'Pictos';
+	font-size: 1.6em;
+	text-align: right;
+	line-height: 1.6em;
+	margin-right: 60px;
+	background: none !important;
+	padding: 0 !important;
+}
+ 
+.answerListItem {
+	background-color: white !important;
+}
+
+.answerListItem .x-innerhtml {
+	padding: 12px 0px !important;
+}
+
+.answerListItem.x-list-item-first.x-list-item-last {
+	border: none !important;
 }

@@ -30,7 +30,7 @@
   +--------------------------------------------------------------------------------+
 */
 
-Ext.define('LernApp.view.home.OverviewPanel', {
+Ext.define('LearningApp.view.home.OverviewPanel', {
     extend: 'Ext.Panel',
     xtype: 'overviewPanel',
 
@@ -38,10 +38,10 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         'Ext.Label',
         'Ext.Spacer',
         'Ext.Button',
-        'LernApp.view.home.TestOverviewPanel',
-        'LernApp.view.learncard.CardCarousel',
-        'LernApp.view.cardindex.CardIndex',
-        'LernApp.view.learn.LearnPanel'
+        'LearningApp.view.home.TestOverviewPanel',
+        'LearningApp.view.flashcard.CardCarousel',
+        'LearningApp.view.cardindex.CardIndex',
+        'LearningApp.view.flashcard.FlashcardBox'
     ],
     
     config: {
@@ -80,8 +80,8 @@ Ext.define('LernApp.view.home.OverviewPanel', {
             }]
         });
         
-        this.learnCardFieldSet = Ext.create('Ext.form.FieldSet', {
-            title: Messages.LEARN_CARD,
+        this.flashcardFieldSet = Ext.create('Ext.form.FieldSet', {
+            title: Messages.LEARNING,
             cls: 'standardForm',
             width: '300px',
             style: 'margin-top: 0px',
@@ -89,38 +89,38 @@ Ext.define('LernApp.view.home.OverviewPanel', {
             items: [
                 {
                     xtype   : 'button',
-                    name    : 'learnCards',
-                    text    : Messages.LEARN_LEARN_CARDS,
+                    name    : 'flashcards',
+                    text    : Messages.FLASHCARD_BOX,
                     cls     : 'forwardListButton',
                     disabled: false,
                     handler : function() {
-                        LernApp.app.storageController.getFlashcardObject(function(flashcardObject) {
-                            var panel = Ext.create('LernApp.view.learn.LearnPanel', {
+                        LearningApp.app.storageController.getFlashcardObject(function(flashcardObject) {
+                            var panel = Ext.create('LearningApp.view.flashcard.FlashcardBox', {
                                 flashcardObject: flashcardObject
                             });
-                            LernApp.app.main.navigation.push(panel);
+                            LearningApp.app.main.navigation.push(panel);
                         });
                         
                     } 
                 }, {
                     xtype   : 'button',
                     name    : 'showCards',
-                    text    : Messages.SHOW_LEARN_CARDS,
+                    text    : Messages.SHOW_FLASHCARDS,
                     cls     : 'forwardListButton',
                     pressedDelay: 100,
                     handler : function() {
                         var button = this;
                         button.disable();
-                        LernApp.app.storageController.getStoredSelectedTests(function(testObj) {
+                        LearningApp.app.storageController.getStoredSelectedTests(function(testObj) {
                             if(Object.keys(testObj).length == 0) {
                                 me.messageBox.show();
                                 button.enable();
                             } else {
-                                LernApp.app.setMasked('Lade Fragen', function() {
-                                    var panel = Ext.create('LernApp.view.home.TestOverviewPanel', {
+                                LearningApp.app.setMasked('Lade Fragen', function() {
+                                    var panel = Ext.create('LearningApp.view.home.TestOverviewPanel', {
                                         testObj: testObj
                                     });
-                                    LernApp.app.main.navigation.push(panel);
+                                    LearningApp.app.main.navigation.push(panel);
                                     Ext.Viewport.setMasked(false);
                                 });
                             }
@@ -134,18 +134,18 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        LernApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
+                        LearningApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
                             if(Object.keys(questions).length == 0) {
                                 me.messageBox.show();
                                 button.enable();
                             } else {
-                                LernApp.app.setMasked('Lade Fragen', function() {
-                                    var panel = Ext.create('LernApp.view.learncard.CardCarousel', { 
+                                LearningApp.app.setMasked('Lade Fragen', function() {
+                                    var panel = Ext.create('LearningApp.view.flashcard.CardCarousel', { 
                                         testMode: true,
                                         questions: questions,
                                         showOnlyQuestion: false
                                     });
-                                    LernApp.app.main.navigation.push(panel);
+                                    LearningApp.app.main.navigation.push(panel);
                                 });
                             }
                         });
@@ -169,9 +169,9 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        LernApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LernApp.view.cardindex.CardIndex', {view: 'test'});
-                            LernApp.app.main.navigation.push(panel);
+                        LearningApp.app.setMasked('Lade Fragen', function() {
+                            var panel = Ext.create('LearningApp.view.cardindex.CardIndex', {view: 'test'});
+                            LearningApp.app.main.navigation.push(panel);
                         });
                     }
                 }, {
@@ -182,9 +182,9 @@ Ext.define('LernApp.view.home.OverviewPanel', {
                     handler : function() {
                         var button = this;
                         button.disable();
-                        LernApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LernApp.view.cardindex.CardIndex');
-                            LernApp.app.main.navigation.push(panel);
+                        LearningApp.app.setMasked('Lade Fragen', function() {
+                            var panel = Ext.create('LearningApp.view.cardindex.CardIndex');
+                            LearningApp.app.main.navigation.push(panel);
                         });
                     }
                 }
@@ -192,7 +192,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
         });
         
         this.add([
-            this.learnCardFieldSet,
+            this.flashcardFieldSet,
             this.cardIndexFieldSet
         ]);
         
@@ -200,9 +200,9 @@ Ext.define('LernApp.view.home.OverviewPanel', {
          * show logout button when panel is activated
          */
         this.onAfter('painted', function() {
-            LernApp.app.main.navigation.logoutButton.show();
+            LearningApp.app.main.navigation.logoutButton.show();
             
-            this.learnCardFieldSet.getInnerItems().forEach(function(item) {
+            this.flashcardFieldSet.getInnerItems().forEach(function(item) {
                 item.enable();
             });
             
@@ -216,7 +216,7 @@ Ext.define('LernApp.view.home.OverviewPanel', {
          * hide logout button when panel is deactivated
          */
         this.on('deactivate', function() {
-            LernApp.app.main.navigation.logoutButton.hide();
+            LearningApp.app.main.navigation.logoutButton.hide();
         });
     }
 });
