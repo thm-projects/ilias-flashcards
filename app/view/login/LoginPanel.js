@@ -78,7 +78,7 @@ Ext.define('LearningApp.view.login.LoginPanel', {
                             if (Ext.os.deviceType === 'Phone' && !tP.getTabBar().isHidden()) {
                                 Ext.defer(function () {
                                     me.getScrollable().getScroller().scrollBy(0, 100, true);
-                                }, 500);
+                                }, 750);
                             }
                         },
                         blur: me.showTabBar
