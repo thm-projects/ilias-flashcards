@@ -112,9 +112,13 @@ Ext.application({
 
     /** destroy loading indicator */
     closeSplashscreen: function () {
-        if (!LearningApp.app.scDestroyed && window.closeSplashscreen) {
+        if (!LearningApp.app.scDestroyed && LearningApp.app.appLoadingFinished && window.closeSplashscreen) {
             LearningApp.app.scDestroyed = true;
             Ext.fly('splashScreenContainer').destroy();
+        } else {
+            Ext.create('Ext.util.DelayedTask', function () {
+                LearningApp.app.closeSplashscreen();
+            }).delay(500);
         }
     },
     

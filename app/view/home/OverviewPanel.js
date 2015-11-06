@@ -46,7 +46,7 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
     
     config: {
         title: Messages.OVERVIEW,
-        scrollable: true,
+        scrollable: false,
         
         layout : {
             type : 'vbox',
@@ -58,15 +58,6 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
         this.callParent(arguments);
         
         var me = this;
-        
-        this.continueButton = Ext.create('Ext.Button', {
-            text: Messages.CONTINUE,
-            scrollable: true,
-            ui: 'confirm',
-            handler: function() {
-
-            }
-         });
 
         this.messageBox = Ext.create('Ext.MessageBox', {
             title: 'Willkommen',
@@ -86,72 +77,69 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
             width: '300px',
             style: 'margin-top: 0px',
             
-            items: [
-                {
-                    xtype   : 'button',
-                    name    : 'flashcards',
-                    text    : Messages.FLASHCARD_BOX,
-                    cls     : 'forwardListButton',
-                    disabled: false,
-                    handler : function() {
-                        LearningApp.app.storageController.getFlashcardObject(function(flashcardObject) {
-                            var panel = Ext.create('LearningApp.view.flashcard.FlashcardBox', {
-                                flashcardObject: flashcardObject
+            items: [{
+                xtype   : 'button',
+                name    : 'flashcards',
+                text    : Messages.FLASHCARD_BOX,
+                cls     : 'forwardListButton',
+                disabled: false,
+                handler : function() {
+                    LearningApp.app.storageController.getFlashcardObject(function(flashcardObject) {
+                        var panel = Ext.create('LearningApp.view.flashcard.FlashcardBox', {
+                            flashcardObject: flashcardObject
+                        });
+                        LearningApp.app.main.navigation.push(panel);
+                    });            
+                } 
+            }, {
+                xtype   : 'button',
+                name    : 'showCards',
+                text    : Messages.SHOW_FLASHCARDS,
+                cls     : 'forwardListButton',
+                pressedDelay: 100,
+                handler : function() {
+                    var button = this;
+                    button.disable();
+                    LearningApp.app.storageController.getStoredSelectedTests(function(testObj) {
+                        if(Object.keys(testObj).length == 0) {
+                            me.messageBox.show();
+                            button.enable();
+                        } else {
+                            LearningApp.app.setMasked('Lade Fragen', function() {
+                                var panel = Ext.create('LearningApp.view.home.TestOverviewPanel', {
+                                    testObj: testObj
+                                });
+                                LearningApp.app.main.navigation.push(panel);
+                                Ext.Viewport.setMasked(false);
                             });
-                            LearningApp.app.main.navigation.push(panel);
-                        });
-                        
-                    } 
-                }, {
-                    xtype   : 'button',
-                    name    : 'showCards',
-                    text    : Messages.SHOW_FLASHCARDS,
-                    cls     : 'forwardListButton',
-                    pressedDelay: 100,
-                    handler : function() {
-                        var button = this;
-                        button.disable();
-                        LearningApp.app.storageController.getStoredSelectedTests(function(testObj) {
-                            if(Object.keys(testObj).length == 0) {
-                                me.messageBox.show();
-                                button.enable();
-                            } else {
-                                LearningApp.app.setMasked('Lade Fragen', function() {
-                                    var panel = Ext.create('LearningApp.view.home.TestOverviewPanel', {
-                                        testObj: testObj
-                                    });
-                                    LearningApp.app.main.navigation.push(panel);
-                                    Ext.Viewport.setMasked(false);
-                                });
-                            }
-                        });
-                    }
-                }, {
-                    xtype   : 'button',
-                    name    : 'randomCards',
-                    text    : Messages.SHOW_RANDOM_CARDS,
-                    cls     : 'forwardListButton',
-                    handler : function() {
-                        var button = this;
-                        button.disable();
-                        LearningApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
-                            if(Object.keys(questions).length == 0) {
-                                me.messageBox.show();
-                                button.enable();
-                            } else {
-                                LearningApp.app.setMasked('Lade Fragen', function() {
-                                    var panel = Ext.create('LearningApp.view.flashcard.CardCarousel', { 
-                                        testMode: true,
-                                        questions: questions,
-                                        showOnlyQuestion: false
-                                    });
-                                    LearningApp.app.main.navigation.push(panel);
-                                });
-                            }
-                        });
-                    }
+                        }
+                    });
                 }
-            ]
+            }, {
+                xtype   : 'button',
+                name    : 'randomCards',
+                text    : Messages.SHOW_RANDOM_CARDS,
+                cls     : 'forwardListButton',
+                handler : function() {
+                    var button = this;
+                    button.disable();
+                    LearningApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
+                        if(Object.keys(questions).length == 0) {
+                            me.messageBox.show();
+                            button.enable();
+                        } else {
+                            LearningApp.app.setMasked('Lade Fragen', function() {
+                                var panel = Ext.create('LearningApp.view.flashcard.CardCarousel', { 
+                                    testMode: true,
+                                    questions: questions,
+                                    showOnlyQuestion: false
+                                });
+                                LearningApp.app.main.navigation.push(panel);
+                            });
+                        }
+                    });
+                }
+            }]
         });
         
         this.cardIndexFieldSet = Ext.create('Ext.form.FieldSet', {
@@ -160,47 +148,53 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
             width: '300px',
             style: 'margin-top: 0px',
             
-            items: [
-                {
-                    xtype   : 'button',
-                    name    : 'showCardIndex',
-                    text    : Messages.EDIT_CARD_INDEX,
-                    cls     : 'forwardListButton',
-                    handler : function() {
-                        var button = this;
-                        button.disable();
-                        LearningApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LearningApp.view.cardindex.CardIndex', {view: 'test'});
-                            LearningApp.app.main.navigation.push(panel);
-                        });
-                    }
-                }, {
-                    xtype   : 'button',
-                    name    : 'showCategoryIndex',
-                    text    : Messages.EDIT_CATEGORYS_INDEX,
-                    cls     : 'forwardListButton',
-                    handler : function() {
-                        var button = this;
-                        button.disable();
-                        LearningApp.app.setMasked('Lade Fragen', function() {
-                            var panel = Ext.create('LearningApp.view.cardindex.CardIndex');
-                            LearningApp.app.main.navigation.push(panel);
-                        });
-                    }
+            items: [{
+                xtype   : 'button',
+                name    : 'showCardIndex',
+                text    : Messages.EDIT_CARD_INDEX,
+                cls     : 'forwardListButton',
+                handler : function() {
+                    var button = this;
+                    button.disable();
+                    LearningApp.app.setMasked('Lade Fragen', function() {
+                        var panel = Ext.create('LearningApp.view.cardindex.CardIndex', {view: 'test'});
+                        LearningApp.app.main.navigation.push(panel);
+                    });
                 }
-            ]
+            }, {
+                xtype   : 'button',
+                name    : 'showCategoryIndex',
+                text    : Messages.EDIT_CATEGORYS_INDEX,
+                cls     : 'forwardListButton',
+                handler : function() {
+                    var button = this;
+                    button.disable();
+                    LearningApp.app.setMasked('Lade Fragen', function() {
+                        var panel = Ext.create('LearningApp.view.cardindex.CardIndex');
+                        LearningApp.app.main.navigation.push(panel);
+                    });
+                }
+            }]
         });
         
-        this.add([
-            this.flashcardFieldSet,
-            this.cardIndexFieldSet
-        ]);
+        this.add([{
+            xtype: 'spacer',
+            width: 'auto',
+            flex: 1
+        }, 
+        this.flashcardFieldSet,
+        this.cardIndexFieldSet, {
+            xtype: 'spacer',
+            width: 'auto',
+            flex: 3
+        }]);
         
         /**
          * show logout button when panel is activated
          */
-        this.onAfter('painted', function() {
+        this.onAfter('painted', function () {
             LearningApp.app.main.navigation.logoutButton.show();
+            LearningApp.app.appLoadingFinished = true;
             
             this.flashcardFieldSet.getInnerItems().forEach(function(item) {
                 item.enable();
@@ -211,12 +205,26 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
             });
             
         });
+
+        /**
+         * check if there are active tests in localstorage
+         */
+        this.on('activate', function () {
+            this.checkUpperFieldVisibility();
+        });
         
         /**
          * hide logout button when panel is deactivated
          */
-        this.on('deactivate', function() {
+        this.on('deactivate', function () {
             LearningApp.app.main.navigation.logoutButton.hide();
+        });
+    },
+
+    checkUpperFieldVisibility: function () {
+        var me = this;
+        LearningApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
+            me.flashcardFieldSet.setHidden(Object.keys(questions).length == 0);
         });
     }
 });

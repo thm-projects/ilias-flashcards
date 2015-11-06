@@ -35,7 +35,7 @@ Ext.define('LearningApp.view.login.LoginPanel', {
     xtype: 'loginPanel',
 
     requires: [        
-        'Ext.field.Text',
+        'Ext.field.Email',
         'Ext.form.FieldSet',
         'Ext.field.Password',
         'LearningApp.view.home.HomeNavigation'
@@ -63,7 +63,7 @@ Ext.define('LearningApp.view.login.LoginPanel', {
             
             items: [
                 {
-                    xtype   : 'textfield',
+                    xtype   : 'emailfield',
                     name    : 'username',
                     itemId  : 'username',
                     cls     : 'loginFields',
@@ -71,7 +71,17 @@ Ext.define('LearningApp.view.login.LoginPanel', {
                     listeners: {
                         action: function() {
                             me.loginFieldSet.getInnerItems()[1].focus();
-                        }
+                        },
+                        focus: function () {
+                            var tP = LearningApp.app.main.tabPanel;
+                            me.hideTabBarOnMobile();
+                            if (Ext.os.deviceType === 'Phone' && !tP.getTabBar().isHidden()) {
+                                Ext.defer(function () {
+                                    me.getScrollable().getScroller().scrollBy(0, 100, true);
+                                }, 500);
+                            }
+                        },
+                        blur: me.showTabBar
                     }
                 }, {
                     xtype   : 'passwordfield',
@@ -82,9 +92,11 @@ Ext.define('LearningApp.view.login.LoginPanel', {
                     listeners: {
                         action: function() {
                             me.confirmButton.config.handler(
-                                    me.confirmButton
+                                me.confirmButton
                             );
-                        }
+                        },
+                        focus: me.hideTabBarOnMobile,
+                        blur: me.showTabBar
                     }
                 }
             ]
@@ -115,6 +127,10 @@ Ext.define('LearningApp.view.login.LoginPanel', {
             src: 'resources/icons/logo.png'
         });
         
+        this.on('painted', function () {
+            LearningApp.app.appLoadingFinished = true;
+        });
+        
         this.add([{
             xtype: 'spacer',
             width: 'auto',
@@ -130,7 +146,25 @@ Ext.define('LearningApp.view.login.LoginPanel', {
             flex: 8
         }]);
     },
-    
+
+    hideTabBarOnMobile: function () {
+        if (Ext.os.deviceType === 'Phone') {
+            LearningApp.app.dontShowTabBar = true;
+            Ext.defer(function () {
+                LearningApp.app.main.tabPanel.getTabBar().setHidden(true);
+                LearningApp.app.dontShowTabBar = false;
+            }, 50);
+        }
+    },
+
+    showTabBar: function () {
+        Ext.defer(function () {
+            if (!LearningApp.app.dontShowTabBar) {
+                LearningApp.app.main.tabPanel.getTabBar().setHidden(false);
+            }
+        }, 50);
+    },
+
     /** enables confirm button */
     enableConfirmButton: function() {
         this.confirmButton.enable();

@@ -6,7 +6,6 @@ resources/css/app.css
 resources/css/index.css
 bootstrap.js
 bootstrap.json
-sass/
 
 # Environment specific files
 *~
