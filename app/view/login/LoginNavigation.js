@@ -60,6 +60,5 @@ Ext.define('LearningApp.view.login.LoginNavigation', {
     
     onDestroy: function() {
         this.loginPanel.destroy();
-        this.welcomePanel.destroy();
     }
 });

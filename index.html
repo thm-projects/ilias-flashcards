@@ -19,12 +19,9 @@
 		    var imgObject = new Image();
 		    var imgElement = doc.getElementById('splashScreenLogo');
 		    var innerSplashContainer = doc.getElementById('innerSplashScreenContainer');
-			
 		 	imgObject.src = "resources/icons/logo.png";
-		 	scaleWidth = imgObject.naturalWidth / imgObject.naturalHeight >= 2;
 			
 			imgElement.onload = function () { 
-				innerSplashContainer.style.width = scaleWidth ? '90%' : 'initial';
 				innerSplashContainer.children[0].classList.add('showSplashScreenElement');
 				
 				setTimeout(function () {

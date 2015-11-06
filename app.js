@@ -89,16 +89,12 @@ Ext.application({
     /**
      * app configuration
      */
-    daysUntilReloadData:    7,
-    daysUntilLoginExpires:  14,
-    randomQuestionCount:    10,
+    daysUntilReloadData: 7,
+    daysUntilLoginExpires: 14,
+    randomQuestionCount: 10,
     
     launch: function() {    
         var me = this;
-        
-        /** destroy loading indicator */
-        //Ext.fly('appLoadingIndicator').destroy();
-        
         this.storageController = this.getController('StorageController');
         this.proxy = Ext.create('LearningApp.proxy.Proxy');
         this.main = Ext.create('LearningApp.view.Main');
@@ -114,6 +110,7 @@ Ext.application({
         Ext.create('Ext.util.DelayedTask', promise, this).delay(1);
     },
 
+    /** destroy loading indicator */
     closeSplashscreen: function () {
         if (!LearningApp.app.scDestroyed && window.closeSplashscreen) {
             LearningApp.app.scDestroyed = true;

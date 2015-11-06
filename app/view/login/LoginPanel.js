@@ -107,8 +107,7 @@ Ext.define('LearningApp.view.login.LoginPanel', {
         
         this.logo = Ext.create('Ext.Img', {
             mode: 'image',
-            width: '240px',
-            height: '98px',
+            cls: 'appLogo',
             style: {
                 'margin-top': '20px',
                 'margin-bottom': '10px'
@@ -116,11 +115,20 @@ Ext.define('LearningApp.view.login.LoginPanel', {
             src: 'resources/icons/logo.png'
         });
         
-        this.add([ 
-            this.logo,
-            this.loginFieldSet, 
-            this.confirmButton
-        ]);
+        this.add([{
+            xtype: 'spacer',
+            width: 'auto',
+            flex: 1
+        }, this.logo, {
+            xtype: 'spacer',
+            width: 'auto',
+            flex: 1
+        }, this.loginFieldSet,
+        this.confirmButton, {
+            xtype: 'spacer',
+            width: 'auto',
+            flex: 8
+        }]);
     },
     
     /** enables confirm button */
