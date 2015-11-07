@@ -229,7 +229,7 @@ Ext.define('LearningApp.view.flashcard.AnswerPanel', {
         
         if(this.getCorrectAnswers() == 0) {
             this.answerList = Ext.create('Ext.Panel', {
-                html: '<p class=""><it>' + Ext.util.Format.htmlEncode('Keine der Antworten ist richtig...') + '</it><p/><br>'
+                html: '<p class=""><it>' + Ext.util.Format.htmlEncode(Messages.NO_CORRECT_ANSWER) + '</it><p/><br>'
             });
         } else {
             this.answerList = Ext.create('Ext.List', {
@@ -264,9 +264,9 @@ Ext.define('LearningApp.view.flashcard.AnswerPanel', {
         }
         
         if(this.answerList.getData() == null || this.answerList.getData().length == 1) {
-            var answerTitle = 'Die richtige Antwort lautet:';
+            var answerTitle = Messages.CORRECT_ANSWER_IS;
         } else {
-            var answerTitle = 'Die richtigen Antworten lauten:';
+            var answerTitle = Messages.CORRECT_ANSWERS_ARE;
         }
         
         this.answerTitle = Ext.create('Ext.Panel', {
@@ -281,14 +281,17 @@ Ext.define('LearningApp.view.flashcard.AnswerPanel', {
         this.feedbackBox = Ext.create('Ext.Panel', {
             cls: 'roundedBox',
             html: 
-                '<p class="title">' + Ext.util.Format.htmlEncode('Hinweis:') + '<p/><br>' +
+                '<p class="title">' + Ext.util.Format.htmlEncode(Messages.HINT) + '<p/><br>' +
                 '<p>' + this.getAppropriateFeedbackText() + '</p>'
         });
+
+        this.formPanel = Ext.create('Ext.form.Panel', {
+            scrollable: null,
+            style: 'margin: 10px',
+            items: [this.answerBox, this.feedbackBox]
+        });
         
-        this.add([
-            this.answerBox,
-            this.feedbackBox
-        ]);
+        this.add(this.formPanel);
         
         /**
          * actions to perform after panel is painted
@@ -361,12 +364,12 @@ Ext.define('LearningApp.view.flashcard.AnswerPanel', {
             });
             
             if(reachedPoints === me.questionObj.points) {
-                alertText = 'Die Antworten waren alle richtig!';
-                alertTitle = 'Richtig!';
+                alertText = Messages.ALL_ANSWERS_CORRECT;
+                alertTitle = Messages.CORRECT + '!';
             } else {
-                alertTitle = 'Leider falsch!';
-                alertText = 'Richtige Antworten: ' + evalObj.correctSelectionCount + '/' + 
-                            evalObj.correctAnswerCount + '<br>' + 'Falsche Antworten: ' +
+                alertTitle = Messages.SADLY_INCORRECT + '!';
+                alertText = Messages.SHOW_CORRECT_ANSWERS + evalObj.correctSelectionCount + '/' + 
+                            evalObj.correctAnswerCount + '<br>' + Messages.SHOW_INCORRECT_ANSWERS +
                             evalObj.falseSelectionCount;
             }
         } 
@@ -379,12 +382,12 @@ Ext.define('LearningApp.view.flashcard.AnswerPanel', {
             if(selectionPoints > 0) {
                 reachedPoints = selectionPoints;
                 evalObj.correctSelectionCount++;
-                alertText = 'Die Antwort war richtig.';
-                alertTitle = 'Richtig!';
+                alertText = Messages.CORRECT_ANSWER;
+                alertTitle = Messages.CORRECT + '!';
             } else {
                 evalObj.falseSelectionCount++;
-                alertText = 'Die Antwort war leider falsch.';
-                alertTitle = 'Falsch!';
+                alertText = Messages.INCORRECT_ANSWER;
+                alertTitle = Messages.INCORRECT + '!';
             }
         }
         

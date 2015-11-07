@@ -58,7 +58,7 @@ Ext.define('LearningApp.view.login.LoginPanel', {
         
         this.loginFieldSet = Ext.create('Ext.form.FieldSet', {
             instructions: Messages.LOGIN_DATA,
-            width: '300px',
+            maxWidth: '320px',
             style: 'margin-bottom: 15px',
             
             items: [
@@ -75,7 +75,7 @@ Ext.define('LearningApp.view.login.LoginPanel', {
                         focus: function () {
                             var tP = LearningApp.app.main.tabPanel;
                             me.hideTabBarOnMobile();
-                            if (Ext.os.deviceType === 'Phone' && !tP.getTabBar().isHidden()) {
+                            if (Ext.os.deviceType === 'Phone' && Ext.os.is('Android') && !tP.getTabBar().isHidden()) {
                                 Ext.defer(function () {
                                     me.getScrollable().getScroller().scrollBy(0, 100, true);
                                 }, 750);

@@ -60,7 +60,6 @@ Ext.define('LearningApp.view.home.TestOverviewPanel', {
         this.cardIndexFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.CARD_INDEX,
             cls: 'standardForm',
-            width: '310px',
             style: 'margin-top: 20px'
         });
         
@@ -77,11 +76,13 @@ Ext.define('LearningApp.view.home.TestOverviewPanel', {
         
         for(var key in this.config.testObj) {
             me.cardIndexFieldSet.add({
-                xtype   : 'button',
-                name    : testObj[key].title,
-                text    : testObj[key].title,
-                itemId  : key,
-                cls     : 'forwardListButton', 
+                xtype: 'subTextButton',
+                name: testObj[key].title,
+                text: testObj[key].title,
+                badgeText: testObj[key].questionCount,
+                badgeCls: 'badgeicon badgefixed_button',
+                itemId: key,
+                cls: 'forwardListButton', 
                 handler : function(obj) {
                     LearningApp.app.setMasked('Lade Fragen', function() {
                         LearningApp.app.storageController.getStoredQuestions(obj.getItemId(), function(questions) {

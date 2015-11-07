@@ -60,22 +60,22 @@ Ext.define('LearningApp.view.home.HomeNavigation', {
         var me = this;
 
         this.logoutButton = Ext.create('Ext.Button', {
-            text    : Messages.LOGOUT,
-            cls     : 'confirmGreen',
-            ui      : 'back',
-            align   : 'left',
-            hidden  : true,
-            handler : function() {
+            text: Messages.LOGOUT,
+            cls: 'confirmGreen',
+            ui: 'back',
+            align: 'left',
+            hidden: true,
+            handler: function() {
                 this.disable();
                 LearningApp.app.getController('LoginController').logout();
             }
         });
         
         this.viewButton = Ext.create('Ext.Button', {
-            text    : Messages.VIEW,
-            ui      : 'action',
-            align   : 'right',
-            hidden  : true,
+            text: Messages.VIEW,
+            ui: 'action',
+            align: 'right',
+            hidden: true,
 
             handler : function() {
                 if(me.viewChangePanel.isHidden()) {                    
@@ -104,9 +104,9 @@ Ext.define('LearningApp.view.home.HomeNavigation', {
                     html: Messages.VIEW_OPTIONS
                 },
                 {
-                    xtype   : 'segmentedbutton',
-                    itemId  : 'viewChangeButton',
-                    align   : 'center',
+                    xtype: 'segmentedbutton',
+                    itemId: 'viewChangeButton',
+                    align: 'center',
                     allowDepress: false,
                     items: [{
                         width: '50%',

@@ -25,9 +25,11 @@
 				innerSplashContainer.children[0].classList.add('showSplashScreenElement');
 				
 				setTimeout(function () {
+				    var appReference = window.LearningApp;
 					window.closeSplashscreen = true;
-					if (LearningApp && LearningApp.app && typeof LearningApp.app.closeSplashscreen === 'function') {
-					    LearningApp.app.closeSplashscreen();
+					if (appReference && appReference.app && 
+					        typeof appReference.app.closeSplashscreen === 'function') {
+					    appReference.app.closeSplashscreen();
 					}
 				}, 4000);
 			};

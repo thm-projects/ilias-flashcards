@@ -85,12 +85,18 @@ Ext.define('LearningApp.view.flashcard.QuestionPanel', {
                 }
             }
         });
+
+        this.formPanel = Ext.create('Ext.form.Panel', {
+            scrollable: null,
+            style: 'margin: 10px',
+            items: [this.questionTitle, this.answerList]
+        });
         
         this.onAfter('activate', function() {
             var me = this;
             
-            if(window.innerWidth < 340) {
-                var title = this.config.questionObj.type === 2 ? 'Multiple Ch.' : 'Single Ch.';
+            if(window.innerWidth < 360) {
+                var title = this.config.questionObj.type === 2 ? 'MC-Frage' : 'SC-Frage';
             } else {
                 var title = this.config.questionObj.type === 2 ? 'Multiple Choice' : 'Single Choice';
             }
@@ -102,9 +108,6 @@ Ext.define('LearningApp.view.flashcard.QuestionPanel', {
             }).delay(1);
         });
         
-        this.add([
-            this.questionTitle,
-            this.answerList
-        ]);
+        this.add([this.formPanel]);
     }
 });

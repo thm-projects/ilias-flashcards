@@ -40,16 +40,16 @@ Ext.define('LearningApp.view.cardindex.CardIndex', {
     ],
     
     config: {
-        title               : Messages.CARD_INDEX,
-        backText            : Messages.BACK,
-        editMode            : false,
-        fullscreen          : true,
-        displayField        : 'title',
-        useTitleAsBackText  : false,
+        title: Messages.CARD_INDEX,
+        backText: Messages.BACK,
+        editMode: false,
+        fullscreen: true,
+        displayField: 'title',
+        useTitleAsBackText: false,
         backButtonHiddenState: true,
-        selectedDisplayMode : 'tree',
+        selectedDisplayMode: 'tree',
         
-        displayModes        : {
+        displayModes: {
             tree: 'tree',
             test: 'test'
         },
@@ -64,7 +64,7 @@ Ext.define('LearningApp.view.cardindex.CardIndex', {
             }
         },
         
-        listConfig  : {
+        listConfig: {
             selectedCls: '',
             variableHeights: true,
             itemCls: 'forwardListButton',
@@ -80,12 +80,17 @@ Ext.define('LearningApp.view.cardindex.CardIndex', {
         this.callParent(arguments);
         
         var me = this;
+        var displayWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
         
         /** set pressedButton in navigation */
         LearningApp.app.main.navigation.setPressedButton(this.config.view);
         
         /** set displayMode */
         this.setDisplayMode(this.config.view);
+
+        if (displayWidth < 330) {
+            this.setTitle(Messages.INDEX);
+        }
         
         /**
          * toggleField - enables/disables edit mode
@@ -196,7 +201,7 @@ Ext.define('LearningApp.view.cardindex.CardIndex', {
     },
     
     /**
-     * rebuild tree structure to evaluate tests and categorys local
+     * rebuild tree structure to evaluate tests and categories locally
      */
     buildTreeStructureRecursively: function(treeObj) {
         var me = this;

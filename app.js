@@ -89,7 +89,7 @@ Ext.application({
     /**
      * app configuration
      */
-    daysUntilReloadData: 7,
+    daysUntilReloadData: 0,
     daysUntilLoginExpires: 14,
     randomQuestionCount: 10,
     
