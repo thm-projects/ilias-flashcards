@@ -74,16 +74,19 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
         this.flashcardFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.LEARNING,
             cls: 'standardForm',
-            width: '300px',
             style: 'margin-top: 0px',
+
+            defaults: {
+                xtype: 'subTextButton',
+                cls: 'forwardListButton',
+                badgeCls: 'badgeicon badgefixed_button',
+                badgeText: '0'
+            },
             
             items: [{
-                xtype   : 'button',
-                name    : 'flashcards',
-                text    : Messages.FLASHCARD_BOX,
-                cls     : 'forwardListButton',
-                disabled: false,
-                handler : function() {
+                name: 'flashcards',
+                text: Messages.FLASHCARD_BOX,
+                handler: function() {
                     LearningApp.app.storageController.getFlashcardObject(function(flashcardObject) {
                         var panel = Ext.create('LearningApp.view.flashcard.FlashcardBox', {
                             flashcardObject: flashcardObject
@@ -92,10 +95,9 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
                     });            
                 } 
             }, {
-                xtype   : 'button',
-                name    : 'showCards',
-                text    : Messages.SHOW_FLASHCARDS,
-                cls     : 'forwardListButton',
+                name: 'showCards',
+                text: Messages.SHOW_FLASHCARDS,
+                cls: 'forwardListButton',
                 pressedDelay: 100,
                 handler : function() {
                     var button = this;
@@ -116,11 +118,9 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
                     });
                 }
             }, {
-                xtype   : 'button',
-                name    : 'randomCards',
-                text    : Messages.SHOW_RANDOM_CARDS,
-                cls     : 'forwardListButton',
-                handler : function() {
+                name: 'randomCards',
+                text: Messages.SHOW_RANDOM_CARDS,
+                handler: function() {
                     var button = this;
                     button.disable();
                     LearningApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
@@ -145,15 +145,19 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
         this.cardIndexFieldSet = Ext.create('Ext.form.FieldSet', {
             title: Messages.CARD_INDEX,
             cls: 'standardForm',
-            width: '300px',
             style: 'margin-top: 0px',
             
+            defaults: {
+                xtype: 'subTextButton',
+                cls: 'forwardListButton',
+                badgeCls: 'badgeicon badgefixed_button'
+            },
+            
             items: [{
-                xtype   : 'button',
-                name    : 'showCardIndex',
-                text    : Messages.EDIT_CARD_INDEX,
-                cls     : 'forwardListButton',
-                handler : function() {
+                name: 'showCardIndex',
+                text: Messages.EDIT_CARD_INDEX,
+                badgeText: '0',
+                handler: function() {
                     var button = this;
                     button.disable();
                     LearningApp.app.setMasked('Lade Fragen', function() {
@@ -162,11 +166,9 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
                     });
                 }
             }, {
-                xtype   : 'button',
-                name    : 'showCategoryIndex',
-                text    : Messages.EDIT_CATEGORYS_INDEX,
-                cls     : 'forwardListButton',
-                handler : function() {
+                name: 'showCategoryIndex',
+                text: Messages.EDIT_CATEGORYS_INDEX,
+                handler: function() {
                     var button = this;
                     button.disable();
                     LearningApp.app.setMasked('Lade Fragen', function() {
@@ -210,6 +212,7 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
          * check if there are active tests in localstorage
          */
         this.on('activate', function () {
+            this.updateBadges();
             this.checkUpperFieldVisibility();
         });
         
@@ -225,6 +228,53 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
         var me = this;
         LearningApp.app.storageController.getRandomSetofStoredQuestions(function(questions) {
             me.flashcardFieldSet.setHidden(Object.keys(questions).length == 0);
+        });
+    },
+
+    updateBadges: function () {
+        var me = this;
+        var storageCtrl = LearningApp.app.storageController;
+        var learningButtons = me.flashcardFieldSet.getInnerItems();
+        var cardIndexButtons = me.cardIndexFieldSet.getInnerItems();
+
+        storageCtrl.getStoredTestObject(function (testObj) {
+            var testCount = Object.keys(testObj).length;
+
+            if (testCount > 0) {
+                cardIndexButtons[0].setBadgeText(testCount);
+            } else {
+                storageCtrl.storeCardIndexTree(function(online) {
+                    storageCtrl.getStoredIndexTreeObject(function(treeObj) {
+                        if (online) {
+                            storageCtrl.storeTests(treeObj, function () {
+                                me.updateBadges();
+                            });
+                        }
+                    });
+                });
+            }
+        });
+
+        /** update badges for learning buttonFieldset **/
+        LearningApp.app.storageController.getStoredSelectedTests(function(testObj) {
+            var testCount = Object.keys(testObj).length;
+
+            if (testCount > 0) {
+                /** showCards button **/
+                learningButtons[1].setBadgeText(testCount);
+
+                /** randomTest button **/
+                learningButtons[2].setBadgeText(LearningApp.app.randomQuestionCount);
+
+                /** flashcard box button **/
+                storageCtrl.getFlashcardObject(function(flashcardObject) {
+                    var boxes = Object.keys(flashcardObject);
+                    for (var badgeCounter = 0, i = 0; i < boxes.length; i++) {
+                        badgeCounter += parseInt(Object.keys(flashcardObject[boxes[i]]).length);
+                    }
+                    learningButtons[0].setBadgeText(badgeCounter);
+                });
+            }
         });
     }
 });
