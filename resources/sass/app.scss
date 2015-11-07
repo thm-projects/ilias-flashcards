@@ -68,6 +68,11 @@
     background-image: url(../icons/icon_delete.png) !important;
 }
 
+.formInvalid:-moz-placeholder {
+    color: #900;
+    opacity: 0.5;
+}
+
 .formInvalid::-moz-placeholder {
     color: #900;
     opacity: 0.5;
@@ -76,6 +81,7 @@
 .formInvalid::-webkit-input-placeholder {
     color: #900;
     opacity: 0.5;
+    -webkit-text-fill-color: #900;
 }
 
 .formInvalid:-ms-input-placeholder {
@@ -109,7 +115,7 @@
 
 .x-button.forwardListButton
 {
-	height: 45px !important;
+	height: 46px !important;
 }
 
 .x-list .x-list-item.x-list-item-tpl .x-innerhtml {
@@ -133,6 +139,11 @@
 	margin-left: 12px;
 	margin-right: 12px;
 	margin: 0.5em 0.5em 0.5em;
+}
+
+.x-form-fieldset {
+	max-width: 480px;
+	width: 95%;
 }
 
 .standardForm .x-form-fieldset-title {
@@ -159,13 +170,15 @@
 }
 
 .roundedBox {
-	margin: 10px;
 	padding: 10px;
+	margin: 10px auto;
 	border-radius: 10px;
 	border-style: solid;
 	border-width: thin;
+	border-color: grey;
 	background-color: white;
 	font-weight: normal;
+	max-width: 720px;
 }
 
 .roundedBox p.title {
@@ -192,8 +205,6 @@
 }
 
 .flashCardFieldSet {
-	max-width: 80%;
-	min-width: 300px;
 	margin-bottom: 10px;
 }
 
@@ -216,7 +227,7 @@
 .saveConfirmPanel .x-button {
 	color: #606060;
 	background: #fff;
-	height: 45px !important;
+	height: 46px !important;
 	align-items: stretch !important;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
 	background: -moz-linear-gradient(top, #fff, #ededed);
@@ -350,7 +361,7 @@
 
 .badgefixed_button {
 	top: 4px;
-    right: 20px;
+    right: 25px;
     position: absolute;
 }
 
@@ -392,6 +403,10 @@
 
 .answerListItem.x-list-item-first.x-list-item-last {
 	border: none !important;
+}
+
+.x-form .x-list-inner .x-scroll-container {
+	background-color: white;
 }
 
 .appLogo img {
