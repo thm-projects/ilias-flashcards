@@ -258,6 +258,7 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
         /** update badges for learning buttonFieldset **/
         LearningApp.app.storageController.getStoredSelectedTests(function(testObj) {
             var testCount = Object.keys(testObj).length;
+            LearningApp.app.main.navigation.userPanel.tab.setHidden(testCount === 0);
 
             if (testCount > 0) {
                 /** showCards button **/
