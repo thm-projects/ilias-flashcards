@@ -142,6 +142,8 @@ Ext.define('LearningApp.view.home.UserPanel', {
             innerPadding: 10,
             interactions: ['rotate', 'itemhighlight'],
             colors: ['#00FF00', '#FFFF00', '#FF9900', '#FF0000', '#999999'],
+            maxWidth: 500,
+            margin: '0 auto',
 
             store: Ext.create('Ext.data.Store', {
                 model: 'ChartDataModel',
