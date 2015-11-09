@@ -726,5 +726,74 @@ Ext.define('LearningApp.controller.StorageController', {
             if(settingsObject.hasOwnProperty(settingsKey)) promise(settingsObject[settingsKey]);
             else promise(null);
         });
+    },
+
+    /** 
+     * Deletes user data from currently logged in user
+     * @param {promise} promise Function to call after processing.
+     */
+    deleteUserData: function(promise) {
+        var me = LearningApp.app.storageController;
+        var username = me.getUsername();
+
+        /** delete storedSettingsObject **/
+        localforage.getItem('preferences', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('preferences', obj);
+        });
+
+        /** delete storedTestObject **/
+        localforage.getItem('storedTests', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('storedTests', obj);
+        });
+
+        /** delete seleted categories **/
+        localforage.getItem('selectedCategories', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('selectedCategories', obj);
+        });
+
+        /** delete stored tree index **/
+        localforage.getItem('storedTree', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('storedTree', obj);
+        });
+
+        /** delete selected question ids **/
+        localforage.getItem('selectedQuestionIds', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('selectedQuestionIds', obj);
+        });
+
+        /** delete all questions from selection **/
+        localforage.getItem('allQuestionsFromSelection', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('allQuestionsFromSelection', obj);
+        });
+
+        /** delete all flashcards set **/
+        localforage.getItem('flashCardSet', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('flashCardSet', obj);
+        });
+
+        /** delete initialized flag **/
+        localforage.getItem('initialized', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('initialized', obj);
+        });
+
+        /** delete lastUpdate timestamp **/
+        localforage.getItem('lastUpdate', function (err, obj) {
+            if (obj[username]) delete obj[username];
+            localforage.setItem('lastUpdate', obj);
+        });
+
+        /** delete login object **/
+        localforage.removeItem('loginObj');
+
+        /** logout **/
+        LearningApp.app.getController('LoginController').logout();
     }
 });
