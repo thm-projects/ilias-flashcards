@@ -117,8 +117,11 @@ Ext.define('LearningApp.view.home.SettingsPanel', {
 
         this.add([
             this.titleBar,
+            { xtype: 'spacer' },
             this.logo,
-            this.buttonContainer
+            { xtype: 'spacer' },
+            this.buttonContainer,
+            { xtype: 'spacer', width: 'auto', flex: 5}
         ]);
 
         this.onAfter('initialize', this.onInitialize);

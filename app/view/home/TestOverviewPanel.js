@@ -64,7 +64,9 @@ Ext.define('LearningApp.view.home.TestOverviewPanel', {
         });
         
         this.add([
-            this.cardIndexFieldSet
+            { xtype: 'spacer' },
+            this.cardIndexFieldSet,
+            { xtype: 'spacer', width: 'auto', flex: 5}
         ]);
         
         this.initializeTestButtons();

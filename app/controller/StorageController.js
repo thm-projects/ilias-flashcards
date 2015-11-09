@@ -53,7 +53,7 @@ Ext.define('LearningApp.controller.StorageController', {
         var me = this;
         
         /** use localstorage as driver for debugging reasons */
-        localforage.setDriver('localStorageWrapper');
+        // localforage.setDriver('localStorageWrapper');
         
         localforage.config({
             name        : 'AppDB',

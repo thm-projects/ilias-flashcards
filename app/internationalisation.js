@@ -64,6 +64,8 @@ switch (lang) {
             HELP: 'Hilfe',
             WELCOME: 'Willkommen',
             ATTENTION: 'Achtung',
+            INFO: 'Info',
+            INFORMATION: 'Informationen',
             LOGIN: 'Login',
             HOME: 'Home',
             ANSWER: 'Antwort',

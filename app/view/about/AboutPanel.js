@@ -38,7 +38,7 @@ Ext.define('LearningApp.view.about.AboutPanel', {
     ],
     
     config: {
-        title: Messages.HELP,
+        title: Messages.INFO,
         scrollable: true,
         iconCls: 'info',
         
@@ -66,7 +66,7 @@ Ext.define('LearningApp.view.about.AboutPanel', {
         
         this.titleBar = Ext.create('Ext.TitleBar', {
             docked: 'top',
-            title: 'Hilfe',
+            title: Messages.INFORMATION,
             items: [this.backButton]
         });
         
@@ -83,16 +83,16 @@ Ext.define('LearningApp.view.about.AboutPanel', {
             
             items: [
                 {
-                    xtype   : 'button',
-                    text    : 'Bedienung',
+                    xtype: 'button',
+                    text: 'Impressum',
                     disabled: true,
-                    cls     : 'forwardListButton'
+                    cls: 'forwardListButton'
                 }, 
                 {
-                    xtype   : 'button',
-                    text    : 'Über die App',
+                    xtype: 'button',
+                    text: 'Datenschutz',
                     disabled: true,
-                    cls     : 'forwardListButton'
+                    cls: 'forwardListButton'
                 }
             ]
         });
@@ -103,7 +103,7 @@ Ext.define('LearningApp.view.about.AboutPanel', {
             this.logo,
             { xtype: 'spacer' },
             this.buttonFieldSet,
-            { xtype: 'spacer' }
+            { xtype: 'spacer', width: 'auto', flex: 5}
         ]);
     }
 });

@@ -106,7 +106,11 @@ Ext.define('LearningApp.view.flashcard.FlashcardBox', {
             ]
         });
         
-        this.add([this.flashcardFieldSet]);
+        this.add([
+            { xtype: 'spacer'}, 
+            this.flashcardFieldSet,
+            { xtype: 'spacer', width: 'auto', flex: 5}
+        ]);
         this.onBefore('painted', this.updateBadges);
     },
     
