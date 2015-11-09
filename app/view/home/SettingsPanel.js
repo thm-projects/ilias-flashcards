@@ -34,11 +34,12 @@ Ext.define('LearningApp.view.home.SettingsPanel', {
     xtype: 'settingsPanel',
 
     requires: [
+        'Ext.Img',
         'Ext.Button',
         'Ext.Panel',
         'Ext.TitleBar',
         'Ext.form.FieldSet',
-        'LearningApp.prototype.SliderField'
+        'Ext.form.Panel'
     ],
     
     config: {
@@ -78,104 +79,48 @@ Ext.define('LearningApp.view.home.SettingsPanel', {
             items: [this.backButton]
         });
 
-        this.notificationToggle = Ext.create('Ext.field.Toggle', {
-            xtype: 'togglefield',
-            name: 'notificationToggle',
-            label: Messages.NOTIFICATIONS,
-            id: 'notification',
-            labelWidth: '60%',
-            listeners: {
-                scope: this,
-                change: function (slider, newValue, oldValue) {
-                    this.iterateThroughSliders(function(slider) {
-                        if(newValue) slider.enable();
-                        else slider.disable();
-                    });
-                    
-                    this.controller.storeSetting(this.notificationToggle.getId(), newValue);
-                }
-            }
+        this.logoutButton = Ext.create('Ext.Button' , {
+            text: Messages.USER_LOGOUT,
+            handler: this.logoutHandler
         });
         
-        this.firstSlider = Ext.create('LearningApp.prototype.SliderField', {
-            label: Messages.FIRST_BOX,
-            labelWidth: '30%',
-            id: 'firstBox',
-            value: 1,
-            minValue: 1,
-            maxValue: 15,
-            increment: 1,
-            disabled: true,
-            listeners: {
-                scope: this,
-                change: function (me, slider, newValue, oldValue) {
-                    this.controller.storeSetting(this.firstSlider.getId(), newValue);
-                }
-            }
+        this.deleteDataButton = Ext.create('Ext.Button', {
+            ui: 'decline',
+            text: Messages.DELETE_DATA,
+            handler: this.deleteDataHandler
         });
         
-        this.secondSlider = Ext.create('LearningApp.prototype.SliderField', {
-            label: Messages.SECOND_BOX,
-            labelWidth: '30%',
-            id: 'secondBox',
-            value: 3,
-            minValue: 3,
-            maxValue: 15,
-            increment: 1,
-            disabled: true,
-            listeners: {
-                scope: this,
-                change: function (me, slider, newValue, oldValue) {
-                    this.controller.storeSetting(this.secondSlider.getId(), newValue);
-                }
-            }
+        this.buttonContainer = Ext.create('Ext.form.Panel', {
+           scrollable: null,
+           items: [{
+              xtype: 'fieldset',
+              cls: 'form',
+              title: Messages.USER_LOGOUT_FORM,
+              items: [this.logoutButton]
+           }, {
+               xtype: 'fieldset',
+               cls: 'form',
+               title: Messages.DELETE_ALL_USER_DATA,
+               items: [this.deleteDataButton]
+           }]
         });
-        
-        this.thirdSlider = Ext.create('LearningApp.prototype.SliderField', {
-            label: Messages.THIRD_BOX,
-            labelWidth: '30%',
-            id: 'thirdBox',
-            value: 5,
-            minValue: 5,
-            maxValue: 15,
-            increment: 1,
-            disabled: true,
-            listeners: {
-                scope: this,
-                change: function (me, slider, newValue, oldValue) {
-                    this.controller.storeSetting(this.thirdSlider.getId(), newValue);
-                }
-            }
-        });
-        
-        this.notificationFieldSet = Ext.create('Ext.form.FieldSet', {
-            title: Messages.NOTIFICATIONS,
-            cls: 'standardForm',
-            width: '300px',
 
-            items: [
-                this.notificationToggle
-            ]
-        });
-        
-        this.settingsFieldSet = Ext.create('Ext.form.FieldSet', {
-            title: Messages.LEARN_INTERVAL + ' (in Tagen)',
-            cls: 'standardForm settingsPanel',
-            width: '300px',
-
-            items: [
-                this.firstSlider,
-                this.secondSlider,
-                this.thirdSlider
-            ]
+        this.logo = Ext.create('Ext.Img', {
+            mode: 'image',
+            cls: 'appLogo',
+            style: {
+                'margin-top': '20px',
+                'margin-bottom': '10px'
+            },
+            src: 'resources/icons/logo.png'
         });
 
         this.add([
             this.titleBar,
-            this.notificationFieldSet,
-            this.settingsFieldSet
+            this.logo,
+            this.buttonContainer
         ]);
-        
+
         this.onAfter('initialize', this.onInitialize);
     },
     
@@ -183,30 +128,21 @@ Ext.define('LearningApp.view.home.SettingsPanel', {
      * actions to perform on initialization
      */
     onInitialize: function() {
-        var me = this,
-            toggle = this.notificationToggle;
-        
-        /** restore value from notificationToggle */
-        me.controller.getStoredSetting(toggle.getId(), function(value) {
-            if(value !== null) toggle.setValue(value);
-        });
-        
-        /** restore values from sliders */
-        me.iterateThroughSliders(function(slider) {
-            me.controller.getStoredSetting(slider.getId(), function(value) {
-                if(value !== null) slider.setValues(value);
-            });
+
+    },
+
+    logoutHandler: function () {
+        Ext.Msg.confirm(Messages.CONFIRM_LOGOUT_TITLE, Messages.CONFIRM_LOGOUT, function (answer) {
+            if (answer === 'yes') {
+                LearningApp.app.getController('LoginController').logout();
+            }
         });
     },
-    
-    /** dynamic function to iterate through all setting sliders */
-    iterateThroughSliders: function(promise) {
-        var me = this;
-        var field = this.settingsFieldSet.getFieldsAsArray();
-        
-        field.forEach(function(element, index, array) {
-            if(element.getId() !== me.notificationToggle.getId()) {
-                promise(element);
+
+    deleteDataHandler: function () {
+        Ext.Msg.confirm(Messages.CONFIRM_LOGOUT_TITLE, Messages.CONFIRM_DELETE_LOGOUT, function (answer) {
+            if (answer === 'yes') {
+                LearningApp.app.storageController.deleteUserData();
             }
         });
     }

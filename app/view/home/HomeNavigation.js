@@ -66,8 +66,14 @@ Ext.define('LearningApp.view.home.HomeNavigation', {
             align: 'left',
             hidden: true,
             handler: function() {
-                this.disable();
-                LearningApp.app.getController('LoginController').logout();
+                var me = this;
+                me.disable();
+                Ext.Msg.confirm(Messages.CONFIRM_LOGOUT_TITLE, Messages.CONFIRM_LOGOUT, function (answer) {
+                    if (answer === 'yes') {
+                        LearningApp.app.getController('LoginController').logout();
+                    }
+                    me.enable();
+                });
             }
         });
         

@@ -52,6 +52,10 @@
 	opacity: 0;
 }
 
+.x-list {
+	background-color: #eee;
+}
+
 .loginFields .x-form-field {
 	text-align: center;
 }
@@ -135,6 +139,7 @@
 	text-align: left;
 }
 
+.form,
 .standardForm {
 	margin-left: 12px;
 	margin-right: 12px;
@@ -146,6 +151,7 @@
 	width: 95%;
 }
 
+.form,
 .standardForm .x-form-fieldset-title {
 	text-align: center;
 }

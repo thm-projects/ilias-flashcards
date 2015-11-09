@@ -46,7 +46,7 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
     
     config: {
         title: Messages.OVERVIEW,
-        scrollable: false,
+        scrollable: true,
         
         layout : {
             type : 'vbox',
@@ -178,8 +178,22 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
                 }
             }]
         });
+
+        this.logo = Ext.create('Ext.Img', {
+            mode: 'image',
+            cls: 'appLogo',
+            style: {
+                'margin-top': '20px',
+                'margin-bottom': '10px'
+            },
+            src: 'resources/icons/logo.png'
+        });
         
         this.add([{
+            xtype: 'spacer',
+            width: 'auto',
+            flex: 1
+        }, this.logo, {
             xtype: 'spacer',
             width: 'auto',
             flex: 1
@@ -188,7 +202,7 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
         this.cardIndexFieldSet, {
             xtype: 'spacer',
             width: 'auto',
-            flex: 3
+            flex: 5
         }]);
         
         /**
@@ -212,8 +226,14 @@ Ext.define('LearningApp.view.home.OverviewPanel', {
          * check if there are active tests in localstorage
          */
         this.on('activate', function () {
+            var displayHeight = (window.innerHeight > 0) ? window.innerHeight : screen.height;
             this.updateBadges();
             this.checkUpperFieldVisibility();
+            
+            if (displayHeight < 600) {
+                this.getInnerItems()[0].setHidden(true);
+                this.getInnerItems()[1].setHidden(true);
+            }
         });
         
         /**
