@@ -31,9 +31,9 @@ Ilias-Flashcards is built through Sencha Cmd by running:
 	cd /path/to/application
 	sencha app build
 
-During this process a folder called *build* with a subfolder *production* will 
-be created inside the project folder. The content of this subfolder can be moved
-directy to a HTTP server installation or manually packed to a web application archive.
+During this process a folder called `build` with a subfolder `production/LearningApp` will 
+be created inside the project folder. The content of this subfolder can be moved directy
+to a HTTP server installation or manually packed to a web application archive.
 
 ## Connector
 
