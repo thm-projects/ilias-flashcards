@@ -1,4 +1,4 @@
-lernkartei
+Ilias-Flashcards
 ==========
 
-Lernkartei
+Ilias-Flashcards is a digital quiz and flashcard application.  This application 
