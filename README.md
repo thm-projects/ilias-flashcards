@@ -3,12 +3,12 @@ ILIAS-Flashcards
 
 ILIAS-Flashcards is a digital quiz and flashcard application. Used together with a
 connector software, the [arsnova- connector](https://github.com/thm-projects/arsnova-lms-connector),
-this application can be utilized to show questions and tests from the open source e-learning plattform [Ilias](http://www.ilias.de/) on any HTML5 capable device. It is released under the GPLv3 license. 
+this application can be utilized to show questions and tests from the open source e-learning plattform [Ilias](http://www.ilias.de/) from any HTML5 capable device. It is released under the GPLv3 license. 
 
 In order to support offline storage of the mentioned questions and tests, ILIAS-flashcards uses [localforage](https://github.com/mozilla/localForage) as local asynchronous storage. After
 registering on the connector software via LDAP, the application can be used completely and
 unconditionally offline. Only the expiration of the login data (usally after 14 days) and
-updates of questions or tests might require a fresh connection to the e-learning plattform.
+updates of questions or tests might require a fresh connection to the connector software.
 
 ### Requirements
 
