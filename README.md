@@ -58,7 +58,36 @@ inside the project folder. This creates the archive `connector-service.war`
 in the `connector-service/build/libs` directory, which can be directly deployed
 to a servlet container.
 
+### Configuration
+
 In order to use the custom connector service, the http address and port have to be
 configured inside the `app/proxy/Proxy.js` file of the client project. Afterwards
 a fresh build of the client software is required.
 
+The connector itself needs a configuration file placed in the folder `/etc/arsnova`
+called `connector.properties`. To ensure full compatibility the servlet container needs
+full ownership and read/write/execute permissions on this folder. The properties file
+must be constructed as follows:  
+
+
+```
+# ilias database connection configuration
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://127.0.0.1:3306/ilias?zeroDateTimeBehavior=convertToNull
+jdbc.username=
+jdbc.password=
+
+# ldap configuration
+ldap.serverUrl=
+ldap.userSearchBase=
+ldap.userSearchFilter=
+
+# admin user data (can also be used as client login)
+admin.username=
+admin.password=
+
+# don't change this lines
+# Enable or disable Ilias Connector Service
+service.startIliasConnector=enable
+dao.implementation=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
+```
